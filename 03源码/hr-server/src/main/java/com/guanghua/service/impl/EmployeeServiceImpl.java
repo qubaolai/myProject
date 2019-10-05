@@ -15,4 +15,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee selectEmployeeById(String id) {
         return employeeMapper.selectByPrimaryKey(id);
     }
+
+    @Override
+    public void insertEmployeeByemp(Employee employee) {
+        employeeMapper.insert(employee);
+    }
 }

@@ -1,6 +1,7 @@
 package com.guanghua;
 
 import com.guanghua.common.utils.UUIDUtil;
+import com.guanghua.mapper.EmployeeMapper;
 import com.guanghua.po.Employee;
 import com.guanghua.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
@@ -9,13 +10,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
 import javax.annotation.Resource;
 
 @Slf4j
 public class HRTest {
-
+    @Resource
     private ApplicationContext applicationContext;
+    @Resource
+    private EmployeeMapper employeeMapper;
     @Resource
     private EmployeeService employeeService;
     @Before
@@ -32,7 +34,7 @@ public class HRTest {
 
     @Test
     public void test() {
-        Employee employee = employeeService.selectEmployeeById("asd");
+        Employee employee = employeeService.selectEmployeeById("aaa");
         log.info("asd");
         System.out.println(1);
     }
@@ -43,5 +45,8 @@ public class HRTest {
         employee.setId(UUIDUtil.getUUID());
         employee.setEmployeeNumber("asd");
         employee.setPassword("asd");
+        employeeService.insertEmployeeByemp(employee);
+        System.out.println(1);
     }
+
 }
