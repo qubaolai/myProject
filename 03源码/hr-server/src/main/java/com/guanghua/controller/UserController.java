@@ -1,5 +1,7 @@
 package com.guanghua.controller;
 
+import com.guanghua.common.enums.ErrorEmnus;
+import com.guanghua.po.Employee;
 import com.guanghua.service.EmployeeService;
 import com.guanghua.vo.ResultVo;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,11 @@ public class UserController {
     private EmployeeService employeeService;
     @RequestMapping("/login")
     public ResultVo login(){
-        return ResultVo.sendResult(200,"success",employeeService.selectEmployeeById("asd"));
+        Employee employee = employeeService.selectEmployeeById("asd");
+        if(employee == null){
+            return ResultVo.sendResult(400, ErrorEmnus.getMsg(400));
+        }
+
+        return ResultVo.sendResult(200,"success");
     }
 }
