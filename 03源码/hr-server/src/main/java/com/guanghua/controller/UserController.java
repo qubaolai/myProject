@@ -14,8 +14,8 @@ public class UserController {
     @Resource
     private EmployeeService employeeService;
     @RequestMapping("/login")
-    public ResultVo login(){
-        Employee employee = employeeService.selectEmployeeById("asd");
+    public ResultVo login(String id){
+        Employee employee = employeeService.selectEmployeeById(id);
         if(employee == null){
             return ResultVo.sendResult(400, ErrorEmnus.getMsg(400));
         }

@@ -88,7 +88,7 @@
             <!-- /**表示所有url包括子url路径 -->
             <mvc:mapping path="/**"/>
             <!-- 不拦截登录的请求 -->
-            <mvc:exclude-mapping path="/user/login"/>
+            <mvc:exclude-mapping path="/user/getUser"/>
             <bean class="com.guanghua.common.intercepter.HrHandlerIntercepter"/>
         </mvc:interceptor>
 
