@@ -1,8 +1,15 @@
 package com.guanghua.service;
 
 import com.guanghua.po.Employee;
+import com.guanghua.vo.ResultVo;
 
+/**
+ * @author qubaolai
+ * @date 2019/10/27 19:01
+ */
 public interface EmployeeService {
-    public Employee selectEmployeeById(String id);
-    public void insertEmployeeByemp(Employee employee);
+    /**
+     *  用户登录
+     */
+    public ResultVo login(Employee employee);
 }

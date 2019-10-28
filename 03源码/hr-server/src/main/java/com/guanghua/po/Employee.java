@@ -1,8 +1,10 @@
 package com.guanghua.po;
 
+import com.guanghua.pojo.EmployeeExtend;
+
 import java.util.Date;
 
-public class Employee {
+public class Employee extends EmployeeExtend {
     private String id;
 
     private String employeeNumber;
