@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qubaolai.mapper.AttendanceMapper" >
+  <resultMap id="BaseResultMap" type="com.qubaolai.po.Attendance" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="employee_number" property="employeeNumber" jdbcType="VARCHAR" />
+    <result column="day" property="day" jdbcType="DATE" />
+    <result column="time_type" property="timeType" jdbcType="CHAR" />
+    <result column="start_time" property="startTime" jdbcType="TIME" />
+    <result column="start_type" property="startType" jdbcType="CHAR" />
+    <result column="end_time" property="endTime" jdbcType="TIME" />
+    <result column="end_type" property="endType" jdbcType="CHAR" />
+    <result column="work_type" property="workType" jdbcType="CHAR" />
+    <result column="notes" property="notes" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, employee_number, day, time_type, start_time, start_type, end_time, end_type, 
+    work_type, notes
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.qubaolai.po.AttendanceExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from attendance
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from attendance
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from attendance
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.qubaolai.po.AttendanceExample" >
+    delete from attendance
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.qubaolai.po.Attendance" >
+    insert into attendance (id, employee_number, day, 
+      time_type, start_time, start_type, 
+      end_time, end_type, work_type, 
+      notes)
+    values (#{id,jdbcType=VARCHAR}, #{employeeNumber,jdbcType=VARCHAR}, #{day,jdbcType=DATE}, 
+      #{timeType,jdbcType=CHAR}, #{startTime,jdbcType=TIME}, #{startType,jdbcType=CHAR}, 
+      #{endTime,jdbcType=TIME}, #{endType,jdbcType=CHAR}, #{workType,jdbcType=CHAR}, 
+      #{notes,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qubaolai.po.Attendance" >
+    insert into attendance
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="employeeNumber != null" >
+        employee_number,
+      </if>
+      <if test="day != null" >
+        day,
+      </if>
+      <if test="timeType != null" >
+        time_type,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="startType != null" >
+        start_type,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="endType != null" >
+        end_type,
+      </if>
+      <if test="workType != null" >
+        work_type,
+      </if>
+      <if test="notes != null" >
+        notes,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeNumber != null" >
+        #{employeeNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="day != null" >
+        #{day,jdbcType=DATE},
+      </if>
+      <if test="timeType != null" >
+        #{timeType,jdbcType=CHAR},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIME},
+      </if>
+      <if test="startType != null" >
+        #{startType,jdbcType=CHAR},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIME},
+      </if>
+      <if test="endType != null" >
+        #{endType,jdbcType=CHAR},
+      </if>
+      <if test="workType != null" >
+        #{workType,jdbcType=CHAR},
+      </if>
+      <if test="notes != null" >
+        #{notes,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.qubaolai.po.AttendanceExample" resultType="java.lang.Integer" >
+    select count(*) from attendance
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update attendance
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.employeeNumber != null" >
+        employee_number = #{record.employeeNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.day != null" >
+        day = #{record.day,jdbcType=DATE},
+      </if>
+      <if test="record.timeType != null" >
+        time_type = #{record.timeType,jdbcType=CHAR},
+      </if>
+      <if test="record.startTime != null" >
+        start_time = #{record.startTime,jdbcType=TIME},
+      </if>
+      <if test="record.startType != null" >
+        start_type = #{record.startType,jdbcType=CHAR},
+      </if>
+      <if test="record.endTime != null" >
+        end_time = #{record.endTime,jdbcType=TIME},
+      </if>
+      <if test="record.endType != null" >
+        end_type = #{record.endType,jdbcType=CHAR},
+      </if>
+      <if test="record.workType != null" >
+        work_type = #{record.workType,jdbcType=CHAR},
+      </if>
+      <if test="record.notes != null" >
+        notes = #{record.notes,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update attendance
+    set id = #{record.id,jdbcType=VARCHAR},
+      employee_number = #{record.employeeNumber,jdbcType=VARCHAR},
+      day = #{record.day,jdbcType=DATE},
+      time_type = #{record.timeType,jdbcType=CHAR},
+      start_time = #{record.startTime,jdbcType=TIME},
+      start_type = #{record.startType,jdbcType=CHAR},
+      end_time = #{record.endTime,jdbcType=TIME},
+      end_type = #{record.endType,jdbcType=CHAR},
+      work_type = #{record.workType,jdbcType=CHAR},
+      notes = #{record.notes,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qubaolai.po.Attendance" >
+    update attendance
+    <set >
+      <if test="employeeNumber != null" >
+        employee_number = #{employeeNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="day != null" >
+        day = #{day,jdbcType=DATE},
+      </if>
+      <if test="timeType != null" >
+        time_type = #{timeType,jdbcType=CHAR},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=TIME},
+      </if>
+      <if test="startType != null" >
+        start_type = #{startType,jdbcType=CHAR},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIME},
+      </if>
+      <if test="endType != null" >
+        end_type = #{endType,jdbcType=CHAR},
+      </if>
+      <if test="workType != null" >
+        work_type = #{workType,jdbcType=CHAR},
+      </if>
+      <if test="notes != null" >
+        notes = #{notes,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qubaolai.po.Attendance" >
+    update attendance
+    set employee_number = #{employeeNumber,jdbcType=VARCHAR},
+      day = #{day,jdbcType=DATE},
+      time_type = #{timeType,jdbcType=CHAR},
+      start_time = #{startTime,jdbcType=TIME},
+      start_type = #{startType,jdbcType=CHAR},
+      end_time = #{endTime,jdbcType=TIME},
+      end_type = #{endType,jdbcType=CHAR},
+      work_type = #{workType,jdbcType=CHAR},
+      notes = #{notes,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
