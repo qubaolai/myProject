@@ -31,8 +31,6 @@ public class History {
 
     private String status;
 
-    private String home;
-
     private String notes;
 
     public String getId() {
@@ -145,14 +143,6 @@ public class History {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getHome() {
-        return home;
-    }
-
-    public void setHome(String home) {
-        this.home = home;
     }
 
     public String getNotes() {

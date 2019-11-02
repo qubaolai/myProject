@@ -1,12 +1,9 @@
 package com.qubaolai.common.utils;
 
 /**
- * @ProjectName: judicialmap
- * @Package: com.thunisoft.judicial.map.common.utils
  * @ClassName: DateUtil
- * @Author: shichuanqi
+ * @Author: qubaolai
  * @Description: date工具类
- * @Date: 2019/7/31 15:40
  * @Version: 1.0
  */
 

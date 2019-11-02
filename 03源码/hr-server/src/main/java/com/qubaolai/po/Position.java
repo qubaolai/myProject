@@ -3,6 +3,8 @@ package com.qubaolai.po;
 public class Position {
     private String id;
 
+    private Integer departmentNumber;
+
     private Integer positionNumber;
 
     private String name;
@@ -15,6 +17,14 @@ public class Position {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Integer getDepartmentNumber() {
+        return departmentNumber;
+    }
+
+    public void setDepartmentNumber(Integer departmentNumber) {
+        this.departmentNumber = departmentNumber;
     }
 
     public Integer getPositionNumber() {

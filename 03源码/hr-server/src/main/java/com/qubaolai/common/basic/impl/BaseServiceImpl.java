@@ -2,14 +2,14 @@ package com.qubaolai.common.basic.impl;
 
 import com.qubaolai.common.basic.BaseService;
 import com.qubaolai.po.Employee;
-
-import javax.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
+@Service
 public class BaseServiceImpl implements BaseService {
 
-    @Resource
+    @Autowired
     private HttpServletRequest request;
     @Override
     public Employee getCurrentLoginEmployee() {

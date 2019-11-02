@@ -17,7 +17,13 @@ public class LoginException extends RuntimeException{
          */
         log.info("获取数据为空,接口:{}", method);
     }
-
+    public LoginException(Integer code,String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+    public Integer getCode(){
+        return code;
+    }
     @Override
     public String getMessage() {
         return msg;

@@ -11,8 +11,6 @@ public class Department {
 
     private String telephone;
 
-    private String address;
-
     private String notes;
 
     public String getId() {
@@ -53,14 +51,6 @@ public class Department {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public String getNotes() {

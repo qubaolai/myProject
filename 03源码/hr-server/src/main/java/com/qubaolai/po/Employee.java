@@ -33,6 +33,8 @@ public class Employee {
 
     private String deviceid;
 
+    private Integer role;
+
     public String getId() {
         return id;
     }
@@ -151,5 +153,13 @@ public class Employee {
 
     public void setDeviceid(String deviceid) {
         this.deviceid = deviceid;
+    }
+
+    public Integer getRole() {
+        return role;
+    }
+
+    public void setRole(Integer role) {
+        this.role = role;
     }
 }

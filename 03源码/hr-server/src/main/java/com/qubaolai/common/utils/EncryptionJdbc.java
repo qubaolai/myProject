@@ -10,9 +10,10 @@ public class EncryptionJdbc {
     @Resource
     private StringEncryptor stringEncryptor;
 
-    public void encryptionJdbc() {
-        String username = stringEncryptor.encrypt("root");
-        String password = stringEncryptor.encrypt("admin");
-        String url = stringEncryptor.encrypt("jdbc:mysql://localhost:3306/hr");
+    public String encryptionJdbc() {
+        String username = stringEncryptor.encrypt("asd");
+//        String password = stringEncryptor.encrypt("admin");
+//        String url = stringEncryptor.encrypt("jdbc:mysql://localhost:3306/hr");
+        return username;
     }
 }

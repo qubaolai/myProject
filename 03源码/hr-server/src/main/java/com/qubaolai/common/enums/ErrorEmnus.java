@@ -5,7 +5,11 @@ public enum  ErrorEmnus {
     NOTOKEN(201,"无token，请重新登录！"),
     TOKENMISSING(202,"token信息缺失，请重新登录"),
     NOUSER(203,"用户不存在！"),
-    USERINFOERROR(204,"用户名密码错误，请重新登录");
+    USERINFOERROR(204,"用户名密码错误"),
+    PASSWORDERROR(205,"新密码与旧密码相同！"),
+    PASSWORDLOGERROR3(206,"密码错误超过三次"),
+    COFIRMPASSWORDERROR(207,"新密码与确认密码不同！"),
+    PASSWORDLOGERROR5(208,"密码错误超过五次");
 
     private Integer code;
     private String msg;

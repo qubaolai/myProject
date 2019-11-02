@@ -7,7 +7,7 @@ import java.security.MessageDigest;
 @Slf4j
 public class MD5Tools {
     /***
-     * MD5加码 生成32位md5码
+     * MD5加密 生成32位md5码
      */
     public static String string2MD5(String inStr) {
         MessageDigest md5 = null;
@@ -52,7 +52,7 @@ public class MD5Tools {
 
     // 测试主函数
     public static void main(String args[]) {
-        String s = new String("root");
+        String s = new String("asd");
         System.out.println("原始：" + s);
         System.out.println("MD5后：" + string2MD5(s));
         System.out.println("MD5后：" + string2MD5(s));

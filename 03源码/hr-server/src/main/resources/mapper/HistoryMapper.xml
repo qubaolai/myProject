@@ -16,7 +16,6 @@
     <result column="department_number" property="departmentNumber" jdbcType="INTEGER" />
     <result column="position_number" property="positionNumber" jdbcType="INTEGER" />
     <result column="status" property="status" jdbcType="CHAR" />
-    <result column="home" property="home" jdbcType="VARCHAR" />
     <result column="notes" property="notes" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -79,7 +78,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, employee_number, name, gender, birthday, telephone, email, address, education, 
-    in_time, out_time, department_number, position_number, status, home, notes
+    in_time, out_time, department_number, position_number, status, notes
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.qubaolai.po.HistoryExample" >
     select
@@ -116,14 +115,14 @@
       gender, birthday, telephone, 
       email, address, education, 
       in_time, out_time, department_number, 
-      position_number, status, home, 
-      notes)
+      position_number, status, notes
+      )
     values (#{id,jdbcType=VARCHAR}, #{employeeNumber,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{gender,jdbcType=CHAR}, #{birthday,jdbcType=DATE}, #{telephone,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{education,jdbcType=VARCHAR}, 
       #{inTime,jdbcType=DATE}, #{outTime,jdbcType=DATE}, #{departmentNumber,jdbcType=INTEGER}, 
-      #{positionNumber,jdbcType=INTEGER}, #{status,jdbcType=CHAR}, #{home,jdbcType=VARCHAR}, 
-      #{notes,jdbcType=VARCHAR})
+      #{positionNumber,jdbcType=INTEGER}, #{status,jdbcType=CHAR}, #{notes,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.qubaolai.po.History" >
     insert into history
@@ -169,9 +168,6 @@
       </if>
       <if test="status != null" >
         status,
-      </if>
-      <if test="home != null" >
-        home,
       </if>
       <if test="notes != null" >
         notes,
@@ -219,9 +215,6 @@
       </if>
       <if test="status != null" >
         #{status,jdbcType=CHAR},
-      </if>
-      <if test="home != null" >
-        #{home,jdbcType=VARCHAR},
       </if>
       <if test="notes != null" >
         #{notes,jdbcType=VARCHAR},
@@ -279,9 +272,6 @@
       <if test="record.status != null" >
         status = #{record.status,jdbcType=CHAR},
       </if>
-      <if test="record.home != null" >
-        home = #{record.home,jdbcType=VARCHAR},
-      </if>
       <if test="record.notes != null" >
         notes = #{record.notes,jdbcType=VARCHAR},
       </if>
@@ -306,7 +296,6 @@
       department_number = #{record.departmentNumber,jdbcType=INTEGER},
       position_number = #{record.positionNumber,jdbcType=INTEGER},
       status = #{record.status,jdbcType=CHAR},
-      home = #{record.home,jdbcType=VARCHAR},
       notes = #{record.notes,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -354,9 +343,6 @@
       <if test="status != null" >
         status = #{status,jdbcType=CHAR},
       </if>
-      <if test="home != null" >
-        home = #{home,jdbcType=VARCHAR},
-      </if>
       <if test="notes != null" >
         notes = #{notes,jdbcType=VARCHAR},
       </if>
@@ -378,7 +364,6 @@
       department_number = #{departmentNumber,jdbcType=INTEGER},
       position_number = #{positionNumber,jdbcType=INTEGER},
       status = #{status,jdbcType=CHAR},
-      home = #{home,jdbcType=VARCHAR},
       notes = #{notes,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
