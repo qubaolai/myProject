@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.qubaolai.common.enums.ErrorEmnus;
 import com.qubaolai.common.exception.exceptions.NoTokenException;
 import com.qubaolai.common.utils.JWTUtil;
 import com.qubaolai.mapper.EmployeeMapper;
@@ -31,7 +32,7 @@ public class HrHandlerIntercepter implements HandlerInterceptor {
         //获取请求头中的token
         String token = httpServletRequest.getHeader("token");
         if(StringUtils.isBlank(token)){
-            throw new NoTokenException("无token，请重新登录");
+            throw new NoTokenException(302, "无token，请重新登录");
         }
         String userId = "";
         String dateString = "";
@@ -40,7 +41,7 @@ public class HrHandlerIntercepter implements HandlerInterceptor {
             userId = decrypt.get("empNum");
             dateString = decrypt.get("date");
         } catch (JWTDecodeException j) {
-            throw new NoTokenException("token信息缺失，请重新登录");
+            throw new NoTokenException(303, "token信息缺失，请重新登录");
         }
         EmployeeExample example = new EmployeeExample();
         EmployeeExample.Criteria criteria = example.createCriteria();
@@ -50,7 +51,7 @@ public class HrHandlerIntercepter implements HandlerInterceptor {
             JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(employees.get(0).getPassword() + dateString)).build();
             jwtVerifier.verify(token);
         } catch (JWTVerificationException e) {
-            throw new NoTokenException("用户名密码错误，请重新登录");
+            throw new NoTokenException(204, ErrorEmnus.getMsg(204));
         }
         HttpSession session = httpServletRequest.getSession();
         session.setAttribute("user",employees.get(0));

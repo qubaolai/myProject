@@ -25,11 +25,11 @@ public class MyExceptionHandle {
         return ResultVo.sendResult(e.getCode(), e.getMsg());
     }
     @ExceptionHandler(NoTokenException.class)
-    public ResultVo noLonginExceptionHandle(NoTokenException e) {
+    public ResultVo noTokenExceptionHandle(NoTokenException e) {
         return ResultVo.sendResult(e.getCode(), e.getMessage());
     }
     @ExceptionHandler(NoDataException.class)
-    public ResultVo noLonginExceptionHandle(NoDataException e) {
+    public ResultVo noDataExceptionHandle(NoDataException e) {
         return ResultVo.sendResult(e.getCode(), e.getMessage());
     }
     @ExceptionHandler(ParamException.class)
