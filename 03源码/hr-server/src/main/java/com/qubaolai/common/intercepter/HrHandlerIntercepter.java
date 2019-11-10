@@ -6,8 +6,10 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.qubaolai.common.enums.ErrorEmnus;
+import com.qubaolai.common.exception.exceptions.NoDataException;
 import com.qubaolai.common.exception.exceptions.NoTokenException;
 import com.qubaolai.common.utils.JWTUtil;
+import com.qubaolai.common.utils.MD5Tools;
 import com.qubaolai.mapper.EmployeeMapper;
 import com.qubaolai.po.Employee;
 import com.qubaolai.po.EmployeeExample;
@@ -45,8 +47,11 @@ public class HrHandlerIntercepter implements HandlerInterceptor {
         }
         EmployeeExample example = new EmployeeExample();
         EmployeeExample.Criteria criteria = example.createCriteria();
-        criteria.andEmployeeNumberEqualTo(userId);
+        criteria.andEmployeeNumberEqualTo(MD5Tools.string2MD5(userId));
         List<Employee> employees = employeeMapper.selectByExample(example);
+        if(employees == null || employees.size() <= 0){
+            throw new NoDataException(400, "用户不存在！");
+        }
         try {
             JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(employees.get(0).getPassword() + dateString)).build();
             jwtVerifier.verify(token);

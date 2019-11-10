@@ -37,13 +37,13 @@ public class JWTUtil {
 
 
     public static String encrypt(Employee employee) {
-        String convert = DateUtil.convert(new Date());
+        String convert = new Date().toString();
         String token = "";
         try {
             token = JWT.create().withAudience(employee.getEmployeeNumber())
                     .withClaim("date", convert)
                     .withClaim(employee.getEmployeeNumber(),employee.getEmployeeNumber())
-                    .sign(Algorithm.HMAC256(employee.getPassword() + convert));
+                    .sign(Algorithm.HMAC256(MD5Tools.string2MD5(employee.getPassword()) + convert));
 
         } catch (Exception e) {
             System.out.println(11111);
