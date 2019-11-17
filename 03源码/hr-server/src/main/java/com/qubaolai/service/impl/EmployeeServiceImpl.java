@@ -103,14 +103,14 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
         if(!newPassword.equals(confirmPassword)){
             throw new ParamException(207,ErrorEmnus.getMsg(207));
         }
-        //判断旧密码与新密码是否相同
-        if (StringUtils.equals(map.get("newPassword"), map.get("oldPassword"))) {
-            return ResultVo.sendResult(205, ErrorEmnus.getMsg(205));
-        }
         //正则表达式：允许数字字母下划线组成，不能少于6个字符
         String check = "^[a-zA-Z0-9]\\w{5}$";
         if(!newPassword.matches(check)){
             throw new ParamException(209,"密码长度少于6位字符");
+        }
+        //判断旧密码与新密码是否相同
+        if (StringUtils.equals(map.get("newPassword"), map.get("oldPassword"))) {
+            return ResultVo.sendResult(205, ErrorEmnus.getMsg(205));
         }
         //使用密码工具类验证密码强度
         String level = PasswordCheckUtil.checkComprehensive(newPassword);
