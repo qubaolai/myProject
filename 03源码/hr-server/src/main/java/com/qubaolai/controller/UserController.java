@@ -34,7 +34,7 @@ public class UserController {
      * @param employee
      * @return
      */
-    @PostMapping("login")
+    @PostMapping("/login")
     public ResultVo login(@RequestBody Employee employee, HttpServletRequest request){
         //判断传入用户是否为空
         if(employee == null){

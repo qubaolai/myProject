@@ -40,4 +40,12 @@ public class ResultVo<T> {
     public static ResultVo sendResult(Integer code, String msg) {
         return new ResultVo(code, msg);
     }
+
+    public int getCode() {
+        return this.code;
+    }
+
+    public T getData(){
+        return this.data;
+    }
 }

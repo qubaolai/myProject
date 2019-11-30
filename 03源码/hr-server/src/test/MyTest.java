@@ -101,4 +101,21 @@ public class MyTest {
         System.out.println("是否包含小写字母"+lowerCase);
         System.out.println("是否包含特殊字符"+specialChar);
     }
+    @Test
+    public void test(){
+        Employee employee = new Employee();
+        employee.setId(UUIDUtil.getUUID());
+        employee.setEmployeeNumber("asd");
+        employee.setName("曲宝来");
+        employee.setGender("男");
+        employee.setBirthday(new Date());
+        employee.setDepartmentNumber(1);
+        employee.setPassword("asd");
+        employeeMapper.insert(employee);
+    }
+    @Test
+    public void test5(){
+        String asd = MD5Tools.string2MD5("asd");
+        log.info(asd);
+    }
 }

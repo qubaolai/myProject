@@ -48,7 +48,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
         //查询用户
         EmployeeExample example = new EmployeeExample();
         EmployeeExample.Criteria criteria = example.createCriteria();
-        criteria.andEmployeeNumberEqualTo(MD5Tools.string2MD5(employee.getEmployeeNumber()));
+        criteria.andEmployeeNumberEqualTo(employee.getEmployeeNumber());
         List<Employee> employees = employeeMapper.selectByExample(example);
         //判空
         if (employees == null || employees.size() <= 0) {
