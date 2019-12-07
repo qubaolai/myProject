@@ -118,4 +118,5 @@ public class MyTest {
         String asd = MD5Tools.string2MD5("asd");
         log.info(asd);
     }
+
 }
