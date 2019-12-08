@@ -9,16 +9,17 @@ import com.qubaolai.common.utils.DateUtil;
 import com.qubaolai.common.utils.MD5Tools;
 import com.qubaolai.common.utils.PasswordCheckUtil;
 import com.qubaolai.common.utils.UUIDUtil;
+import com.qubaolai.mapper.AttendanceMapper;
 import com.qubaolai.mapper.EmployeeMapper;
 import com.qubaolai.mapper.LogsMapper;
-import com.qubaolai.po.Employee;
-import com.qubaolai.po.EmployeeExample;
-import com.qubaolai.po.Logs;
-import com.qubaolai.po.LogsExample;
+import com.qubaolai.po.*;
 import com.qubaolai.service.EmployeeService;
 import com.qubaolai.vo.ResultVo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +37,8 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
     private LogsMapper logsMapper;
     @Resource
     private EmployeeService employeeService;
+    @Resource
+    private AttendanceMapper attendanceMapper;
 
     @Override
     public void updateEmployee(Employee employee) {
@@ -43,6 +46,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
             employeeMapper.updateByPrimaryKeySelective(employee);
         }
     }
+
     @Override
     public ResultVo login(Employee employee) {
         //查询用户
@@ -118,5 +122,61 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
         currentLoginEmployee.setPassword(MD5Tools.string2MD5(map.get("newPassword")));
         employeeService.updateEmployee(currentLoginEmployee);
         return ResultVo.sendResult(200,"success",level);
+    }
+
+    /**
+     * 上下班签到
+     */
+    @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    public ResultVo workSingIn() {
+        Attendance attendance = new Attendance();
+        attendance.setId(UUIDUtil.getUUID());
+        attendance.setEmployeeNumber(employeeService.getCurrentLoginEmployee().getEmployeeNumber());
+        attendance.setDay(DateUtil.getDate());
+        //六点到九点之间为上班
+        //获取当前日期的六点整时间戳
+        long timeStamp06 = DateUtil.getTimeStamp("06");
+        //获取当前日期的九点整时间戳
+        long timeStamp09 = DateUtil.getTimeStamp("09");
+        //获取当前日期的12点整时间戳
+        long timeStamp12 = DateUtil.getTimeStamp("12");
+        //获取当前日期的12点整时间戳
+        long timeStamp24 = DateUtil.getTimeStamp("24");
+        //获取当前日期的16点整时间戳
+        long timeStamp16 = DateUtil.getTimeStamp("16");
+        //获取当前日期的18点整时间戳
+        long timeStamp18 = DateUtil.getTimeStamp("18");
+        //获取当前日期的19点整时间戳
+        long timeStamp19 = DateUtil.getTimeStamp("19");
+        //获取当前时间时间戳
+        long timestamp = DateUtil.getTimestamp();
+        //上午
+        if(timestamp >= timeStamp06 && timestamp <= timeStamp12){
+            attendance.setTimeType("上午");
+            attendance.setStartTime(DateUtil.getTime());
+            if(timestamp >= timeStamp06 && timestamp <= timeStamp09){
+                attendance.setStartType("正常");
+            }else{
+                attendance.setStartType("迟到");
+            }
+        }
+        //下午
+        if(timestamp >= timeStamp12 && timestamp <= timeStamp24){
+            attendance.setTimeType("下午");
+            attendance.setEndTime(DateUtil.getTime());
+            if(timestamp < timeStamp16){
+                attendance.setEndType("早退");
+            }
+            if(timestamp >= timeStamp16 && timestamp <= timeStamp18){
+                attendance.setEndType("正常");
+            }
+            if(timestamp > timeStamp19){
+                attendance.setEndType("加班");
+            }
+        }
+        //上下班签到在attendance表中插入数据
+        attendanceMapper.insert(attendance);
+        return ResultVo.sendResult(200,"success");
     }
 }

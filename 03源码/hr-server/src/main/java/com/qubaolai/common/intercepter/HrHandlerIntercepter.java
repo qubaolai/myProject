@@ -5,7 +5,6 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.qubaolai.common.enums.ErrorEmnus;
 import com.qubaolai.common.exception.exceptions.NoDataException;
 import com.qubaolai.common.exception.exceptions.NoTokenException;
 import com.qubaolai.common.utils.JWTUtil;
@@ -47,7 +46,7 @@ public class HrHandlerIntercepter implements HandlerInterceptor {
         }
         EmployeeExample example = new EmployeeExample();
         EmployeeExample.Criteria criteria = example.createCriteria();
-        criteria.andEmployeeNumberEqualTo(MD5Tools.string2MD5(userId));
+        criteria.andEmployeeNumberEqualTo(userId);
         List<Employee> employees = employeeMapper.selectByExample(example);
         if(employees == null || employees.size() <= 0){
             throw new NoDataException(400, "用户不存在！");
@@ -56,7 +55,7 @@ public class HrHandlerIntercepter implements HandlerInterceptor {
             JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(employees.get(0).getPassword() + dateString)).build();
             jwtVerifier.verify(token);
         } catch (JWTVerificationException e) {
-            throw new NoTokenException(204, "系统异常{} token解析异常");
+            throw new NoTokenException(204, "token以失效");
         }
         HttpSession session = httpServletRequest.getSession();
         session.setAttribute("user",employees.get(0));

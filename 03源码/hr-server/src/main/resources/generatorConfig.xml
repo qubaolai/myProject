@@ -6,7 +6,7 @@
     <properties resource="generator.properties"/>
 
     <classPathEntry
-            location="D:\maven\mavenrepository\mysql\mysql-connector-java\5.1.38\mysql-connector-java-5.1.38.jar"/>
+            location="E:\mavenrepository\mysql\mysql-connector-java\5.1.38\mysql-connector-java-5.1.38.jar"/>
     <context id="context1">
         <!-- 注释 -->
         <commentGenerator>
@@ -32,7 +32,7 @@
                              targetProject="${mapperProject}" type="XMLMAPPER"/>
 
         <!-- 如果需要通配所有表 直接用sql的通配符    %即可 -->
-        <table schema="" tableName="%" enableCountByExample="true"/>
+        <table schema="" tableName="${table}" enableCountByExample="true"/>
 
     </context>
 </generatorConfiguration>

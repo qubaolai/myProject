@@ -1,17 +1,11 @@
 package com.qubaolai.controller;
 
-import com.qubaolai.common.enums.ErrorEmnus;
 import com.qubaolai.common.exception.exceptions.ParamException;
-import com.qubaolai.common.utils.DateUtil;
 import com.qubaolai.common.utils.JWTUtil;
-import com.qubaolai.common.utils.PasswordCheckUtil;
 import com.qubaolai.po.Employee;
 import com.qubaolai.service.EmployeeService;
 import com.qubaolai.vo.ResultVo;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -65,5 +59,11 @@ public class UserController {
     public ResultVo updatePassword(@RequestBody Map<String,String> map){
         ResultVo resultVo = employeeService.updatePassword(map);
         return resultVo;
+    }
+
+    @PostMapping("/workSingIn")
+    public ResultVo workSingIn(){
+        ResultVo resultVo = employeeService.workSingIn();
+        return  resultVo;
     }
 }

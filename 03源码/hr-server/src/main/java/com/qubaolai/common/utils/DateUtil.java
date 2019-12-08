@@ -7,6 +7,9 @@ package com.qubaolai.common.utils;
  * @Version: 1.0
  */
 
+import lombok.extern.slf4j.Slf4j;
+
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -17,7 +20,35 @@ import java.util.GregorianCalendar;
  *
  * @author zhaoyb
  */
+@Slf4j
 public class DateUtil {
+    public static long getTimeStamp(String time){
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, Integer.valueOf(time));
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        long timeStamp = cal.getTimeInMillis();
+        return timeStamp;
+    }
+
+    /**
+     * 获取年月日 格式化
+     * @return
+     */
+    public static String getDate(){
+        return new SimpleDateFormat("yyyy-MM-dd").format(new Date()).toString();
+    }
+    /**
+     * 获取时分秒 格式化
+     * @return
+     */
+    public static String getTime(){
+        Date d = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        String dateNowStr = sdf.format(d);
+        return dateNowStr;
+    }
 
     /**
      * 把日期字符串格式化成日期类型

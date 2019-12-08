@@ -30,4 +30,9 @@ public interface EmployeeService extends BaseService {
      * @param employee
      */
     public void updateEmployee(Employee employee);
+
+    /**
+     * 员工上下班签到
+     */
+    public ResultVo workSingIn();
 }
