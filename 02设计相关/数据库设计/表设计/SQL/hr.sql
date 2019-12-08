@@ -11,7 +11,7 @@
  Target Server Version : 50147
  File Encoding         : 65001
 
- Date: 01/12/2019 05:28:04
+ Date: 08/12/2019 09:15:14
 */
 
 SET NAMES utf8mb4;
@@ -24,17 +24,21 @@ DROP TABLE IF EXISTS `attendance`;
 CREATE TABLE `attendance`  (
   `id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `employee_number` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `day` datetime NULL DEFAULT NULL,
-  `time_type` enum('上午','下午','加班') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `start_time` datetime NULL DEFAULT NULL,
+  `day` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `time_type` enum('上午','下午') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `start_time` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `start_type` enum('正常','迟到','未签到') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '未签到',
-  `end_time` datetime NULL DEFAULT NULL,
-  `end_type` enum('正常','早退','未签到') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '未签到',
-  `work_type` enum('上班','请假') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `end_time` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `end_type` enum('正常','早退','未签到','加班') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '未签到',
   `notes` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `att_emp_fk`(`employee_number`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '签到记录' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of attendance
+-- ----------------------------
+INSERT INTO `attendance` VALUES ('83602fe55bf54cc9b0c73b06f9fefe5e', 'asd', '2019-12-08', '上午', '09:10:33', '迟到', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for department
@@ -85,7 +89,7 @@ CREATE TABLE `employee`  (
 -- ----------------------------
 -- Records of employee
 -- ----------------------------
-INSERT INTO `employee` VALUES ('9004f903dd8541e685fb2328fc1a872b', 'asd', '曲宝来', '男', '2019-10-31 00:00:00', '13894658959', 'qblsiwen@163.com', '吉林省大安市', '本科', 1, 1, '2019-10-31 00:00:00', '7815696ecbf1c96e6894b779456d330e', NULL, '11', 0);
+INSERT INTO `employee` VALUES ('9004f903dd8541e685fb2328fc1a872b', 'asd', '曲宝来', '男', '2019-10-31 00:00:00', '13894658959', 'qblsiwen@163.com', '吉林省大安市', '本科', 1, 1, '2019-10-31 00:00:00', 'bfd59291e825b5f2bbf1eb76569f8fe7', NULL, '11', 0);
 
 -- ----------------------------
 -- Table structure for history
@@ -96,13 +100,13 @@ CREATE TABLE `history`  (
   `employee_number` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `name` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `gender` enum('男','女') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `birthday` datetime NULL DEFAULT NULL,
+  `birthday` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `telephone` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
   `email` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
   `address` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
   `education` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '教育背景',
-  `in_time` datetime NULL DEFAULT NULL COMMENT '入职时间',
-  `out_time` datetime NULL DEFAULT NULL COMMENT '离职时间',
+  `in_time` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '入职时间',
+  `out_time` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '离职时间',
   `department_number` int(10) NULL DEFAULT NULL,
   `position_number` int(10) NULL DEFAULT NULL COMMENT '职位',
   `status` enum('离职','在职','退休') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -121,8 +125,8 @@ CREATE TABLE `lea`  (
   `id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `employee_number` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `department_number` int(10) NULL DEFAULT NULL,
-  `start_time` datetime NULL DEFAULT NULL,
-  `end_time` datetime NULL DEFAULT NULL,
+  `start_time` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `end_time` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `reason` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '原因',
   `type` enum('事假','病假') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `manager` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -147,6 +151,11 @@ CREATE TABLE `logs`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '密码修改日志' ROW_FORMAT = Compact;
 
 -- ----------------------------
+-- Records of logs
+-- ----------------------------
+INSERT INTO `logs` VALUES ('d672a6f172944750bd7725c2217657c8', '9004f903dd8541e685fb2328fc1a872b', '密码错误', '2019-12-08 09:06:03', '2019-12-08 09:06:03');
+
+-- ----------------------------
 -- Table structure for move
 -- ----------------------------
 DROP TABLE IF EXISTS `move`;
@@ -155,7 +164,7 @@ CREATE TABLE `move`  (
   `employee_number` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `before` int(10) NULL DEFAULT NULL COMMENT '调动前 对应职位表职务编号',
   `after` int(10) NULL DEFAULT NULL COMMENT '调动后 对应职位表职务编号',
-  `time` datetime NULL DEFAULT NULL,
+  `time` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `manager` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `notes` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
@@ -172,9 +181,9 @@ CREATE TABLE `overtime`  (
   `id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `department_number` int(10) NULL DEFAULT NULL,
   `employee_number` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `day` date NULL DEFAULT NULL,
-  `start_time` datetime NULL DEFAULT NULL,
-  `end_time` datetime NULL DEFAULT NULL,
+  `day` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `start_time` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `end_time` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `notes` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `ove_dep_fk`(`department_number`) USING BTREE,
@@ -210,7 +219,7 @@ CREATE TABLE `rewards_punishment`  (
   `type` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `reason` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '原因',
   `money` float(8, 0) NULL DEFAULT NULL,
-  `time` datetime NULL DEFAULT NULL,
+  `time` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `manager` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `notes` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
