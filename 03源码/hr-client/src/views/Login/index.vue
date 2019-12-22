@@ -189,10 +189,15 @@ export default {
           };
           login(formParam)
             .then(response => {
-              this.$router.push({
-                name: "Console",
-                params: response
-              });
+              const data = response.data;
+              if (data.code === 200) {
+                this.$router.push({
+                  name: "Console"
+                  // query: { user: data.data.user }
+                });
+                //将数据存储在本地
+                window.localStorage.setItem("user", data.data.user);
+              }
             })
             .catch(error => {
               console.log(error);

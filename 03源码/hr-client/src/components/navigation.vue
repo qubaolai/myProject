@@ -1,5 +1,9 @@
 <template>
   <div id="nav-wrap">
+    <div id="hrImg">
+      <svg-icon iconClass="hrImg" class="hrImg" />
+      <label>HR医院</label>
+    </div>
     <el-menu
       default-active="1-4-1"
       class="el-menu-vertical-demo"
@@ -71,19 +75,18 @@ export default {
   name: "navigation",
   data: function() {
     //声明路由对象
-    console.log(this.$router.options.routes);
     return {
       isCollapse: false,
       routers: this.$router.options.routes
     };
   },
   methods: {
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath);
-      console.log(this.routers);
+    handleOpen() {
+      // console.log(key, keyPath);
+      // console.log(this.routers);
     },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath);
+    handleClose() {
+      // console.log(key, keyPath);
     }
   }
 };
@@ -103,5 +106,18 @@ svg {
   margin-left: 14px;
   margin-right: 10px;
   padding-bottom: 4px;
+}
+#hrImg {
+  margin-top: 20px;
+  margin-left: 35px;
+  margin-bottom: 30px;
+  color: #fff;
+  label {
+    margin-top: -30px;
+  }
+  svg {
+    margin-bottom: -10px;
+    font-size: 30px;
+  }
 }
 </style>

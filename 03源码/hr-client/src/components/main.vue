@@ -28,7 +28,7 @@ export default {
 .main-content {
   width: 100%;
   height: 100%;
-  padding-top: $layoutHeader + 30;
+  // padding-top: $layoutHeader + 30;
   padding-right: 30px;
   @include webkit(box-sizing, border-box);
   @include webkit(transition, all 0.3s ease 0s);
@@ -46,7 +46,7 @@ export default {
 .content {
   width: 100%;
   height: 100%;
-  padding: 30px 30px 0 30px;
+  // padding-top: 20px;
   background-color: #fff;
   @include webkit(box-sizing, border-box);
 }

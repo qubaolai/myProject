@@ -13,7 +13,7 @@ intercept.interceptors.request.use(
     // 在发送请求之前做些什么
     //如果不是登录请求,在请求头添加token
     const url = config.url;
-    if (url === "/user/login") {
+    if (url !== "/user/login") {
       config.headers["token"] = "token1234tioudfgjaeklfg";
     }
     return config;
@@ -33,6 +33,9 @@ intercept.interceptors.response.use(
       return Promise.reject(data.msg);
     } else {
       //将token保存
+      const token = data.data.token;
+      window.localStorage.setItem("token", token);
+      sessionStorage[token];
       //返回response
       return response;
     }
