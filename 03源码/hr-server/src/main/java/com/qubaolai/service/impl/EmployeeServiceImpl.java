@@ -82,6 +82,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
             if (logs1.size() == 3) {
                 throw new LoginException(199,"密码已错误四次");
             }
+            //用户名或密码错误
             return ResultVo.sendResult(204, ErrorEmnus.getMsg(204));
         }
         return ResultVo.sendResult(200, "success", employees.get(0));
