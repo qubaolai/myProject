@@ -1,30 +1,70 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import login from '@/components/login'
-import user from '@/components/user'
-import hello from '@/components/HelloWorld'
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
-Vue.use(Router)
-Vue.use(ElementUI)
+import Vue from "vue";
+import VueRouter from "vue-router";
+import layout from "../views/Layout/layout.vue";
 
-export default new Router({
+Vue.use(VueRouter);
+
+export default new VueRouter({
   routes: [
-    
     {
-      path: '/',
-      name: 'login',
-      component: login
+      path: "/",
+      redirect: "login",
+      hidden: true,
+      meta: {
+        name: "主页"
+      }
     },
     {
-      path: '/',
-      name: 'user',
-      component: user
+      path: "/login",
+      name: "Login",
+      hidden: true,
+      meta: {
+        name: "登录"
+      },
+      component: () => import("../views/Login/index.vue")
     },
     {
-      path: '/',
-      name: 'hello',
-      component: hello
+      path: "/console",
+      name: "Console",
+      redirect: "index",
+      hidden: false,
+      meta: {
+        name: "控制台",
+        icon: "console"
+      },
+      component: layout,
+      children: [
+        {
+          path: "/index",
+          name: "Index",
+          hidden: false,
+          meta: {
+            name: "首页"
+          },
+          component: () => import("../views/Console/index.vue")
+        }
+      ]
     },
+    {
+      path: "/user",
+      name: "User",
+      hidden: false,
+      meta: {
+        name: "员工管理",
+        icon: "user"
+      },
+      component: layout,
+      children: [
+        {
+          path: "/userList",
+          name: "UserList",
+          // hidden: false,
+          meta: {
+            name: "员工列表"
+          },
+          component: () => import("../views/User/userList.vue")
+        }
+      ]
+    }
   ]
-})
+});
