@@ -17,7 +17,7 @@
       <el-col :span="12">
         <div class="grid-content bg-purple">
           <div class="mainBody">
-            <div>{{ role }}</div>
+            <div>{{ user.username }}</div>
           </div>
         </div>
       </el-col>
@@ -68,13 +68,17 @@ export default {
   data: () => {
     return {
       //页面显示内容start
-      role: ""
+      user: {
+        username: "",
+        userRole: ""
+      }
       //页面显示内容end
     };
   },
   mounted() {
-    this.role = JSON.parse(window.localStorage.getItem("user")).name;
-    console.log(this.role);
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    this.user.username = user.name;
+    this.user.userRole = user.role;
   }
 };
 </script>

@@ -134,6 +134,10 @@ export default {
     return {
       // 显示验证码区域和确认密码
       pageModel: "login",
+      user: {
+        name: "",
+        role: ""
+      },
       // confirmPass: false,
       menuTab: [
         { txt: "登录", current: true, type: "login" },
@@ -195,8 +199,11 @@ export default {
                   name: "Console"
                   // query: { user: data.data.user }
                 });
-                //将数据存储在本地
-                window.localStorage.setItem("user", data.data.user);
+                console.log(data.data.user);
+                this.user.name = data.data.user.name;
+                this.user.role = data.data.user.role;
+                //将数据存储在sessionStorage
+                sessionStorage.setItem("user", JSON.stringify(this.user));
               }
             })
             .catch(error => {
