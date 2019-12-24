@@ -18,6 +18,8 @@
         <div class="grid-content bg-purple">
           <div class="mainBody">
             <div>{{ user.username }}</div>
+            <div>欢迎登录到医院人事管理系统</div>
+            <div>登录时间:{{ nowTime }}</div>
           </div>
         </div>
       </el-col>
@@ -33,14 +35,14 @@
       <el-col :span="6">
         <div class="grid-content bg-purple" justify align>
           <div class="buttonType">
-            <el-button type="primary">主要按钮</el-button>
+            <el-button type="primary" @click="Signin">上班签到</el-button>
           </div>
         </div>
       </el-col>
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <div class="buttonType">
-            <el-button type="primary">主要按钮</el-button>
+            <el-button type="primary">下班签到</el-button>
           </div>
         </div>
       </el-col>
@@ -63,6 +65,8 @@
   </div>
 </template>
 <script>
+import { getNowDate } from "@/utils/dateUtil.js";
+import { singin } from "@/api/user/signin.js";
 export default {
   name: "console",
   data: () => {
@@ -71,14 +75,27 @@ export default {
       user: {
         username: "",
         userRole: ""
-      }
+      },
+      nowTime: ""
       //页面显示内容end
     };
   },
   mounted() {
+    this.nowTime = getNowDate();
     const user = JSON.parse(sessionStorage.getItem("user"));
     this.user.username = user.name;
     this.user.userRole = user.role;
+  },
+  methods: {
+    Signin() {
+      singin().then(responce => {
+        console.log(responce);
+      });
+      // this.$message({
+      //   message: "签到成功" + "\n" + "签到时间为:" + " " + getNowDate(),
+      //   type: "success"
+      // });
+    }
   }
 };
 </script>

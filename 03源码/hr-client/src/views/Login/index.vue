@@ -199,11 +199,16 @@ export default {
                   name: "Console"
                   // query: { user: data.data.user }
                 });
-                console.log(data.data.user);
                 this.user.name = data.data.user.name;
                 this.user.role = data.data.user.role;
                 //将数据存储在sessionStorage
                 sessionStorage.setItem("user", JSON.stringify(this.user));
+                //将token保存
+                const token = data.data.token;
+                if (token !== null) {
+                  window.localStorage.setItem("token", token);
+                  sessionStorage[token];
+                }
               }
             })
             .catch(error => {

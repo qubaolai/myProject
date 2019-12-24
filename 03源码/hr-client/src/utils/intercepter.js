@@ -14,7 +14,7 @@ intercept.interceptors.request.use(
     //如果不是登录请求,在请求头添加token
     const url = config.url;
     if (url !== "/user/login") {
-      config.headers["token"] = "token1234tioudfgjaeklfg";
+      config.headers["token"] = window.localStorage.getItem("token");
     }
     return config;
   },
@@ -32,10 +32,6 @@ intercept.interceptors.response.use(
       Message.error(data.msg);
       return Promise.reject(data.msg);
     } else {
-      //将token保存
-      const token = data.data.token;
-      window.localStorage.setItem("token", token);
-      sessionStorage[token];
       //返回response
       return response;
     }
