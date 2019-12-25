@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : connection
+ Source Server         : localhost
  Source Server Type    : MySQL
  Source Server Version : 50147
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 50147
  File Encoding         : 65001
 
- Date: 08/12/2019 09:15:14
+ Date: 25/12/2019 21:12:56
 */
 
 SET NAMES utf8mb4;
@@ -38,7 +38,12 @@ CREATE TABLE `attendance`  (
 -- ----------------------------
 -- Records of attendance
 -- ----------------------------
+INSERT INTO `attendance` VALUES ('015ead2fe174483db7366de438b929cf', 'asd', '2019-12-24', '下午', NULL, NULL, '22:58:17', '加班', NULL);
+INSERT INTO `attendance` VALUES ('45216480d9074a409d5e27ee46f231f4', 'asd', '2019-12-24', '下午', NULL, NULL, '22:48:38', '加班', NULL);
+INSERT INTO `attendance` VALUES ('6b8b9902c9ce4b40a09fc95b9feb44d2', 'asd', '2019-12-24', '下午', NULL, NULL, '22:46:26', '加班', NULL);
+INSERT INTO `attendance` VALUES ('738e8c413d0c4d428528d299867bb495', 'asd', '2019-12-24', '下午', NULL, NULL, '22:49:42', '加班', NULL);
 INSERT INTO `attendance` VALUES ('83602fe55bf54cc9b0c73b06f9fefe5e', 'asd', '2019-12-08', '上午', '09:10:33', '迟到', NULL, NULL, NULL);
+INSERT INTO `attendance` VALUES ('e9aceb13f36040fc8c0fb06a5e5643ed', 'asd', '2019-12-24', '下午', NULL, NULL, '22:50:16', '加班', NULL);
 
 -- ----------------------------
 -- Table structure for department
@@ -153,6 +158,7 @@ CREATE TABLE `logs`  (
 -- ----------------------------
 -- Records of logs
 -- ----------------------------
+INSERT INTO `logs` VALUES ('1df9aa9fdcf54528aafb1d44c4dce94a', '9004f903dd8541e685fb2328fc1a872b', '密码错误', '2019-12-14 14:50:28', '2019-12-14 14:50:28');
 INSERT INTO `logs` VALUES ('d672a6f172944750bd7725c2217657c8', '9004f903dd8541e685fb2328fc1a872b', '密码错误', '2019-12-08 09:06:03', '2019-12-08 09:06:03');
 
 -- ----------------------------
@@ -172,23 +178,6 @@ CREATE TABLE `move`  (
   INDEX `mov_pos_fk_after`(`after`) USING BTREE,
   INDEX `mov_pos_fk_before`(`before`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '员工调动记录' ROW_FORMAT = Compact;
-
--- ----------------------------
--- Table structure for overtime
--- ----------------------------
-DROP TABLE IF EXISTS `overtime`;
-CREATE TABLE `overtime`  (
-  `id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `department_number` int(10) NULL DEFAULT NULL,
-  `employee_number` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `day` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `start_time` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `end_time` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `notes` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `ove_dep_fk`(`department_number`) USING BTREE,
-  INDEX `ove_emp_fk`(`employee_number`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '加班' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for position
@@ -225,5 +214,21 @@ CREATE TABLE `rewards_punishment`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `employee_number`(`employee_number`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '奖罚表' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Table structure for worktime
+-- ----------------------------
+DROP TABLE IF EXISTS `worktime`;
+CREATE TABLE `worktime`  (
+  `id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `department_number` int(10) NULL DEFAULT NULL,
+  `employee_number` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `day` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `working_hours` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '工时',
+  `notes` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `ove_dep_fk`(`department_number`) USING BTREE,
+  INDEX `ove_emp_fk`(`employee_number`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '加班' ROW_FORMAT = Compact;
 
 SET FOREIGN_KEY_CHECKS = 1;
