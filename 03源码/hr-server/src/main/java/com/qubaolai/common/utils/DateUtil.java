@@ -9,7 +9,7 @@ package com.qubaolai.common.utils;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.text.ParsePosition;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -18,20 +18,38 @@ import java.util.GregorianCalendar;
 /**
  * yyyy-MM-dd HH:mm:ss
  *
- * @author zhaoyb
+ * @author
  */
 @Slf4j
 public class DateUtil {
-    public static long getTimeStamp(String time){
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY, Integer.valueOf(time));
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        long timeStamp = cal.getTimeInMillis();
-        return timeStamp;
+    /**
+     * 将字符串日期转为时间戳
+     * @param time
+     * @return
+     */
+    public static Long getTimeStamp(String time){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = null;
+        try {
+            date = format.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date.getTime();
     }
-
+    /**
+     * 获取整点时间
+     * @param time
+     * @return
+     */
+    public static Date getTime(Integer time){
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR_OF_DAY, time);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        Date date = c.getTime();
+        return date;
+    }
     /**
      * 获取年月日 格式化
      * @return

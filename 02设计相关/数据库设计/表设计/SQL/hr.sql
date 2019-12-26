@@ -11,7 +11,7 @@
  Target Server Version : 50147
  File Encoding         : 65001
 
- Date: 25/12/2019 21:12:56
+ Date: 26/12/2019 22:52:09
 */
 
 SET NAMES utf8mb4;
@@ -25,9 +25,8 @@ CREATE TABLE `attendance`  (
   `id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `employee_number` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `day` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `time_type` enum('上午','下午') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `start_time` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `start_type` enum('正常','迟到','未签到') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '未签到',
+  `start_type` enum('正常','迟到') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `end_time` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `end_type` enum('正常','早退','未签到','加班') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '未签到',
   `notes` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -38,12 +37,12 @@ CREATE TABLE `attendance`  (
 -- ----------------------------
 -- Records of attendance
 -- ----------------------------
-INSERT INTO `attendance` VALUES ('015ead2fe174483db7366de438b929cf', 'asd', '2019-12-24', '下午', NULL, NULL, '22:58:17', '加班', NULL);
-INSERT INTO `attendance` VALUES ('45216480d9074a409d5e27ee46f231f4', 'asd', '2019-12-24', '下午', NULL, NULL, '22:48:38', '加班', NULL);
-INSERT INTO `attendance` VALUES ('6b8b9902c9ce4b40a09fc95b9feb44d2', 'asd', '2019-12-24', '下午', NULL, NULL, '22:46:26', '加班', NULL);
-INSERT INTO `attendance` VALUES ('738e8c413d0c4d428528d299867bb495', 'asd', '2019-12-24', '下午', NULL, NULL, '22:49:42', '加班', NULL);
-INSERT INTO `attendance` VALUES ('83602fe55bf54cc9b0c73b06f9fefe5e', 'asd', '2019-12-08', '上午', '09:10:33', '迟到', NULL, NULL, NULL);
-INSERT INTO `attendance` VALUES ('e9aceb13f36040fc8c0fb06a5e5643ed', 'asd', '2019-12-24', '下午', NULL, NULL, '22:50:16', '加班', NULL);
+INSERT INTO `attendance` VALUES ('015ead2fe174483db7366de438b929cf', 'asd', '2019-12-24', NULL, NULL, '22:58:17', '加班', NULL);
+INSERT INTO `attendance` VALUES ('45216480d9074a409d5e27ee46f231f4', 'asd', '2019-12-24', NULL, NULL, '22:48:38', '加班', NULL);
+INSERT INTO `attendance` VALUES ('6b8b9902c9ce4b40a09fc95b9feb44d2', 'asd', '2019-12-24', NULL, NULL, '22:46:26', '加班', NULL);
+INSERT INTO `attendance` VALUES ('738e8c413d0c4d428528d299867bb495', 'asd', '2019-12-24', NULL, NULL, '22:49:42', '加班', NULL);
+INSERT INTO `attendance` VALUES ('83602fe55bf54cc9b0c73b06f9fefe5e', 'asd', '2019-12-08', '09:10:33', '迟到', NULL, NULL, NULL);
+INSERT INTO `attendance` VALUES ('e9aceb13f36040fc8c0fb06a5e5643ed', 'asd', '2019-12-24', NULL, NULL, '22:50:16', '加班', NULL);
 
 -- ----------------------------
 -- Table structure for department
@@ -216,10 +215,10 @@ CREATE TABLE `rewards_punishment`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '奖罚表' ROW_FORMAT = Compact;
 
 -- ----------------------------
--- Table structure for worktime
+-- Table structure for work_time
 -- ----------------------------
-DROP TABLE IF EXISTS `worktime`;
-CREATE TABLE `worktime`  (
+DROP TABLE IF EXISTS `work_time`;
+CREATE TABLE `work_time`  (
   `id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `department_number` int(10) NULL DEFAULT NULL,
   `employee_number` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,

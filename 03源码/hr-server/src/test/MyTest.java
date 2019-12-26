@@ -18,9 +18,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.annotation.Resource;
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author qubaolai
@@ -35,6 +35,7 @@ public class MyTest {
     private DepartmentMapper departmentMapper;
     @Resource
     private PositionMapper positionMapper;
+
     @Before
     public void setUp() throws Exception {
         // 加载spring配置文件
@@ -44,8 +45,9 @@ public class MyTest {
         departmentMapper = applicationContext.getBean(DepartmentMapper.class);
         positionMapper = applicationContext.getBean(PositionMapper.class);
     }
+
     @Test
-    public void test1(){
+    public void test1() {
         String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRlIjoiMjAxOS0xMS0xMCAxNDowMTowNCIsImF1ZCI6ImFzZCIsImFzZCI6ImFzZCJ9.6UKnNVOWE0FQSlg3VeSTd1oRKVI13nqXOEI2EDs0-yI";
         String userId = "";
         String dateString = "";
@@ -68,8 +70,9 @@ public class MyTest {
         }
         System.out.println(1);
     }
+
     @Test
-    public void test2(){
+    public void test2() {
         Employee employee = employeeMapper.selectByPrimaryKey("9004f903dd8541e685fb2328fc1a872b");
         Date birthday = employee.getBirthday();
         String convert = DateUtil.convert(birthday);
@@ -79,8 +82,9 @@ public class MyTest {
         String a = MD5Tools.convertMD5(asd);
         System.out.println(asd);
     }
+
     @Test
-    public void test3(){
+    public void test3() {
         String check = "^[a-zA-Z0-9]\\w{5}$";
         String password = "As2_";
         //是否包含数字
@@ -91,13 +95,14 @@ public class MyTest {
         boolean lowerCase = PasswordCheckUtil.checkContainLowerCase(password);
         //是否包含特殊字符
         boolean specialChar = PasswordCheckUtil.checkContainSpecialChar(password);
-        System.out.println("是否包含数字"+num);
-        System.out.println("是否包含大写字母"+upperCase);
-        System.out.println("是否包含小写字母"+lowerCase);
-        System.out.println("是否包含特殊字符"+specialChar);
+        System.out.println("是否包含数字" + num);
+        System.out.println("是否包含大写字母" + upperCase);
+        System.out.println("是否包含小写字母" + lowerCase);
+        System.out.println("是否包含特殊字符" + specialChar);
     }
+
     @Test
-    public void test(){
+    public void test() {
         Employee employee = new Employee();
         employee.setId(UUIDUtil.getUUID());
         employee.setEmployeeNumber("asd");
@@ -108,10 +113,30 @@ public class MyTest {
         employee.setPassword("asd");
         employeeMapper.insert(employee);
     }
+
     @Test
-    public void test5(){
-        String asd = MD5Tools.string2MD5("asd");
-        log.info(asd);
+    public void test5() {
+//        Calendar c = Calendar.getInstance();
+//        c.set(Calendar.HOUR_OF_DAY, 24);
+//        c.set(Calendar.MINUTE, 0);
+//        c.set(Calendar.SECOND, 0);
+//        Date m6 = c.getTime();
+//        System.out.println(m6);
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("ad","asd");
+//        System.out.println(map.get("a"));
+        String time = DateUtil.convert(new Date());
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = null;
+        try {
+            date = format.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Long timestamp = date.getTime();
+        long timestamp1 = DateUtil.getTimestamp();
+        System.out.println(timestamp);
+        System.out.println(timestamp1);
     }
 
 }

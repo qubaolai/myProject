@@ -5,7 +5,6 @@
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="employee_number" property="employeeNumber" jdbcType="VARCHAR" />
     <result column="day" property="day" jdbcType="VARCHAR" />
-    <result column="time_type" property="timeType" jdbcType="CHAR" />
     <result column="start_time" property="startTime" jdbcType="VARCHAR" />
     <result column="start_type" property="startType" jdbcType="CHAR" />
     <result column="end_time" property="endTime" jdbcType="VARCHAR" />
@@ -71,8 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, employee_number, day, time_type, start_time, start_type, end_time, end_type, 
-    notes
+    id, employee_number, day, start_time, start_type, end_time, end_type, notes
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.qubaolai.po.AttendanceExample" >
     select
@@ -106,13 +104,11 @@
   </delete>
   <insert id="insert" parameterType="com.qubaolai.po.Attendance" >
     insert into attendance (id, employee_number, day, 
-      time_type, start_time, start_type, 
-      end_time, end_type, notes
-      )
+      start_time, start_type, end_time, 
+      end_type, notes)
     values (#{id,jdbcType=VARCHAR}, #{employeeNumber,jdbcType=VARCHAR}, #{day,jdbcType=VARCHAR}, 
-      #{timeType,jdbcType=CHAR}, #{startTime,jdbcType=VARCHAR}, #{startType,jdbcType=CHAR}, 
-      #{endTime,jdbcType=VARCHAR}, #{endType,jdbcType=CHAR}, #{notes,jdbcType=VARCHAR}
-      )
+      #{startTime,jdbcType=VARCHAR}, #{startType,jdbcType=CHAR}, #{endTime,jdbcType=VARCHAR}, 
+      #{endType,jdbcType=CHAR}, #{notes,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.qubaolai.po.Attendance" >
     insert into attendance
@@ -125,9 +121,6 @@
       </if>
       <if test="day != null" >
         day,
-      </if>
-      <if test="timeType != null" >
-        time_type,
       </if>
       <if test="startTime != null" >
         start_time,
@@ -154,9 +147,6 @@
       </if>
       <if test="day != null" >
         #{day,jdbcType=VARCHAR},
-      </if>
-      <if test="timeType != null" >
-        #{timeType,jdbcType=CHAR},
       </if>
       <if test="startTime != null" >
         #{startTime,jdbcType=VARCHAR},
@@ -193,9 +183,6 @@
       <if test="record.day != null" >
         day = #{record.day,jdbcType=VARCHAR},
       </if>
-      <if test="record.timeType != null" >
-        time_type = #{record.timeType,jdbcType=CHAR},
-      </if>
       <if test="record.startTime != null" >
         start_time = #{record.startTime,jdbcType=VARCHAR},
       </if>
@@ -221,7 +208,6 @@
     set id = #{record.id,jdbcType=VARCHAR},
       employee_number = #{record.employeeNumber,jdbcType=VARCHAR},
       day = #{record.day,jdbcType=VARCHAR},
-      time_type = #{record.timeType,jdbcType=CHAR},
       start_time = #{record.startTime,jdbcType=VARCHAR},
       start_type = #{record.startType,jdbcType=CHAR},
       end_time = #{record.endTime,jdbcType=VARCHAR},
@@ -239,9 +225,6 @@
       </if>
       <if test="day != null" >
         day = #{day,jdbcType=VARCHAR},
-      </if>
-      <if test="timeType != null" >
-        time_type = #{timeType,jdbcType=CHAR},
       </if>
       <if test="startTime != null" >
         start_time = #{startTime,jdbcType=VARCHAR},
@@ -265,7 +248,6 @@
     update attendance
     set employee_number = #{employeeNumber,jdbcType=VARCHAR},
       day = #{day,jdbcType=VARCHAR},
-      time_type = #{timeType,jdbcType=CHAR},
       start_time = #{startTime,jdbcType=VARCHAR},
       start_type = #{startType,jdbcType=CHAR},
       end_time = #{endTime,jdbcType=VARCHAR},

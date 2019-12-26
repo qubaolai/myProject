@@ -4,6 +4,7 @@ import com.qubaolai.common.basic.BaseService;
 import com.qubaolai.po.Employee;
 import com.qubaolai.vo.ResultVo;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -33,6 +34,7 @@ public interface EmployeeService extends BaseService {
 
     /**
      * 员工上下班签到
+     * @param flag 签到标志(上班或者下班)
      */
-    public ResultVo workSingIn();
+    public ResultVo workSingIn(String flag);
 }

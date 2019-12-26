@@ -7,8 +7,6 @@ public class Attendance {
 
     private String day;
 
-    private String timeType;
-
     private String startTime;
 
     private String startType;
@@ -41,14 +39,6 @@ public class Attendance {
 
     public void setDay(String day) {
         this.day = day;
-    }
-
-    public String getTimeType() {
-        return timeType;
-    }
-
-    public void setTimeType(String timeType) {
-        this.timeType = timeType;
     }
 
     public String getStartTime() {
