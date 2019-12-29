@@ -22,22 +22,27 @@ public class MyExceptionHandle {
      */
     @ExceptionHandler(NoLoginException.class)
     public ResultVo noLonginExceptionHandle(NoLoginException e) {
+        log.error(e.getMessage());
         return ResultVo.sendResult(e.getCode(), e.getMsg());
     }
     @ExceptionHandler(NoTokenException.class)
     public ResultVo noTokenExceptionHandle(NoTokenException e) {
+        log.error(e.getMessage());
         return ResultVo.sendResult(e.getCode(), e.getMessage());
     }
     @ExceptionHandler(NoDataException.class)
     public ResultVo noDataExceptionHandle(NoDataException e) {
+        log.error(e.getMessage());
         return ResultVo.sendResult(e.getCode(), e.getMessage());
     }
     @ExceptionHandler(ParamException.class)
     public ResultVo paramExceptionHandle(ParamException e) {
+        log.error(e.getMessage());
         return ResultVo.sendResult(e.getCode(), e.getMessage());
     }
     @ExceptionHandler(LoginException.class)
     public ResultVo LoginExceptionHandle(LoginException e) {
+        log.error(e.getMessage());
         return ResultVo.sendResult(e.getCode(), e.getMessage());
     }
 }

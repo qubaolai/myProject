@@ -28,17 +28,16 @@ intercept.interceptors.request.use(
 intercept.interceptors.response.use(
   function(response) {
     const data = response.data;
-    if (data.code !== 200) {
-      Message.error(data.msg);
-      return Promise.reject(data.msg);
+    if (data.code === 500) {
+      Message.error("系统异常!");
     } else {
       //返回response
       return response;
     }
   },
   function(error) {
+    Message.error(error);
     // 对响应错误做点什么
-    return Promise.reject(error);
   }
 );
 

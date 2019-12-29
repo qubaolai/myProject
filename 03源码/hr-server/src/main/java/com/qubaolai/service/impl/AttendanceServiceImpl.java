@@ -1,6 +1,5 @@
 package com.qubaolai.service.impl;
 
-import com.qubaolai.common.exception.exceptions.NoDataException;
 import com.qubaolai.common.utils.DateUtil;
 import com.qubaolai.common.utils.UUIDUtil;
 import com.qubaolai.mapper.AttendanceMapper;
@@ -42,7 +41,8 @@ public class AttendanceServiceImpl implements AttendanceService {
         //向签到记录添加数据
         attendance.setDay(DateUtil.getDate());
         if(null != map.get("startTime")){
-            attendance.setStartTime(DateUtil.convert2String((Date)map.get("startTime"),"yyyy-MM-dd HH:mm:ss"));
+            Date startTime = (Date) map.get("startTime");
+            attendance.setStartTime(DateUtil.convert2String(startTime,"yyyy-MM-dd HH:mm:ss"));
         }
         if(null != map.get("startType")){
             attendance.setStartType((String)map.get("startType"));
@@ -67,25 +67,25 @@ public class AttendanceServiceImpl implements AttendanceService {
         AttendanceExample.Criteria criteria = example.createCriteria();
         //当前登录系统用户
         criteria.andEmployeeNumberEqualTo(employeeService.getCurrentLoginEmployee().getEmployeeNumber());
-        List<Attendance> attendances = attendanceMapper.selectByExample(example);
-        if(0 > attendances.size() || null == attendances){
-            return ResultVo.sendResult(400,"Data is null");
-        }
-        return ResultVo.sendResult(200, "success");
-    }
-
-    @Override
-    public ResultVo selectAfterWorkAttendanceLog() {
-        AttendanceExample example = new AttendanceExample();
-        AttendanceExample.Criteria criteria = example.createCriteria();
-        //当前登录系统用户
-        criteria.andEmployeeNumberEqualTo(employeeService.getCurrentLoginEmployee().getEmployeeNumber());
-        //当前年月日
         criteria.andDayEqualTo(DateUtil.getDate());
         List<Attendance> attendances = attendanceMapper.selectByExample(example);
-        if(0 > attendances.size() || null == attendances){
-            return ResultVo.sendResult(400,"Data is null");
+        if(0 >= attendances.size() || null == attendances){
+            return ResultVo.sendResult(400,"上班未签到,请联系人事管理!");
         }
-        return ResultVo.sendResult(200, "success", attendances.get(0));
+        return ResultVo.sendResult(200, "success",attendances.get(0));
     }
+
+    /**
+     * 修改上班签到记录添加下班时间和类型
+     * @param map
+     */
+    @Override
+    public void updateSingin(Map<String, Object> map) {
+        //获取上班签到记录
+        Attendance attendance = (Attendance) map.get("attendance");
+        attendance.setEndTime(DateUtil.convert2String((Date)map.get("endTime"),"yyyy-MM-dd HH:mm:ss"));
+        attendance.setEndType((String)map.get("endType"));
+        attendanceMapper.updateByPrimaryKey(attendance);
+    }
+
 }

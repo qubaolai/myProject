@@ -26,8 +26,8 @@ public interface AttendanceService {
     public ResultVo selectGoWorkAttendanceLog();
 
     /**
-     * 查询下班签到记录
-     * @return
+     * 修改上班签到记录
+     * @param map
      */
-    public ResultVo selectAfterWorkAttendanceLog();
+    public void updateSingin(Map<String, Object> map);
 }

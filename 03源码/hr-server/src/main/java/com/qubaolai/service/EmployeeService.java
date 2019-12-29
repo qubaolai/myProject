@@ -34,7 +34,6 @@ public interface EmployeeService extends BaseService {
 
     /**
      * 员工上下班签到
-     * @param flag 签到标志(上班或者下班)
      */
-    public ResultVo workSingIn(String flag);
+    public ResultVo workSingIn();
 }

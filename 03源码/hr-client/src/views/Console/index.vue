@@ -32,17 +32,10 @@
       <el-col :span="6">
         <div class="grid-content bg-purple"></div>
       </el-col>
-      <el-col :span="6">
-        <div class="grid-content bg-purple" justify align>
-          <div class="buttonType">
-            <el-button type="primary" @click="Signin">上班签到</el-button>
-          </div>
-        </div>
-      </el-col>
-      <el-col :span="6">
+      <el-col :span="8">
         <div class="grid-content bg-purple">
           <div class="buttonType">
-            <el-button type="primary">下班签到</el-button>
+            <el-button type="primary" @click="signinWork()">签到</el-button>
           </div>
         </div>
       </el-col>
@@ -78,6 +71,8 @@ export default {
       },
       nowTime: ""
       //页面显示内容end
+      //功能参数Start
+      //功能参数end
     };
   },
   mounted() {
@@ -87,7 +82,7 @@ export default {
     this.user.userRole = user.role;
   },
   methods: {
-    Signin() {
+    signinWork() {
       singin().then(responce => {
         console.log(responce);
       });

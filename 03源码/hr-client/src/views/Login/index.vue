@@ -191,29 +191,25 @@ export default {
             username: this.ruleForm.username,
             password: this.ruleForm.password
           };
-          login(formParam)
-            .then(response => {
-              const data = response.data;
-              if (data.code === 200) {
-                this.$router.push({
-                  name: "Console"
-                  // query: { user: data.data.user }
-                });
-                this.user.name = data.data.user.name;
-                this.user.role = data.data.user.role;
-                //将数据存储在sessionStorage
-                sessionStorage.setItem("user", JSON.stringify(this.user));
-                //将token保存
-                const token = data.data.token;
-                if (token !== null) {
-                  window.localStorage.setItem("token", token);
-                  sessionStorage[token];
-                }
+          login(formParam).then(response => {
+            const data = response.data;
+            if (data.code === 200) {
+              this.$router.push({
+                name: "Console"
+                // query: { user: data.data.user }
+              });
+              this.user.name = data.data.user.name;
+              this.user.role = data.data.user.role;
+              //将数据存储在sessionStorage
+              sessionStorage.setItem("user", JSON.stringify(this.user));
+              //将token保存
+              const token = data.data.token;
+              if (token !== null) {
+                window.localStorage.setItem("token", token);
+                sessionStorage[token];
               }
-            })
-            .catch(error => {
-              console.log(error);
-            });
+            }
+          });
         }
       });
     },

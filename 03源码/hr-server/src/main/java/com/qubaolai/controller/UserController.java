@@ -44,6 +44,7 @@ public class UserController {
             Map<String, Object> map = new HashMap<>();
             map.put("user", employee1);
             map.put("token",token);
+            log.info(token);
             return ResultVo.sendResult(200,"success",map);
         }else {
             return resultVo;
@@ -61,7 +62,7 @@ public class UserController {
         return resultVo;
     }
 
-    @PostMapping("/workSingIn")
+    @GetMapping("/workSingIn")
     public ResultVo workSingIn(){
         ResultVo resultVo = employeeService.workSingIn();
         return  resultVo;
