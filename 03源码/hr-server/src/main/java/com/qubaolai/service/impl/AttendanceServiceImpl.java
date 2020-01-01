@@ -58,7 +58,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 
     /**
      * 查询签到记录是否存在
-     * 条件:当前年月日并且上班签到时间为空
+     * 条件:当前年月日
      * @return ResultVo
      */
     @Override
