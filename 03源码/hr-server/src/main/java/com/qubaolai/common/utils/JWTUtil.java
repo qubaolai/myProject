@@ -40,9 +40,9 @@ public class JWTUtil {
         String convert = new Date().toString();
         String token = "";
         try {
-            token = JWT.create().withAudience(employee.getEmployeeNumber())
+            token = JWT.create().withAudience(employee.getUsername())
                     .withClaim("date", convert)
-                    .withClaim(employee.getEmployeeNumber(),employee.getEmployeeNumber())
+                    .withClaim(employee.getUsername(),employee.getUsername())
                     .sign(Algorithm.HMAC256(MD5Tools.string2MD5(employee.getPassword()) + convert));
 
         } catch (Exception e) {

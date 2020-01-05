@@ -8,8 +8,9 @@ import com.qubaolai.common.utils.*;
 import com.qubaolai.mapper.DepartmentMapper;
 import com.qubaolai.mapper.EmployeeMapper;
 import com.qubaolai.mapper.PositionMapper;
-import com.qubaolai.po.Employee;
-import com.qubaolai.po.EmployeeExample;
+import com.qubaolai.mapper.myMapper.MyEmployeeMapper;
+import com.qubaolai.po.*;
+import com.qubaolai.service.WorkTimeService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,6 +36,10 @@ public class MyTest {
     private DepartmentMapper departmentMapper;
     @Resource
     private PositionMapper positionMapper;
+    @Resource
+    private WorkTimeService workTimeService;
+    @Resource
+    private MyEmployeeMapper myEmployeeMapper;
 
     @Before
     public void setUp() throws Exception {
@@ -44,6 +49,8 @@ public class MyTest {
         employeeMapper = applicationContext.getBean(EmployeeMapper.class);
         departmentMapper = applicationContext.getBean(DepartmentMapper.class);
         positionMapper = applicationContext.getBean(PositionMapper.class);
+        workTimeService = applicationContext.getBean(WorkTimeService.class);
+        myEmployeeMapper = applicationContext.getBean(MyEmployeeMapper.class);
     }
 
     @Test
@@ -60,7 +67,7 @@ public class MyTest {
         }
         EmployeeExample example = new EmployeeExample();
         EmployeeExample.Criteria criteria = example.createCriteria();
-        criteria.andEmployeeNumberEqualTo("asd");
+        criteria.andUsernameEqualTo("asd");
         List<Employee> employees = employeeMapper.selectByExample(example);
         try {
             JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(employees.get(0).getPassword() + dateString)).build();
@@ -105,7 +112,7 @@ public class MyTest {
     public void test() {
         Employee employee = new Employee();
         employee.setId(UUIDUtil.getUUID());
-        employee.setEmployeeNumber("asd");
+        employee.setUsername("asd");
         employee.setName("曲宝来");
         employee.setGender("男");
         employee.setBirthday(new Date());
@@ -137,6 +144,48 @@ public class MyTest {
         long timestamp1 = DateUtil.getTimestamp();
         System.out.println(timestamp);
         System.out.println(timestamp1);
+    }
+
+    @Test
+    public void test6(){
+        for(int i = 1;i <= 10; i++){
+            Employee employee = new Employee();
+            employee.setId(UUIDUtil.getUUID());
+            employee.setName("姓名"+i);
+            employee.setPassword("asd123"+i);
+            employee.setUsername("zxc"+i);
+            employee.setGender("男");
+            employee.setTelephone("138"+i+"345"+(i-1)+"786");
+            employee.setAddress("旮旯胡同");
+            employee.setEducation("本科");
+            employee.setRole(1);
+            employeeMapper.insert(employee);
+        }
+    }
+    @Test
+//    @Pagination(countPerPage = "1", currentPageNumber = "2")
+    public void test7(){
+        Map<String, Object> param = new HashMap<>();
+            param.put("empName", "姓名");
+        //员工编号
+            param.put("employeeNumber", "zxc");
+        //入职时间
+            param.put("inTime", DateUtil.convert2Date("2019-10-31","yyyy-MM-dd"));
+        //性别
+            param.put("gender", "男");
+        //学历
+            param.put("education", "本科");
+            List<String> midList = new ArrayList<>();
+            midList.add("04baca6236bf43b195198f97672114cc");
+            midList.add("1bf4e22c1f1a46a59607522a81f3de0e");
+            midList.add("3d337e5fa140474280a00fbe73d4d734");
+            midList.add("455b65b57302415186948db4c736b041");
+        param.put("midList", midList);
+        List<Integer> didList = new ArrayList<>();
+        didList.add(16);
+        param.put("didList", didList);
+        List<Employee> employeeByConditions = myEmployeeMapper.getEmployeeByConditions(param);
+        System.out.println(1);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.qubaolai.service.impl;
 
 import com.qubaolai.common.utils.DateUtil;
+import com.qubaolai.po.Employee;
 import com.qubaolai.service.WorkTimeService;
 import org.springframework.stereotype.Service;
 
@@ -32,4 +33,5 @@ public class WorkTimeServiceImpl implements WorkTimeService {
         Double difference = endTime.subtract(startTime).divide(new BigDecimal(3600000 )).doubleValue();
         return difference;
     }
+
 }

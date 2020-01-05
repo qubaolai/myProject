@@ -1,7 +1,9 @@
 package com.qubaolai.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.qubaolai.common.exception.exceptions.ParamException;
 import com.qubaolai.common.utils.JWTUtil;
+import com.qubaolai.mapper.EmployeeMapper;
 import com.qubaolai.po.Employee;
 import com.qubaolai.service.EmployeeService;
 import com.qubaolai.vo.ResultVo;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,6 +25,8 @@ import java.util.Map;
 public class UserController {
     @Resource
     private EmployeeService employeeService;
+    @Resource
+    private EmployeeMapper employeeMapper;
 
     /**
      * 用户登录
@@ -62,9 +67,14 @@ public class UserController {
         return resultVo;
     }
 
-    @GetMapping("/workSingIn")
-    public ResultVo workSingIn(){
-        ResultVo resultVo = employeeService.workSingIn();
-        return  resultVo;
+    @PostMapping("/employeeList")
+    public ResultVo getEmployeeList(@RequestBody Map<String,Object> map){
+        if(null != map){
+            PageInfo pageInfo = employeeService.getEmployeeByConditions(map);
+            if(null != pageInfo.getList() && 0 < pageInfo.getList().size()){
+                return ResultVo.sendResult(200, "success",pageInfo);
+            }
+        }
+        return ResultVo.sendResult(400, "NoData");
     }
 }

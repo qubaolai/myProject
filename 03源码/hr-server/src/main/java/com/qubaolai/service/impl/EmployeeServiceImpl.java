@@ -1,5 +1,7 @@
 package com.qubaolai.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.qubaolai.common.basic.impl.BaseServiceImpl;
 import com.qubaolai.common.enums.ErrorEmnus;
 import com.qubaolai.common.exception.exceptions.LoginException;
@@ -9,35 +11,41 @@ import com.qubaolai.common.utils.DateUtil;
 import com.qubaolai.common.utils.MD5Tools;
 import com.qubaolai.common.utils.PasswordCheckUtil;
 import com.qubaolai.common.utils.UUIDUtil;
+import com.qubaolai.mapper.DepartmentMapper;
 import com.qubaolai.mapper.EmployeeMapper;
 import com.qubaolai.mapper.LogsMapper;
+import com.qubaolai.mapper.PositionMapper;
+import com.qubaolai.mapper.myMapper.MyEmployeeMapper;
 import com.qubaolai.po.*;
-import com.qubaolai.service.AttendanceService;
 import com.qubaolai.service.EmployeeService;
 import com.qubaolai.vo.ResultVo;
+import lombok.extern.log4j.Log4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author qubaolai
  * @date 2019/10/30 14:13
  */
+@Log4j
 @Service
 public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeService {
     @Resource
     private EmployeeMapper employeeMapper;
     @Resource
+    private MyEmployeeMapper myEmployeeMapper;
+    @Resource
     private LogsMapper logsMapper;
     @Resource
     private EmployeeService employeeService;
     @Resource
-    private AttendanceService attendanceService;
+    private DepartmentMapper departmentMapper;
+    @Resource
+    private PositionMapper positionMapper;
 
     @Override
     public void updateEmployee(Employee employee) {
@@ -51,7 +59,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
         //查询用户
         EmployeeExample example = new EmployeeExample();
         EmployeeExample.Criteria criteria = example.createCriteria();
-        criteria.andEmployeeNumberEqualTo(employee.getEmployeeNumber());
+        criteria.andUsernameEqualTo(employee.getUsername());
         List<Employee> employees = employeeMapper.selectByExample(example);
         //判空
         if (employees == null || employees.size() <= 0) {
@@ -124,99 +132,101 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
         return ResultVo.sendResult(200, "success", level);
     }
 
-    /**
-     * 上下班签到
-     *
-     */
     @Override
-    public ResultVo workSingIn() {
-        //签到记录参数
+    public PageInfo getEmployeeByConditions(Map<String, Object> map) {
         Map<String, Object> param = new HashMap<>();
-        param.put("user", employeeService.getCurrentLoginEmployee());
-        //获取正常上班签到时间(8:00-9:00)
-        Date eight = DateUtil.getTime(8);
-        Date nine = DateUtil.getTime(9);
-        //获取12:00(区分上午下午)
-        Date twelve = DateUtil.getTime(12);
-        //获取正常下班打卡时间(17:00)
-        Date seventeen = DateUtil.getTime(17);
-        //获取加班工时计时开始时间(19:00)
-        Date nineteen = DateUtil.getTime(19);
-        //获取24:00(第二天零点)
-        Date zero = DateUtil.getTime(24);
-        //获取当前时间
-        Date date = new Date();
-        //上班
-        if (date.before(twelve)) {
-            //根据用户ID和当前年月日查询签到记录
-            //如果记录存在且上班签到时间不为空
-            //提示已签到
-            //否则插入记录 签到成功
-            ResultVo resultVo = attendanceService.selectGoWorkAttendanceLog();
-            if (400 == resultVo.getCode()) {
-                //签到记录不存在
-                if (date.before(twelve)) {
-                    //正常上班
-                    if (date.before(eight) || (date.after(eight) && date.before(nine))) {
-                        param.put("timeType", "上午");
-                        param.put("startTime", date);
-                        param.put("startType", "正常");
-                    }
-                    //上班迟到
-                    if (date.after(nine) && date.before(twelve)) {
-                        param.put("timeType", "上午");
-                        param.put("startTime", date);
-                        param.put("startType", "迟到");
-                    }
-                    //插入上班签到记录
-                    attendanceService.singin(param);
-                    return ResultVo.sendResult(200, "签到成功!");
-                }
-                //签到时间过期
-                if(date.after(twelve)){
-                    //插入上班签到记录
-                    param.put("timeType", "下午");
-                    param.put("startTime", date);
-                    param.put("startType", "缺勤");
-                    attendanceService.singin(param);
-                    return ResultVo.sendResult(200, "上午缺勤!");
+        //条件:员工姓名
+        if (null != map.get("name") && !"".equals((String)map.get("name"))) {
+            param.put("empName", map.get("name"));
+        }
+        //员工编号
+        if (null != map.get("employeeNumber") && !"".equals((String)map.get("employeeNumber"))) {
+            param.put("employeeNumber", map.get("employeeNumber"));
+        }
+        //入职时间
+        if (null != map.get("inTime") && !"".equals((String)map.get("inTime"))) {
+            param.put("inTime", map.get("inTime"));
+        }
+        //性别
+        if (null != map.get("sex") && !"".equals((String)map.get("sex"))) {
+            param.put("gender", map.get("sex"));
+        }
+        //学历
+        if (null != map.get("education") && !"".equals((String)map.get("education"))) {
+            param.put("education", map.get("education"));
+        }
+        //领导姓名
+        AtomicReference<List<Employee>> employees = new AtomicReference<>();
+        if (null != map.get("mangerName")) {
+            EmployeeExample employeeExample = new EmployeeExample();
+            EmployeeExample.Criteria criteria1 = employeeExample.createCriteria();
+            String mangerName = (String) map.get("mangerName");
+            criteria1.andNameLike("%" + mangerName + "%");
+            employees.set(employeeMapper.selectByExample(employeeExample));
+        }
+        List<String> midList = new ArrayList<>();
+        if (null != employees) {
+            if (null != employees.get() && 0 < employees.get().size()) {
+                for (Employee employee : employees.get()) {
+                    midList.add(employee.getId());
                 }
             }
-            //查询记录存在
-            return ResultVo.sendResult(200, "您已签到!");
-        }
-        //下班
-        if (date.after(twelve)) {
-            ResultVo resultVo = attendanceService.selectGoWorkAttendanceLog();
-            param.put("attendance", resultVo.getData());
-            //存在上班签到记录
-            if(200 == resultVo.getCode()){
-                Attendance attendance = (Attendance)resultVo.getData();
-                if(null != attendance.getEndTime() && !"".equals(attendance.getEndTime())){
-                    //已签到
-                    return ResultVo.sendResult(200, "您已签到!");
-                }
-                //早退
-                if(date.before(seventeen)){
-                    param.put("endTime", date);
-                    param.put("endType", "早退");
-                }
-                //正常下班
-                if(date.after(seventeen) && date.before(nineteen)){
-                    param.put("endTime", date);
-                    param.put("endType", "正常");
-                }
-                //加班
-                if(date.after(nineteen)){
-                    param.put("endTime", date);
-                    param.put("endType", "加班");
-                }
-                //修改上班签到记录
-                attendanceService.updateSingin(param);
-                return ResultVo.sendResult(200, "签到成功!");
+            if (null != midList && 0 < midList.size()) {
+                param.put("midList", midList);
             }
-            return resultVo;
         }
-        return null;
+        //部门名称
+        AtomicReference<List<Department>> departments = new AtomicReference<>();
+        if (null != map.get("departmentName")) {
+            DepartmentExample departmentExample = new DepartmentExample();
+            DepartmentExample.Criteria criteria1 = departmentExample.createCriteria();
+            String departmentName = (String) map.get("departmentName");
+            criteria1.andNameLike("%" + departmentName + "%");
+            departments.set(departmentMapper.selectByExample(departmentExample));
+        }
+        List<Integer> didList = new ArrayList<>();
+        if (null != departments) {
+            if (null != departments.get() && 0 < departments.get().size()) {
+                for (Department department : departments.get()) {
+                    didList.add(department.getDepartmentNumber());
+                }
+            }
+            if (null != didList && 0 < didList.size()) {
+                param.put("didList", didList);
+            }
+        }
+        //职称
+        AtomicReference<List<Position>> positions = new AtomicReference<>();
+        if (null != map.get("positionName")) {
+            PositionExample positionExample = new PositionExample();
+            PositionExample.Criteria criteria1 = positionExample.createCriteria();
+            String positionName = (String) map.get("positionName");
+            criteria1.andNameEqualTo(positionName);
+            positions.set(positionMapper.selectByExample(positionExample));
+        }
+        List<Integer> pidList = new ArrayList<>();
+        if (null != positions) {
+            if (null != positions.get() && 0 < positions.get().size()) {
+                for (Position position : positions.get()) {
+                    pidList.add(position.getPositionNumber());
+                }
+            }
+            if (null != pidList && 0 < pidList.size()) {
+                param.put("pidList",pidList);
+            }
+        }
+        Integer pageNo = null;
+        Integer pageSize = null;
+        if(null != map.get("pageNo") && null != map.get("pageSize")){
+            pageNo = (Integer)map.get("pageNo");
+            pageSize = (Integer)map.get("pageSize");
+        }
+        PageHelper.startPage(pageNo, pageSize);
+        List<Employee> employeeList = myEmployeeMapper.getEmployeeByConditions(param);
+        if (null == employeeList || 0 > employeeList.size()) {
+            throw new NoDataException("数据为空!");
+        }
+        PageInfo page = new PageInfo(employeeList);
+        return page;
     }
 }

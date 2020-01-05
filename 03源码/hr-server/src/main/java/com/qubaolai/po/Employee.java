@@ -1,11 +1,13 @@
 package com.qubaolai.po;
 
+import com.qubaolai.pojo.EmployeeFather;
+
 import java.util.Date;
 
-public class Employee {
+public class Employee extends EmployeeFather {
     private String id;
 
-    private String employeeNumber;
+    private String username;
 
     private String name;
 
@@ -25,7 +27,7 @@ public class Employee {
 
     private Integer positionNumber;
 
-    private Date inTime;
+    private String inTime;
 
     private String password;
 
@@ -35,6 +37,8 @@ public class Employee {
 
     private Integer role;
 
+    private String manageerId;
+
     public String getId() {
         return id;
     }
@@ -43,12 +47,12 @@ public class Employee {
         this.id = id;
     }
 
-    public String getEmployeeNumber() {
-        return employeeNumber;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmployeeNumber(String employeeNumber) {
-        this.employeeNumber = employeeNumber;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getName() {
@@ -123,11 +127,11 @@ public class Employee {
         this.positionNumber = positionNumber;
     }
 
-    public Date getInTime() {
+    public String getInTime() {
         return inTime;
     }
 
-    public void setInTime(Date inTime) {
+    public void setInTime(String inTime) {
         this.inTime = inTime;
     }
 
@@ -161,5 +165,13 @@ public class Employee {
 
     public void setRole(Integer role) {
         this.role = role;
+    }
+
+    public String getManageerId() {
+        return manageerId;
+    }
+
+    public void setManageerId(String manageerId) {
+        this.manageerId = manageerId;
     }
 }

@@ -1,10 +1,12 @@
 package com.qubaolai.service;
 
+import com.github.pagehelper.PageInfo;
 import com.qubaolai.common.basic.BaseService;
 import com.qubaolai.po.Employee;
 import com.qubaolai.vo.ResultVo;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,7 +35,9 @@ public interface EmployeeService extends BaseService {
     public void updateEmployee(Employee employee);
 
     /**
-     * 员工上下班签到
+     * 通过条件获取员工列表
+     * @param param,paginationParam
+     * @return
      */
-    public ResultVo workSingIn();
+    public PageInfo getEmployeeByConditions(Map<String, Object> param);
 }

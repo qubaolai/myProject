@@ -46,7 +46,7 @@ public class HrHandlerIntercepter implements HandlerInterceptor {
         }
         EmployeeExample example = new EmployeeExample();
         EmployeeExample.Criteria criteria = example.createCriteria();
-        criteria.andEmployeeNumberEqualTo(userId);
+        criteria.andUsernameEqualTo(userId);
         List<Employee> employees = employeeMapper.selectByExample(example);
         if(employees == null || employees.size() <= 0){
             throw new NoDataException(400, "用户不存在！");

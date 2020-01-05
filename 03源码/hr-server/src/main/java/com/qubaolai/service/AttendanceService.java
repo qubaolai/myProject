@@ -1,9 +1,6 @@
 package com.qubaolai.service;
 
-import com.qubaolai.po.Attendance;
 import com.qubaolai.vo.ResultVo;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
@@ -17,7 +14,7 @@ public interface AttendanceService {
      * 插入签到记录
      * @param map
      */
-    public void singin(Map<String, Object> map);
+    public void singIn(Map<String, Object> map);
 
     /**
      * 查询上班签到记录
@@ -26,8 +23,20 @@ public interface AttendanceService {
     public ResultVo selectGoWorkAttendanceLog();
 
     /**
-     * 修改上班签到记录
+     * 员工上班签到
+     */
+    public ResultVo workSingIn();
+
+    /**
+     * 员工上班签到
      * @param map
      */
-    public void updateSingin(Map<String, Object> map);
+    public void outWorkSingIn(Map<String, Object> map);
+
+    /**
+     *  管理员添加员工签到记录
+     * @param map
+     */
+    public ResultVo updateSingInLog(Map<String, Object> map);
+
 }
