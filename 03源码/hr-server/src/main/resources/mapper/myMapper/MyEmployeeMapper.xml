@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qubaolai.mapper.myMapper.MyEmployeeMapper">
+    <resultMap id="MyBaseResultMap" type="com.qubaolai.po.Employee">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="empName" property="name" jdbcType="VARCHAR"/>
+        <result column="telephone" property="telephone" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="education" property="education" jdbcType="VARCHAR"/>
+        <result column="in_time" property="inTime" jdbcType="DATE"/>
+        <result column="manageer_id" property="manageerId" jdbcType="VARCHAR"/>
+        <association property="department" javaType="com.qubaolai.po.Department">
+            <id column="did" property="did" jdbcType="VARCHAR"/>
+            <result column="deptName" property="name" jdbcType="VARCHAR"/>
+        </association>
+        <association property="employee" javaType="com.qubaolai.po.Employee">
+            <id column="eid" property="eid" jdbcType="VARCHAR"/>
+            <result column="mangName" property="name" jdbcType="VARCHAR"/>
+        </association>
+        <association property="position" javaType="com.qubaolai.po.Position">
+            <id column="pid" property="pid" jdbcType="VARCHAR"/>
+            <result column="posiName" property="name" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
+
+    <sql id="getEmployees">
+    e.NAME empName,
+	d.NAME deptName,
+	e.in_time,
+	emp.NAME mangName,
+	e.education,
+	e.telephone,
+	e.address,
+	p.NAME posiName
+  </sql>
+    <select id="getEmployeeByConditions" resultMap="MyBaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="getEmployees"/>
+        FROM employee e
+        LEFT JOIN department d ON e.department_number = d.department_number
+        LEFT JOIN position p ON e.position_number = p.position_number
+        INNER JOIN employee emp ON e.manageer_id = emp.id
+        <where>
+            <!-- 员工姓名 -->
+            <if test='empName != null'>
+                and e.NAME LIKE concat('%',#{empName},'%')
+            </if>
+            <!-- 员工编号 -->
+            <if test='employeeNumber != null'>
+                and e.username LIKE concat('%',#{employeeNumber},'%')
+            </if>
+            <!-- 入职时间 -->
+            <if test='inTime != null'>
+                and e.in_time = #{inTime}
+            </if>
+            <!-- 员工性别 -->
+            <if test='gender != null'>
+                and e.gender = #{gender}
+            </if>
+            <!-- 员工学历 -->
+            <if test='education != null'>
+                and e.education = #{education}
+            </if>
+            <!-- 领导ID 根据领导姓名模糊查询出领导ID集合 -->
+            <if test='midList != null'>
+                and e.manageer_id IN
+                <foreach collection="midList" item="mid" index="index"
+                         open="(" close=")" separator=",">
+                    #{mid}
+                </foreach>
+            </if>
+            <!-- 部门ID 根据部门名称模糊查询出部门ID集合 -->
+            <if test='didList != null'>
+                and e.department_number IN
+                <foreach collection="didList" item="did" index="index"
+                         open="(" close=")" separator=",">
+                    #{did}
+                </foreach>
+            </if>
+            <!-- 职称ID 根据职称名称模糊查询出职称ID集合 -->
+            <if test='pidList != null'>
+                and e.position_number IN
+                <foreach collection="pidList" item="pid" index="index"
+                         open="(" close=")" separator=",">
+                    #(pid)
+                </foreach>
+            </if>
+        </where>
+    </select>
+</mapper>
