@@ -29,17 +29,17 @@
     </el-row>
     <!-- 三行 -->
     <el-row :gutter="20">
-      <el-col :span="6">
+      <el-col :span="8">
         <div class="grid-content bg-purple"></div>
       </el-col>
-      <el-col :span="8">
+      <el-col :span="5">
         <div class="grid-content bg-purple">
           <div class="buttonType">
             <el-button type="primary" @click="signinWork()">签到</el-button>
           </div>
         </div>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="7">
         <div class="grid-content bg-purple"></div>
       </el-col>
     </el-row>
@@ -85,6 +85,10 @@ export default {
     signinWork() {
       singin().then(responce => {
         console.log(responce);
+        this.$message({
+          message: responce.data.msg,
+          type: "warning"
+        });
       });
       // this.$message({
       //   message: "签到成功" + "\n" + "签到时间为:" + " " + getNowDate(),
@@ -97,6 +101,10 @@ export default {
 <style lang="scss" scoped>
 .adminBody {
   background-color: rgb(236, 236, 236);
+  line-height: normal;
+  font-weight: bold;
+  letter-spacing: normal;
+  text-align: justify;
 }
 .el-button--primary {
   margin: 100px;

@@ -6,8 +6,7 @@
     <div class="pull-right">
       <div class="user-info pull-left">
         <img src="@/assets/images/face.jpg" alt />
-        <!-- {{ username }} -->
-        管理员
+        {{ user.username }}
       </div>
       <div class="header-icon pull-left">
         <svg-icon iconClass="logout" class="logout" />
@@ -16,7 +15,23 @@
   </div>
 </template>
 <script>
-export default {};
+export default {
+  data: () => {
+    return {
+      //页面显示内容start
+      user: {
+        username: "",
+        userRole: ""
+      }
+      //页面显示内容end
+    };
+  },
+  mounted() {
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    this.user.username = user.name;
+    this.user.userRole = user.role;
+  }
+};
 </script>
 <style lang="scss" scoped>
 @import "@/styles/config.scss";
