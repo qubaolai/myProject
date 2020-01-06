@@ -11,7 +11,7 @@ export function login(formData) {
     method: "post",
     url: "/user/login",
     data: {
-      employeeNumber: formData.username,
+      username: formData.username,
       password: formData.password
     },
     headers: {
