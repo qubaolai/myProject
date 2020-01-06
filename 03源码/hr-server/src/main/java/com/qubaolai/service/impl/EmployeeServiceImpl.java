@@ -136,8 +136,8 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
     public PageInfo getEmployeeByConditions(Map<String, Object> map) {
         Map<String, Object> param = new HashMap<>();
         //条件:员工姓名
-        if (null != map.get("name") && !"".equals((String)map.get("name"))) {
-            param.put("empName", map.get("name"));
+        if (null != map.get("empName") && !"".equals((String)map.get("empName"))) {
+            param.put("empName", map.get("empName"));
         }
         //员工编号
         if (null != map.get("employeeNumber") && !"".equals((String)map.get("employeeNumber"))) {
