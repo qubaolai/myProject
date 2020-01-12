@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Pattern;
 
 /**
  * @author qubaolai
@@ -136,29 +137,29 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
     public PageInfo getEmployeeByConditions(Map<String, Object> map) {
         Map<String, Object> param = new HashMap<>();
         //条件:员工姓名
-        if (null != map.get("empName") && !"".equals((String)map.get("empName"))) {
+        if (null != map.get("empName") && !"".equals((String) map.get("empName"))) {
             param.put("empName", map.get("empName"));
         }
         //员工编号
-        if (null != map.get("employeeNumber") && !"".equals((String)map.get("employeeNumber"))) {
+        if (null != map.get("employeeNumber") && !"".equals((String) map.get("employeeNumber"))) {
             param.put("employeeNumber", map.get("employeeNumber"));
         }
         //入职时间
-        if (null != map.get("inTimeStart") && !"".equals((String)map.get("inTimeEnd"))) {
+        if (null != map.get("inTimeStart") && !"".equals((String) map.get("inTimeEnd"))) {
             param.put("inTimeStart", map.get("inTimeStart"));
             param.put("inTimeEnd", map.get("inTimeEnd"));
         }
         //性别
-        if (null != map.get("sex") && !"".equals((String)map.get("sex"))) {
+        if (null != map.get("sex") && !"".equals((String) map.get("sex"))) {
             param.put("gender", map.get("sex"));
         }
         //学历
-        if (null != map.get("education") && !"".equals((String)map.get("education"))) {
+        if (null != map.get("education") && !"".equals((String) map.get("education"))) {
             param.put("education", map.get("education"));
         }
         //领导姓名
         AtomicReference<List<Employee>> employees = new AtomicReference<>();
-        if (null != map.get("mangerName")) {
+        if (null != map.get("mangerName") && !"".equals((String) map.get("mangerName"))) {
             EmployeeExample employeeExample = new EmployeeExample();
             EmployeeExample.Criteria criteria1 = employeeExample.createCriteria();
             String mangerName = (String) map.get("mangerName");
@@ -177,50 +178,18 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
             }
         }
         //部门名称
-        AtomicReference<List<Department>> departments = new AtomicReference<>();
-        if (null != map.get("departmentName")) {
-            DepartmentExample departmentExample = new DepartmentExample();
-            DepartmentExample.Criteria criteria1 = departmentExample.createCriteria();
-            String departmentName = (String) map.get("departmentName");
-            criteria1.andNameLike("%" + departmentName + "%");
-            departments.set(departmentMapper.selectByExample(departmentExample));
-        }
-        List<Integer> didList = new ArrayList<>();
-        if (null != departments) {
-            if (null != departments.get() && 0 < departments.get().size()) {
-                for (Department department : departments.get()) {
-                    didList.add(department.getDepartmentNumber());
-                }
-            }
-            if (null != didList && 0 < didList.size()) {
-                param.put("didList", didList);
-            }
+        if (null != map.get("departmentNumber") && !"".equals((String) map.get("departmentNumber"))) {
+            param.put("did", (String) map.get("departmentNumber"));
         }
         //职称
-        AtomicReference<List<Position>> positions = new AtomicReference<>();
-        if (null != map.get("positionName")) {
-            PositionExample positionExample = new PositionExample();
-            PositionExample.Criteria criteria1 = positionExample.createCriteria();
-            String positionName = (String) map.get("positionName");
-            criteria1.andNameEqualTo(positionName);
-            positions.set(positionMapper.selectByExample(positionExample));
-        }
-        List<Integer> pidList = new ArrayList<>();
-        if (null != positions) {
-            if (null != positions.get() && 0 < positions.get().size()) {
-                for (Position position : positions.get()) {
-                    pidList.add(position.getPositionNumber());
-                }
-            }
-            if (null != pidList && 0 < pidList.size()) {
-                param.put("pidList",pidList);
-            }
+        if (null != map.get("positionNumber") && !"".equals((String) map.get("positionNumber"))) {
+            param.put("pid", (String)map.get("positionNumber"));
         }
         Integer pageNo = null;
         Integer pageSize = null;
-        if(null != map.get("pageNo") && null != map.get("pageSize")){
-            pageNo = (Integer)map.get("pageNo");
-            pageSize = (Integer)map.get("pageSize");
+        if (null != map.get("pageNo") && null != map.get("pageSize")) {
+            pageNo = (Integer) map.get("pageNo");
+            pageSize = (Integer) map.get("pageSize");
             PageHelper.startPage(pageNo, pageSize);
         }
         List<Employee> employeeList = myEmployeeMapper.getEmployeeByConditions(param);
@@ -229,5 +198,59 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
         }
         PageInfo page = new PageInfo(employeeList);
         return page;
+    }
+
+    @Override
+    public String insertEmployee(Employee employee) {
+        String msg = "用户名为:" + employee.getUsername();
+        //判断用户名是否存在
+        EmployeeExample employeeExample = new EmployeeExample();
+        EmployeeExample.Criteria criteria1 = employeeExample.createCriteria();
+        if(null == employee.getUsername() || "".equals(employee.getUsername())){
+            throw new ParamException(500, "参数异常!");
+        }
+        criteria1.andUsernameLike("%" + employee.getUsername() + "%");
+        employeeExample.setOrderByClause("username");
+        List<Employee> employees = employeeMapper.selectByExample(employeeExample);
+        if(null != employees && 0 < employees.size()){
+            String username = employees.get(employees.size() - 1).getUsername();
+            String substring = username.substring(username.length() - 1, username.length());
+            //如果用户名存在用户名拼接1
+            if(employee.getUsername().equals(username)){
+                employee.setUsername(employee.getUsername()+"1");
+                msg = "用户名重复,当前用户名为:" + employee.getUsername();
+            }
+            //判断最后一个字符是不是数组
+            String test = "^[0-9]*$";
+            boolean matches = Pattern.matches(test, substring);
+            if(matches){
+                Integer last = Integer.parseInt(substring);
+                last += 1;
+                employee.setUsername(username.substring(0, username.length()-1) + last);
+                msg = "用户名重复,当前用户名为:" + employee.getUsername();
+            }
+        }
+        employee.setId(UUIDUtil.getUUID());
+        String MD5Password = MD5Tools.string2MD5("admin123");
+        employee.setPassword(MD5Password);
+        employee.setRole(1);
+        //根据员工的部门id查询该部门领导
+        EmployeeExample example = new EmployeeExample();
+        EmployeeExample.Criteria criteria = example.createCriteria();
+        if(null == employee.getDepartmentNumber() || "0".equals(employee.getDepartmentNumber())){
+            throw new ParamException(500, "参数异常!");
+        }
+        criteria.andDepartmentNumberEqualTo(employee.getDepartmentNumber());
+        criteria.andDeviceidEqualTo("0");
+        List<Employee> employeeList = employeeMapper.selectByExample(example);
+        if(null == employeeList || 0 >= employeeList.size()){
+            //添加的员工为部门领导
+            employee.setDeviceid("0");
+        }else{
+            employee.setManageerId(employeeList.get(0).getId());
+        }
+        employee.setInTime(DateUtil.getDate());
+        employeeMapper.insert(employee);
+        return msg;
     }
 }

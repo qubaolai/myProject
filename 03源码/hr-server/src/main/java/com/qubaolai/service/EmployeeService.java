@@ -40,4 +40,10 @@ public interface EmployeeService extends BaseService {
      * @return
      */
     public PageInfo getEmployeeByConditions(Map<String, Object> param);
+
+    /**
+     * 添加员工 用于管理员添加新员工
+     * @param employee
+     */
+    public String insertEmployee(Employee employee);
 }

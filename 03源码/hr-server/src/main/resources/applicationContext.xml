@@ -112,14 +112,14 @@
         <property name="typeAliasesPackage" value="com.guanghua.po"/>
         <property name="plugins">
             <array>
-                <bean class="com.github.pagehelper.PageInterceptor">
-                    <property name="properties">
-                        <props>
-                            <prop key="helperDialect">mysql</prop>
-                            <prop key="resonable">true</prop>
-                        </props>
-                    </property>
-                </bean>
+                <!--<bean class="com.github.pagehelper.PageInterceptor">-->
+                    <!--<property name="properties">-->
+                        <!--<props>-->
+                            <!--<prop key="helperDialect">mysql</prop>-->
+                            <!--<prop key="resonable">true</prop>-->
+                        <!--</props>-->
+                    <!--</property>-->
+                <!--</bean>-->
                 <bean id="timeIntercepter" class="com.qubaolai.common.intercepter.TimeIntercepter"></bean>
             </array>
         </property>

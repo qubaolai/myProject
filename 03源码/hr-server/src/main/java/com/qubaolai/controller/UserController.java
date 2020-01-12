@@ -67,6 +67,11 @@ public class UserController {
         return resultVo;
     }
 
+    /**
+     *  按添加查询员工信息
+     * @param map
+     * @return
+     */
     @PostMapping("/employeeList")
     public ResultVo getEmployeeList(@RequestBody Map<String,Object> map){
         if(null != map){
@@ -76,5 +81,14 @@ public class UserController {
             }
         }
         return ResultVo.sendResult(400, "NoData");
+    }
+
+    @RequestMapping("/insertEmp")
+    public ResultVo insertEmp(@RequestBody Employee employee){
+        if(null == employee){
+            throw new ParamException(500, "参数异常!");
+        }
+        String msg = employeeService.insertEmployee(employee);
+        return ResultVo.sendResult(200, "success",msg);
     }
 }

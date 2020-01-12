@@ -214,6 +214,12 @@ export default {
                 type: "warning"
               });
               this.loginButtonState = false;
+            } else {
+              this.$message({
+                message: data.msg,
+                type: "warning"
+              });
+              this.loginButtonState = false;
             }
           });
         }

@@ -59,7 +59,7 @@
           <span>部门:</span>
           <el-select
             class="formStyle"
-            v-model="form.departmentName"
+            v-model="form.departmentNumber"
             filterable
             clearable
             placeholder="请选择部门"
@@ -97,7 +97,7 @@
           <span>职称:</span>
           <el-select
             class="formStyle"
-            v-model="form.positionName"
+            v-model="form.positionNumber"
             clearable
             placeholder="请选择"
           >
@@ -190,44 +190,43 @@ export default {
   data() {
     return {
       //分页
-      //总数
+      //显示数据总数
       sumNum: 0,
       //每页数量
-      pageSize: 2,
+      pageSize: 10,
       //当前页
       currentPage: 1,
       //分页
       //页面表单start
       form: {
         pageNo: 1,
-        pageSize: 10,
-        empName: "姓名",
-        employeeNumber: "zxc",
-        mangerName: "姓名2",
+        pageSize: 0,
+        empName: "",
+        employeeNumber: "",
+        mangerName: "",
         sex: "1",
-        education: "本科",
-        departmentName: "外科",
-        positionName: "",
+        education: "",
+        departmentNumber: "",
+        positionNumber: "",
         intimeStart: "",
         intimeEnd: ""
       },
+      //入职日期数组 绑定在日期选择器
       inTime: [],
+      //用于初始页面显示的数据: 部门和职称
       initData: formData,
-      dataLength: 0,
-      //页面表单end
-      //按钮控制
+      //查询按钮控制
       disable: false,
+      //查询数据容器
       tableData: []
     };
   },
   methods: {
     handleSizeChange(val) {
       this.pageSize = val;
-      console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
       this.currentPage = val;
-      console.log(`当前页: ${val}`);
     },
     //提交查询参数
     submitForm() {
@@ -236,12 +235,12 @@ export default {
         this.form.intimeEnd = formatDate(this.inTime[1]);
       }
       this.form.sex = this.form.sex === "1" ? "男" : "女";
+      //设置每页条数
+      this.form.pageSize = this.pageSize;
+      //设置页数
+      this.form.pageNo = this.currentPage;
       getEmpList(this.form).then(response => {
         this.form.sex = this.form.sex === "男" ? "1" : "2";
-        //设置每页条数
-        this.form.pageSize = this.pageSize;
-        //设置页数
-        this.form.pageNo = this.currentPage;
         const data = response.data;
         if (data.code === 400) {
           this.tableData = [];
@@ -287,7 +286,9 @@ export default {
       this.form.intimeEnd = "";
     },
     init() {
+      //页面初始化 发送请求获取所有部门和职称
       initPage();
+      this.submitForm();
       this.initData = formData;
     }
   },
@@ -295,6 +296,7 @@ export default {
     this.init();
   },
   computed: {
+    //自动计算页面数据展示
     pageData: function() {
       return this.tableData.slice(
         (this.currentPage - 1) * this.pageSize,

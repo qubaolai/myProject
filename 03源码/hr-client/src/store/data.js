@@ -68,7 +68,7 @@ export function setData(data) {
       value: "",
       label: ""
     };
-    dept.value = data.dept[i].name;
+    dept.value = data.dept[i].id;
     dept.label = data.dept[i].name;
     depts.push(dept);
   }
@@ -77,7 +77,7 @@ export function setData(data) {
       value: "",
       label: ""
     };
-    option.value = data.option[i].name;
+    option.value = data.option[i].id;
     option.label = data.option[i].name;
     optionList.push(option);
   }

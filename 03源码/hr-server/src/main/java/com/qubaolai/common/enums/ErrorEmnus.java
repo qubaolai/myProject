@@ -9,7 +9,7 @@ public enum  ErrorEmnus {
     PASSWORDERROR(205,"新密码与旧密码相同！"),
     PASSWORDLOGERROR3(206,"密码错误超过三次"),
     COFIRMPASSWORDERROR(207,"新密码与确认密码不同！"),
-    PASSWORDLOGERROR5(208,"密码错误超过五次"),
+    PASSWORDLOGERROR5(208,"密码错误超过五次,今日不能登录!"),
     PARAMERROR(209,"请求参数异常！");
 
     private Integer code;
