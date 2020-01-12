@@ -144,8 +144,9 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
             param.put("employeeNumber", map.get("employeeNumber"));
         }
         //入职时间
-        if (null != map.get("inTime") && !"".equals((String)map.get("inTime"))) {
-            param.put("inTime", map.get("inTime"));
+        if (null != map.get("inTimeStart") && !"".equals((String)map.get("inTimeEnd"))) {
+            param.put("inTimeStart", map.get("inTimeStart"));
+            param.put("inTimeEnd", map.get("inTimeEnd"));
         }
         //性别
         if (null != map.get("sex") && !"".equals((String)map.get("sex"))) {
@@ -220,8 +221,8 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
         if(null != map.get("pageNo") && null != map.get("pageSize")){
             pageNo = (Integer)map.get("pageNo");
             pageSize = (Integer)map.get("pageSize");
+            PageHelper.startPage(pageNo, pageSize);
         }
-        PageHelper.startPage(pageNo, pageSize);
         List<Employee> employeeList = myEmployeeMapper.getEmployeeByConditions(param);
         if (null == employeeList || 0 > employeeList.size()) {
             throw new NoDataException("数据为空!");

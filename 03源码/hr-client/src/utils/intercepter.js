@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Message } from "element-ui";
-
+import { setData } from "@/store/data.js";
 const BASEURL = process.env.NODE_ENV === "production" ? "" : "/api";
 //创建axios 赋给变量intercept
 const intercept = axios.create({
@@ -30,6 +30,8 @@ intercept.interceptors.response.use(
     const data = response.data;
     if (data.code === 500) {
       Message.error("系统异常!");
+    } else if (data.msg === "initPage") {
+      setData(data.data);
     } else {
       //返回response
       return response;
@@ -40,5 +42,25 @@ intercept.interceptors.response.use(
     // 对响应错误做点什么
   }
 );
-
+// function setDept(data) {
+//   debugger;
+//   const dept = data["dept"];
+//   // const position = data["option"];
+//   formData.departments = [];
+//   formData.options = [];
+//   const department = {
+//     value: "",
+//     name: ""
+//   };
+//   for (let i = 0; i < dept.length; i++) {
+//     // formData.departments[i] = data[i].name;
+//     department.value = dept[i].id;
+//     department.name = dept[i].name;
+//     formData.departments.push(department);
+//   }
+//   // for (let i = 0; i < position.length; i++) {
+//   //   formData.options[i].value = position[i].id;
+//   //   formData.options[i].name =
+//   // }
+// }
 export default intercept;

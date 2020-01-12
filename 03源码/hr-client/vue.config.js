@@ -1,6 +1,6 @@
 const path = require("path");
 module.exports = {
-  publicPath: "/", //基本路径
+  publicPath: "./", //基本路径
   //publicPath: process.env.NODE_ENV !== 'production' ? process.env.VUE_APP_URL : '/', //基本路径
   outputDir: process.env.NODE_ENV === "production" ? "dist" : "devdist", //生产环境构建输出目录
   //outputDir: process.env.VUE_APP_outputDir

@@ -1,8 +1,9 @@
 import intercept from "@/utils/intercepter";
 
-export function getEmpList() {
+export function getEmpList(data) {
   return intercept.request({
     method: "post",
-    url: "/user/employeeList"
+    url: "/user/employeeList",
+    data: data
   });
 }

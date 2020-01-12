@@ -24,3 +24,11 @@ export function getNowDate() {
     date.getSeconds();
   return currentdate;
 }
+export function formatDate(date) {
+  const year = date.getFullYear();
+  const monthDate = date.getMonth() + 1;
+  const month = monthDate < 10 ? "0" + monthDate : monthDate;
+  const dayDate = date.getDate();
+  const day = dayDate < 10 ? "0" + dayDate : dayDate;
+  return year + "-" + month + "-" + day;
+}

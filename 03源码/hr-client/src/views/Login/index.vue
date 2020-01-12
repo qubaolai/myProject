@@ -144,7 +144,7 @@ export default {
         { txt: "注册", current: false, type: "registered" }
       ],
       ruleForm: {
-        username: "asd",
+        username: "asidun",
         password: "asd123",
         confirmPassword: "",
         age: ""
@@ -208,6 +208,12 @@ export default {
                 window.localStorage.setItem("token", token);
                 sessionStorage[token];
               }
+            } else if (data.code === 400) {
+              this.$message({
+                message: "用户名或密码错误!",
+                type: "warning"
+              });
+              this.loginButtonState = false;
             }
           });
         }

@@ -97,7 +97,7 @@
           <span>职称:</span>
           <el-select
             class="formStyle"
-            v-model="form.option"
+            v-model="form.positionName"
             clearable
             placeholder="请选择"
           >
@@ -115,8 +115,9 @@
           <span>入职时间:</span>
           <el-date-picker
             class="timeStyle"
-            v-model="form.intime"
+            v-model="inTime"
             type="daterange"
+            unlink-panels
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
@@ -136,8 +137,9 @@
       <el-col :span="24"
         ><div class="grid-content bg-purple-dark">
           <el-table
-            :data="tableData"
+            :data="pageData"
             style="width: 100%"
+            height="400"
             :default-sort="{ prop: 'date', order: 'descending' }"
           >
             <el-table-column prop="empName" label="姓名" width="165">
@@ -146,7 +148,7 @@
             </el-table-column>
             <el-table-column prop="mangName" label="领导姓名" width="165">
             </el-table-column>
-            <el-table-column prop="education" label="学历" width="165">
+            <el-table-column prop="education" label="学历" width="150">
             </el-table-column>
             <el-table-column prop="option" label="职称" width="165">
             </el-table-column>
@@ -168,10 +170,10 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="currentPage"
-          :page-sizes="[10, 20, 50, 100]"
-          :page-size="10"
+          :page-sizes="[2, 5, 10]"
+          :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="100"
+          :total="sumNum"
         >
         </el-pagination>
       </div>
@@ -181,75 +183,96 @@
 <script>
 import { getEmpList } from "@/api/user/getEmployees.js";
 import formData from "@/store/data.js";
+import { initPage } from "@/api/page/init.js";
+import { formatDate } from "@/utils/dateUtil.js";
 export default {
   name: "userList",
   data() {
     return {
-      //分页start
+      //分页
+      //总数
+      sumNum: 0,
+      //每页数量
+      pageSize: 2,
+      //当前页
       currentPage: 1,
-      //分页end
+      //分页
       //页面表单start
       form: {
-        empName: "",
-        employeeNumber: "",
-        mangerName: "",
-        input: "",
+        pageNo: 1,
+        pageSize: 10,
+        empName: "姓名",
+        employeeNumber: "zxc",
+        mangerName: "姓名2",
         sex: "1",
-        education: "",
-        departmentName: "",
-        option: "",
-        intime: "",
-        initData: formData
+        education: "本科",
+        departmentName: "外科",
+        positionName: "",
+        intimeStart: "",
+        intimeEnd: ""
       },
+      inTime: [],
+      initData: formData,
+      dataLength: 0,
       //页面表单end
       //按钮控制
       disable: false,
-      tableData: [
-        {
-          empName: "王小虎",
-          deptName: "儿科",
-          mangName: "王大虎",
-          inTime: "2016-05-01",
-          education: "本科",
-          option: "老中医",
-          telephone: "13865748493",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          empName: "王小虎",
-          deptName: "儿科",
-          mangName: "王大虎",
-          inTime: "2016-05-03",
-          education: "本科",
-          option: "老中医",
-          telephone: "13865748493",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          empName: "王小虎",
-          deptName: "儿科",
-          mangName: "王大虎",
-          inTime: "2016-05-02",
-          education: "本科",
-          option: "老中医",
-          telephone: "13865748493",
-          address: "上海市普陀区金沙江路 1518 弄"
-        }
-      ]
+      tableData: []
     };
   },
   methods: {
     handleSizeChange(val) {
+      this.pageSize = val;
       console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
+      this.currentPage = val;
       console.log(`当前页: ${val}`);
     },
+    //提交查询参数
     submitForm() {
-      console.log(formData);
-      console.log(getEmpList);
-      console.log(this.initData);
-      alert("tijiao");
+      if (this.form.intimeStart !== "" && this.form.intimeEnd !== "") {
+        this.form.intimeStart = formatDate(this.inTime[0]);
+        this.form.intimeEnd = formatDate(this.inTime[1]);
+      }
+      this.form.sex = this.form.sex === "1" ? "男" : "女";
+      getEmpList(this.form).then(response => {
+        this.form.sex = this.form.sex === "男" ? "1" : "2";
+        //设置每页条数
+        this.form.pageSize = this.pageSize;
+        //设置页数
+        this.form.pageNo = this.currentPage;
+        const data = response.data;
+        if (data.code === 400) {
+          this.tableData = [];
+          this.$message("数据为空!");
+        } else {
+          const tableList = data.data.list;
+          this.tableData = [];
+          this.sumNum = tableList.length;
+          for (let i = 0; i < tableList.length; i++) {
+            const table = {
+              empName: "",
+              deptName: "",
+              mangName: "",
+              inTime: "",
+              education: "",
+              option: "",
+              telephone: "",
+              address: ""
+            };
+            table.empName = tableList[i].name;
+            table.deptName = tableList[i].department.name;
+            table.mangName = tableList[i].employee.name;
+            table.inTime = tableList[i].inTime;
+            table.education = tableList[i].education;
+            table.option = tableList[i].position.name;
+            table.telephone = tableList[i].telephone;
+            table.address = tableList[i].address;
+            this.tableData.push(table);
+          }
+        }
+      });
     },
     reset() {
       this.disable = false;
@@ -260,16 +283,24 @@ export default {
       this.form.input = "";
       this.form.education = "";
       this.form.departmentName = "";
-      this.form.option = "";
-      this.form.intime = "";
+      this.form.intimeStart = "";
+      this.form.intimeEnd = "";
     },
     init() {
+      initPage();
       this.initData = formData;
     }
   },
   created: function() {
-    //页面加载完成发送请求 请求下拉框数据数据
     this.init();
+  },
+  computed: {
+    pageData: function() {
+      return this.tableData.slice(
+        (this.currentPage - 1) * this.pageSize,
+        this.currentPage * this.pageSize
+      );
+    }
   }
 };
 </script>

@@ -3,7 +3,6 @@
     <Layoutheader />
     <Layoutmain />
     <Layoutnavigation />
-    asd
   </div>
 </template>
 <script>

@@ -65,6 +65,27 @@ export default new VueRouter({
           component: () => import("../views/User/userList.vue")
         }
       ]
+    },
+    {
+      path: "/ceshi",
+      name: "Test",
+      hidden: false,
+      meta: {
+        name: "测试",
+        icon: "user"
+      },
+      component: layout,
+      children: [
+        {
+          path: "/test",
+          name: "ceshi",
+          // hidden: false,
+          meta: {
+            name: "ceshi"
+          },
+          component: () => import("../views/test/test.vue")
+        }
+      ]
     }
   ]
 });
