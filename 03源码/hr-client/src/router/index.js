@@ -63,6 +63,15 @@ export default new VueRouter({
             name: "员工列表"
           },
           component: () => import("../views/User/userList.vue")
+        },
+        {
+          path: "/insetUser",
+          name: "InsetUser",
+          // hidden: false,
+          meta: {
+            name: "添加员工"
+          },
+          component: () => import("../views/User/insertUser.vue")
         }
       ]
     },
