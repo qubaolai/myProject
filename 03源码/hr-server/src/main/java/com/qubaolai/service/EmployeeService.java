@@ -42,8 +42,14 @@ public interface EmployeeService extends BaseService {
     public PageInfo getEmployeeByConditions(Map<String, Object> param);
 
     /**
-     * 添加员工 用于管理员添加新员工
-     * @param employee
+     * 异步查询员工编号是否可用
+     * @param empNum
+     * @return 可用编号
      */
-    public String insertEmployee(Employee employee);
+    public String checkEmpNum(String empNum);
+    /**
+     * 添加员工 用于管理员添加新员工
+     * @param employees
+     */
+    public void insertEmployee(List<Employee> employees);
 }

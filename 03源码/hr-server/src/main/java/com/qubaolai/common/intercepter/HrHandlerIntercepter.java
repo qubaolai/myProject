@@ -8,7 +8,6 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.qubaolai.common.exception.exceptions.NoDataException;
 import com.qubaolai.common.exception.exceptions.NoTokenException;
 import com.qubaolai.common.utils.JWTUtil;
-import com.qubaolai.common.utils.MD5Tools;
 import com.qubaolai.mapper.EmployeeMapper;
 import com.qubaolai.po.Employee;
 import com.qubaolai.po.EmployeeExample;

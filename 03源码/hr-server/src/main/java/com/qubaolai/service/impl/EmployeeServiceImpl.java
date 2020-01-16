@@ -177,7 +177,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
                 param.put("midList", midList);
             }
         }
-        //部门名称
+        //部门
         if (null != map.get("departmentNumber") && !"".equals((String) map.get("departmentNumber"))) {
             param.put("did", (String) map.get("departmentNumber"));
         }
@@ -201,24 +201,21 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
     }
 
     @Override
-    public String insertEmployee(Employee employee) {
-        String msg = "用户名为:" + employee.getUsername();
-        //判断用户名是否存在
-        EmployeeExample employeeExample = new EmployeeExample();
-        EmployeeExample.Criteria criteria1 = employeeExample.createCriteria();
-        if(null == employee.getUsername() || "".equals(employee.getUsername())){
-            throw new ParamException(500, "参数异常!");
+    public String checkEmpNum(String empNum) {
+        EmployeeExample example = new EmployeeExample();
+        EmployeeExample.Criteria criteria = example.createCriteria();
+        if(null == empNum || "".equals(empNum)){
+            throw new ParamException(500, "参数异常");
         }
-        criteria1.andUsernameLike("%" + employee.getUsername() + "%");
-        employeeExample.setOrderByClause("username");
-        List<Employee> employees = employeeMapper.selectByExample(employeeExample);
-        if(null != employees && 0 < employees.size()){
-            String username = employees.get(employees.size() - 1).getUsername();
+        criteria.andUsernameLike("%" + empNum + "%");
+        example.setOrderByClause("username");
+        List<Employee> employeeList = employeeMapper.selectByExample(example);
+        if(null != employeeList && 0 < employeeList.size()){
+            String username = employeeList.get(employeeList.size() - 1).getUsername();
             String substring = username.substring(username.length() - 1, username.length());
             //如果用户名存在用户名拼接1
-            if(employee.getUsername().equals(username)){
-                employee.setUsername(employee.getUsername()+"1");
-                msg = "用户名重复,当前用户名为:" + employee.getUsername();
+            if(empNum.equals(username)){
+                return empNum + "1";
             }
             //判断最后一个字符是不是数组
             String test = "^[0-9]*$";
@@ -226,31 +223,38 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
             if(matches){
                 Integer last = Integer.parseInt(substring);
                 last += 1;
-                employee.setUsername(username.substring(0, username.length()-1) + last);
-                msg = "用户名重复,当前用户名为:" + employee.getUsername();
+                return  username.substring(0, username.length()-1) + last;
             }
         }
-        employee.setId(UUIDUtil.getUUID());
-        String MD5Password = MD5Tools.string2MD5("admin123");
-        employee.setPassword(MD5Password);
-        employee.setRole(1);
-        //根据员工的部门id查询该部门领导
-        EmployeeExample example = new EmployeeExample();
-        EmployeeExample.Criteria criteria = example.createCriteria();
-        if(null == employee.getDepartmentNumber() || "0".equals(employee.getDepartmentNumber())){
-            throw new ParamException(500, "参数异常!");
+        return null;
+    }
+
+    @Override
+    public void insertEmployee(List<Employee> employees) {
+        for(Employee employee : employees){
+            //判断用户名是否存在
+            employee.setUsername(employee.getUsername());
+            employee.setId(UUIDUtil.getUUID());
+            String MD5Password = MD5Tools.string2MD5("admin123");
+            employee.setPassword(MD5Password);
+            employee.setRole(1);
+            //根据员工的部门id查询该部门领导
+            EmployeeExample example = new EmployeeExample();
+            EmployeeExample.Criteria criteria = example.createCriteria();
+            if(null == employee.getDepartmentNumber() || "0".equals(employee.getDepartmentNumber())){
+                throw new ParamException(500, "参数异常!");
+            }
+            criteria.andDepartmentNumberEqualTo(employee.getDepartmentNumber());
+            criteria.andDeviceidEqualTo("0");
+            List<Employee> employeeList1 = employeeMapper.selectByExample(example);
+            if(null == employeeList1 || 0 >= employeeList1.size()){
+                //添加的员工为部门领导
+                employee.setDeviceid("0");
+            }else{
+                employee.setManageerId(employeeList1.get(0).getId());
+            }
+            employee.setInTime(DateUtil.getDate());
+            employeeMapper.insert(employee);
         }
-        criteria.andDepartmentNumberEqualTo(employee.getDepartmentNumber());
-        criteria.andDeviceidEqualTo("0");
-        List<Employee> employeeList = employeeMapper.selectByExample(example);
-        if(null == employeeList || 0 >= employeeList.size()){
-            //添加的员工为部门领导
-            employee.setDeviceid("0");
-        }else{
-            employee.setManageerId(employeeList.get(0).getId());
-        }
-        employee.setInTime(DateUtil.getDate());
-        employeeMapper.insert(employee);
-        return msg;
     }
 }

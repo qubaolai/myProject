@@ -35,33 +35,33 @@ public class TimeIntercepter implements Interceptor {
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
-        try {
-            Object[] args = invocation.getArgs();
-            MappedStatement ms = (MappedStatement) args[0];
-            Object parameter = args[1];
-            Object p;
-            //这里的参数这样判断是因为加了@Param的和没有加的好像有点区别，调试的时候看到的
-            if (parameter instanceof Map) {
-                Map map = (Map) parameter;
-                HashSet<Object> set = new HashSet<>();
-                set.addAll(map.values());
-                p = set;
-            } else {
-                p = parameter;
-            }
-            Object result;
-            long start = System.currentTimeMillis();
-            result = invocation.proceed();
-            long end = System.currentTimeMillis();
-            long cost = end - start;
-            log.debug("[TimerInterceptor] execute [{}] cost [{}] ms, parameter:{}", ms.getId(), cost, p);
-            if (cost > 2000) {//这里的时间根据情况设定，也可以写在配置文件里面
-                log.warn("Sql语句执行时间超过2秒钟，请检查优化,方法:{},耗时:{}ms,参数:{}", ms.getId(), cost, p);
-            }
-            return result;
-        } catch (Throwable r) {
-            log.error(r.getMessage(), r);
-        }
+//        try {
+//            Object[] args = invocation.getArgs();
+//            MappedStatement ms = (MappedStatement) args[0];
+//            Object parameter = args[1];
+//            Object p;
+//            //这里的参数这样判断是因为加了@Param的和没有加的好像有点区别，调试的时候看到的
+//            if (parameter instanceof Map) {
+//                Map map = (Map) parameter;
+//                HashSet<Object> set = new HashSet<>();
+//                set.addAll(map.values());
+//                p = set;
+//            } else {
+//                p = parameter;
+//            }
+//            Object result;
+//            long start = System.currentTimeMillis();
+//            result = invocation.proceed();
+//            long end = System.currentTimeMillis();
+//            long cost = end - start;
+//            log.debug("[TimerInterceptor] execute [{}] cost [{}] ms, parameter:{}", ms.getId(), cost, p);
+//            if (cost > 2000) {//这里的时间根据情况设定，也可以写在配置文件里面
+//                log.warn("Sql语句执行时间超过2秒钟，请检查优化,方法:{},耗时:{}ms,参数:{}", ms.getId(), cost, p);
+//            }
+//            return result;
+//        } catch (Throwable r) {
+//            log.error(r.getMessage(), r);
+//        }
         return invocation.proceed();
     }
 

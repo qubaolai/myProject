@@ -35,6 +35,7 @@
               placeholder="请输入内容"
               v-model="form.username"
               clearable
+              @blur="checkUserName"
             >
             </el-input></div
         ></el-col>
@@ -89,13 +90,13 @@
           ><div class="grid-content bg-purple" style="margin-top: -10px;">
             <span class="w2">地址</span>
             <span>:</span>
-            <el-cascader
-              style="width: 74%; margin-left: 5px; margin-right: 5px;"
+            <el-input
+              style="width: 74%; margin-left: 5px;"
+              placeholder="请输入内容"
               v-model="form.address"
-              :options="options"
-              :props="{ expandTrigger: 'hover' }"
-              @change="handleChange"
-            ></el-cascader></div
+              clearable
+            >
+            </el-input></div
         ></el-col>
       </el-row>
       <el-row :gutter="8">
@@ -110,10 +111,10 @@
               style="width: 74%; margin-left: 5px; margin-right: 5px;"
             >
               <el-option
-                v-for="item in departments"
+                v-for="item in initData.formData.departments"
                 :key="item.value"
                 :label="item.label"
-                :value="item.value"
+                :value="item.label"
               >
               </el-option>
             </el-select></div
@@ -131,10 +132,10 @@
               style="width: 74%; margin-left: 5px; margin-right: 5px;"
             >
               <el-option
-                v-for="item in positions"
+                v-for="item in initData.formData.options"
                 :key="item.value"
                 :label="item.label"
-                :value="item.value"
+                :value="item.label"
               >
               </el-option>
             </el-select></div
@@ -152,10 +153,10 @@
               style="width: 74%; margin-left: 5px; margin-right: 5px;"
             >
               <el-option
-                v-for="item in educations"
+                v-for="item in initData.formData.educations"
                 :key="item.value"
                 :label="item.label"
-                :value="item.value"
+                :value="item.label"
               >
               </el-option>
             </el-select></div
@@ -165,12 +166,15 @@
         <el-col :span="18"
           ><div
             class="grid-content bg-purple"
-            style="width: 74%;margin-left: 10%; margin-top: 5px;"
+            style="width: 100%;margin-left: 10%; margin-top: 5px;"
           >
-            <el-button style="margin-right: 50px;">默认按钮</el-button>
-            <el-button>默认按钮</el-button>
-          </div></el-col
-        >
+            <el-button @click="addEmp">添加</el-button>
+            <el-button @click="reset">重置</el-button>
+            <el-button
+              @click="determine"
+              v-text="determineStatu === true ? '确定' : '提交'"
+            ></el-button></div
+        ></el-col>
       </el-row>
     </div>
     <div class="rightMain">
@@ -193,7 +197,7 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column label="员工编号" width="130">
+        <el-table-column label="员工编号" width="110">
           <template slot-scope="scope">
             <div slot="reference" class="name-wrapper">
               <el-tag size="mini">{{ scope.row.username }}</el-tag>
@@ -230,7 +234,7 @@
               size="mini"
               type="danger"
               style="margin-left: 3px;"
-              @click="handleDelete(scope.$index, scope.row)"
+              @click="handleDelete(scope.$index)"
               >删除</el-button
             >
           </template>
@@ -241,10 +245,19 @@
 </template>
 <script>
 import router from "@/router/index.js";
+import { initPage } from "@/api/page/init.js";
+import formData from "@/store/data.js";
+import { insertEmp } from "@/api/user/insertEmployee.js";
+import { checkEmpNum } from "@/api/user/checkEmpNum.js";
 export default {
-  name: "test",
+  name: "insertEmployee",
   data: () => {
     return {
+      //按钮功能为提交还是确定
+      determineStatu: false,
+      //当前数据下标
+      tableindex: "",
+      //提交表单
       form: {
         name: "",
         username: "",
@@ -256,64 +269,9 @@ export default {
         departmentNumber: "",
         positionNumber: ""
       },
-      input: "",
-      value: [],
-      options: [
-        {
-          value: "zhinan",
-          label: "指南",
-          children: [
-            {
-              value: "shejiyuanze",
-              label: "设计原则",
-              children: [
-                {
-                  value: "yizhi",
-                  label: "一致"
-                },
-                {
-                  value: "fankui",
-                  label: "反馈"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          value: "zujian",
-          label: "组件",
-          children: [
-            {
-              value: "basic",
-              label: "Basic",
-              children: [
-                {
-                  value: "layout",
-                  label: "Layout 布局"
-                },
-                {
-                  value: "color",
-                  label: "Color 色彩"
-                }
-              ]
-            },
-            {
-              value: "form",
-              label: "Form",
-              children: [
-                {
-                  value: "radio",
-                  label: "Radio 单选框"
-                },
-                {
-                  value: "checkbox",
-                  label: "Checkbox 多选框"
-                }
-              ]
-            }
-          ]
-        }
-      ],
+      //初始化页面的部门和职称等
+      initData: formData,
+      //展示区已添加的数据
       tableData: [
         {
           name: "王小虎",
@@ -334,26 +292,157 @@ export default {
           birthday: "2016-05-02",
           address: "上海市普陀区金沙江路 1518 弄",
           education: "本科",
-          departmentNumber: "骨伤外科",
+          departmentNumber: "ni",
           positionNumber: "主治医师"
         }
       ],
+      //页面绑定的部门列表
       departments: [],
+      //页面绑定的职称列表
       positions: [],
+      //页面绑定的学历列表
       educations: []
     };
   },
   methods: {
-    onSubmit() {
-      console.log("submit!");
+    //用于向右侧展示区添加待插入数据
+    addEmp() {
+      if (this.checkUserName(this.form.username)) {
+        if (this.tableData.length >= 10) {
+          this.$message.error("最多添加10条记录!");
+        } else {
+          const table = {
+            name: this.form.name,
+            username: this.form.username,
+            telephone: this.form.telephone,
+            gender: this.form.gender === "1" ? "男" : "女",
+            birthday: this.form.birthday,
+            address: this.form.address,
+            education: this.form.education,
+            departmentNumber: this.form.departmentNumber,
+            positionNumber: this.form.positionNumber
+          };
+          this.tableData.push(table);
+          this.reset();
+        }
+      }
     },
+    //页面加载完成调用的初始化方法
+    init() {
+      //页面初始化 发送请求获取所有部门和职称
+      initPage();
+      this.initData = formData;
+    },
+    //返回上一个页面
     goBack() {
-      console.log("go back");
       router.back(-1);
     },
-    handleChange(value) {
-      console.log(value);
+    //编辑按钮
+    handleEdit(index, row) {
+      this.form.name = row.name;
+      this.form.username = row.username;
+      this.form.telephone = row.telephone;
+      this.form.gender = row.gender == "男" ? "1" : "2";
+      this.form.birthday = row.birthday;
+      this.form.address = row.address;
+      this.form.education = row.education;
+      this.form.departmentNumber = row.departmentNumber;
+      this.form.positionNumber = row.positionNumber;
+      this.tableindex = index;
+      this.determineStatu = !this.determineStatu;
+    },
+    //删除按钮
+    handleDelete(index) {
+      this.tableData.splice(index, 1);
+    },
+    //提交和确认按钮方法
+    determine() {
+      //determineStatu为true时,功能为向右侧展示区添加记录
+      if (this.determineStatu) {
+        const table = {
+          name: this.form.name,
+          username: this.form.username,
+          telephone: this.form.telephone,
+          gender: this.form.gender === "1" ? "男" : "女",
+          birthday: this.form.birthday,
+          address: this.form.address,
+          education: this.form.education,
+          departmentNumber: this.form.departmentNumber,
+          positionNumber: this.form.positionNumber
+        };
+        if (this.tableindex !== "") {
+          this.determineStatu = !this.determineStatu;
+          this.tableData.splice(this.tableindex, 1, table);
+          this.reset();
+        }
+      } else {
+        //向后台发送请求插入数据
+        if (this.tableData.length > 0) {
+          const options = this.initData.formData.options;
+          const department = this.initData.formData.departments;
+          for (let i = 0; i < options.length; i++) {
+            if (this.form.positionNumber === options[i].label) {
+              this.form.positionNumber = options[i].value;
+            }
+          }
+          for (let i = 0; i < department.length; i++) {
+            if (this.form.departmentNumber === department[i].label) {
+              this.form.departmentNumber = department[i].value;
+            }
+          }
+          //声明传入后台的对象参数,springmvc转换json时需要通过key获取值 不能直接传对象数组到后台
+          const emplist = {
+            employees: []
+          };
+          emplist.employees = this.tableData;
+          //调用后台api接口
+          insertEmp(emplist).then(response => {
+            const data = response.data;
+            if (data.code === 200) {
+              this.$message({
+                message: "添加成功",
+                type: "success"
+              });
+              this.tableData = [];
+            }
+          });
+          this.reset();
+        } else {
+          this.$message.error("提交数据为空!");
+        }
+      }
+    },
+    reset() {
+      this.form.name = "";
+      this.form.username = "";
+      this.form.telephone = "";
+      this.form.gender = "1";
+      this.form.birthday = "";
+      this.form.address = "";
+      this.form.education = "";
+      this.form.departmentNumber = "";
+      this.form.positionNumber = "";
+      this.tableindex = "";
+    },
+    checkUserName() {
+      if (this.form.username !== null && this.form.username !== "") {
+        let flag = true;
+        checkEmpNum(this.form.username).then(response => {
+          debugger;
+          const data = response.data;
+          if (data.code !== 200 && data.data != null) {
+            this.$alert("可用编号为:" + data.data, "员工编号重复", {
+              confirmButtonText: "确定"
+            });
+            flag = false;
+          }
+        });
+        return flag;
+      }
     }
+  },
+  created: function() {
+    this.init();
   }
 };
 </script>

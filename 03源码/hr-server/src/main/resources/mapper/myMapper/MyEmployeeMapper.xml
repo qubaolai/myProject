@@ -40,8 +40,8 @@
         select
         <include refid="getEmployees"/>
         FROM employee e
-        LEFT JOIN department d ON e.department_number = d.department_number
-        LEFT JOIN position p ON e.position_number = p.position_number
+        LEFT JOIN department d ON e.department_number = d.id
+        LEFT JOIN position p ON e.position_number = p.id
         INNER JOIN employee emp ON e.manageer_id = emp.id
         <where>
             <!-- 员工姓名 -->

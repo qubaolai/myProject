@@ -23,9 +23,9 @@ public class Employee extends EmployeeFather {
 
     private String education;
 
-    private Integer departmentNumber;
+    private String departmentNumber;
 
-    private Integer positionNumber;
+    private String positionNumber;
 
     private String inTime;
 
@@ -111,19 +111,19 @@ public class Employee extends EmployeeFather {
         this.education = education;
     }
 
-    public Integer getDepartmentNumber() {
+    public String getDepartmentNumber() {
         return departmentNumber;
     }
 
-    public void setDepartmentNumber(Integer departmentNumber) {
+    public void setDepartmentNumber(String departmentNumber) {
         this.departmentNumber = departmentNumber;
     }
 
-    public Integer getPositionNumber() {
+    public String getPositionNumber() {
         return positionNumber;
     }
 
-    public void setPositionNumber(Integer positionNumber) {
+    public void setPositionNumber(String positionNumber) {
         this.positionNumber = positionNumber;
     }
 

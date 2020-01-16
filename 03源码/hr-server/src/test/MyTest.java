@@ -110,15 +110,15 @@ public class MyTest {
 
     @Test
     public void test() {
-        Employee employee = new Employee();
-        employee.setId(UUIDUtil.getUUID());
-        employee.setUsername("asd");
-        employee.setName("曲宝来");
-        employee.setGender("男");
-        employee.setBirthday(new Date());
-        employee.setDepartmentNumber(1);
-        employee.setPassword("asd");
-        employeeMapper.insert(employee);
+//        Employee employee = new Employee();
+//        employee.setId(UUIDUtil.getUUID());
+//        employee.setUsername("asd");
+//        employee.setName("曲宝来");
+//        employee.setGender("男");
+//        employee.setBirthday(new Date());
+//        employee.setDepartmentNumber(1);
+//        employee.setPassword("asd");
+//        employeeMapper.insert(employee);
     }
 
     @Test

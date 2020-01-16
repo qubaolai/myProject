@@ -83,12 +83,25 @@ public class UserController {
         return ResultVo.sendResult(400, "NoData");
     }
 
+    @GetMapping("/checkEmployeeNumber")
+    public ResultVo checkEmpNum(String empNum){
+        if(null == empNum || "".equals(empNum)){
+            throw new ParamException(500, "参数异常");
+        }
+        String result = employeeService.checkEmpNum(empNum);
+        if(null == result){
+            return ResultVo.sendResult(200, "success");
+        }
+        return ResultVo.sendResult(208, "员工编号存在!", result);
+    }
+
     @RequestMapping("/insertEmp")
-    public ResultVo insertEmp(@RequestBody Employee employee){
-        if(null == employee){
+    public ResultVo insertEmp(@RequestBody Map<String, List<Employee>> map){
+        if(null == map.get("employees") || map.get("employees") instanceof Employee){
             throw new ParamException(500, "参数异常!");
         }
-        String msg = employeeService.insertEmployee(employee);
-        return ResultVo.sendResult(200, "success",msg);
+        List<Employee> employeesList = map.get("employees");
+        employeeService.insertEmployee(employeesList);
+        return ResultVo.sendResult(200, "success");
     }
 }

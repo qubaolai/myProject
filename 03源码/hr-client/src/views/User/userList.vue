@@ -242,6 +242,7 @@ export default {
       getEmpList(this.form).then(response => {
         this.form.sex = this.form.sex === "男" ? "1" : "2";
         const data = response.data;
+        debugger;
         if (data.code === 400) {
           this.tableData = [];
           this.$message("数据为空!");
@@ -261,11 +262,23 @@ export default {
               address: ""
             };
             table.empName = tableList[i].name;
-            table.deptName = tableList[i].department.name;
-            table.mangName = tableList[i].employee.name;
+            if (tableList[i].department !== null) {
+              table.deptName = tableList[i].department.name;
+            } else {
+              table.deptName = "无";
+            }
+            if (tableList[i].employee !== null) {
+              table.mangName = tableList[i].employee.name;
+            } else {
+              table.mangName = "无";
+            }
+            if (tableList[i].position !== null) {
+              table.option = tableList[i].position.name;
+            } else {
+              table.option = "无";
+            }
             table.inTime = tableList[i].inTime;
             table.education = tableList[i].education;
-            table.option = tableList[i].position.name;
             table.telephone = tableList[i].telephone;
             table.address = tableList[i].address;
             this.tableData.push(table);
