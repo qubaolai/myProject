@@ -11,7 +11,7 @@
  Target Server Version : 50147
  File Encoding         : 65001
 
- Date: 12/01/2020 21:43:25
+ Date: 18/01/2020 13:42:25
 */
 
 SET NAMES utf8mb4;
@@ -41,6 +41,7 @@ INSERT INTO `attendance` VALUES ('1516b01fa6b548288c260e4d8f19bb9d', 'asd', '202
 INSERT INTO `attendance` VALUES ('1ffc2dd44211419489dfeffa7742476a', 'asd', '2019-12-29', '2019-12-29 08:18:12', '正常', '2019-12-29 20:18:36', '加班', NULL);
 INSERT INTO `attendance` VALUES ('6929a35671494503988e2838af671ff5', 'asd', '2020-01-05', NULL, NULL, '2020-01-05 15:41:39', '早退', NULL);
 INSERT INTO `attendance` VALUES ('80529e9a957f4d679e2d9c5b9c566727', 'asd', '2020-01-11', NULL, NULL, '2020-01-11 13:43:02', '早退', NULL);
+INSERT INTO `attendance` VALUES ('f94f2465b3924a8cbde641782ddbf5ac', 'asd', '2020-01-15', NULL, NULL, '2020-01-15 21:23:24', '加班', NULL);
 
 -- ----------------------------
 -- Table structure for department
@@ -80,8 +81,8 @@ CREATE TABLE `employee`  (
   `email` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
   `address` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `education` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '学历',
-  `department_number` int(10) NULL DEFAULT NULL,
-  `position_number` int(10) NULL DEFAULT NULL COMMENT '职位编号',
+  `department_number` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `position_number` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '职位编号',
   `in_time` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '入职',
   `password` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `notes` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '备注',
@@ -96,24 +97,38 @@ CREATE TABLE `employee`  (
 -- ----------------------------
 -- Records of employee
 -- ----------------------------
-INSERT INTO `employee` VALUES ('05880d8766974e19999a9c43a9f7b699', 'wenwen', '马翼文', '女', NULL, '13874758695', 'mayiwen@163.com', '吉林省吉林市', '本科', 1, 1, '2020-01-12', 'bfd59291e825b5f2bbf1eb76569f8fe7', NULL, '0', 1, NULL);
-INSERT INTO `employee` VALUES ('2855d9bcea394f2897da57b2c3e1c8d1', 'yiwen1', '马翼文', '女', NULL, '13874758695', 'mayiwen@163.com', '吉林省吉林市', '本科', 1, 1, '2020-01-12', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '05880d8766974e19999a9c43a9f7b699');
-INSERT INTO `employee` VALUES ('28e5e623e2314c6fb76ff187ac411bb5', 'wenwen6', '马翼文', '女', NULL, '13874758695', 'mayiwen@163.com', '吉林省吉林市', '本科', 1, 1, '2020-01-12', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '05880d8766974e19999a9c43a9f7b699');
-INSERT INTO `employee` VALUES ('2d5fa5c87cfc4d1dbdafc16edc4ac644', 'yiwen5', '马翼文', '女', NULL, '13874758695', 'mayiwen@163.com', '吉林省吉林市', '本科', 1, 1, '2020-01-12', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '05880d8766974e19999a9c43a9f7b699');
-INSERT INTO `employee` VALUES ('2eac39bce7834ebb9d38cd5b3a8ec9c8', 'yiwen4', '马翼文', '女', NULL, '13874758695', 'mayiwen@163.com', '吉林省吉林市', '本科', 1, 1, '2020-01-12', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '05880d8766974e19999a9c43a9f7b699');
-INSERT INTO `employee` VALUES ('3d5bf358f4d74c54a01b67b8bc3b5d7e', 'yiwen3', '马翼文', '女', NULL, '13874758695', 'mayiwen@163.com', '吉林省吉林市', '本科', 1, 1, '2020-01-12', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '05880d8766974e19999a9c43a9f7b699');
-INSERT INTO `employee` VALUES ('71729e0150614814b21cc60dc711b1f7', 'wenwen2', '马翼文', '女', NULL, '13874758695', 'mayiwen@163.com', '吉林省吉林市', '本科', 1, 1, '2020-01-12', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '05880d8766974e19999a9c43a9f7b699');
-INSERT INTO `employee` VALUES ('84bc14c7145445b689ff00b73b6a4f3e', 'wenwen4', '马翼文', '女', NULL, '13874758695', 'mayiwen@163.com', '吉林省吉林市', '本科', 1, 1, '2020-01-12', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '05880d8766974e19999a9c43a9f7b699');
-INSERT INTO `employee` VALUES ('8caa4f796dd94608b55702b1027764db', 'zxc1', '姓名1', '男', NULL, '13813450786', NULL, '旮旯胡同', '本科', 3, 5, '2019-10-31', 'asd1231', NULL, NULL, 1, '9004f903dd8541e685fb2328fc1a872b');
-INSERT INTO `employee` VALUES ('8e247acb20e44539840d56dfaf80479d', 'wenwen1', '马翼文', '女', NULL, '13874758695', 'mayiwen@163.com', '吉林省吉林市', '本科', 1, 1, '2020-01-12', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '05880d8766974e19999a9c43a9f7b699');
-INSERT INTO `employee` VALUES ('9004f903dd8541e685fb2328fc1a872b', 'asd', '曲宝来', '男', '2019-10-31', '13894658959', 'qblsiwen@163.com', '吉林省大安市', '本科', 4, 1, '2019-10-31', 'bfd59291e825b5f2bbf1eb76569f8fe7', NULL, '', 0, '9004f903dd8541e685fb2328fc1a872b');
-INSERT INTO `employee` VALUES ('94031af3be7d4cb7a71e50cdec10c0fb', 'zxc4', '姓名4', '男', NULL, '13843453786', NULL, '旮旯胡同', '本科', 1, 5, '2019-10-31', 'asd1234', NULL, NULL, 1, '9004f903dd8541e685fb2328fc1a872b');
-INSERT INTO `employee` VALUES ('a40d56a7166e4ff4857f59425b8a28cc', 'zxc8', '姓名8', '男', NULL, '13883457786', NULL, '旮旯胡同', '本科', 1, 1, '2019-10-31', 'asd1238', NULL, NULL, 1, '9004f903dd8541e685fb2328fc1a872b');
-INSERT INTO `employee` VALUES ('ba439fe348034d7fbcac1531d61be9ef', 'yiwen', '马翼文', '女', NULL, '13874758695', 'mayiwen@163.com', '吉林省吉林市', '本科', 1, 1, '2020-01-12', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '05880d8766974e19999a9c43a9f7b699');
-INSERT INTO `employee` VALUES ('d35a236e5d554e768ebdae94c5a4f640', 'wenwen3', '马翼文', '女', NULL, '13874758695', 'mayiwen@163.com', '吉林省吉林市', '本科', 1, 1, '2020-01-12', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '05880d8766974e19999a9c43a9f7b699');
-INSERT INTO `employee` VALUES ('d9833a2110c14a3f9046f0dc0302d3af', 'zxc2', '姓名2', '男', NULL, '13823451786', NULL, '旮旯胡同', '本科', 5, 3, '2019-10-31', 'asd1232', NULL, NULL, 1, '9004f903dd8541e685fb2328fc1a872b');
-INSERT INTO `employee` VALUES ('ec37c2cf9263415fbd1a1b7429841d03', 'wenwen5', '马翼文', '女', NULL, '13874758695', 'mayiwen@163.com', '吉林省吉林市', '本科', 1, 1, '2020-01-12', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '05880d8766974e19999a9c43a9f7b699');
-INSERT INTO `employee` VALUES ('f3878e95067e419a8141379d4faf371b', 'yiwen2', '马翼文', '女', NULL, '13874758695', 'mayiwen@163.com', '吉林省吉林市', '本科', 1, 1, '2020-01-12', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '05880d8766974e19999a9c43a9f7b699');
+INSERT INTO `employee` VALUES ('05880d8766974e19999a9c43a9f7b699', 'wenwen', '马翼文', '女', NULL, '13874758695', 'mayiwen@163.com', '吉林省吉林市', '本科', '1', '1', '2020-01-12', 'bfd59291e825b5f2bbf1eb76569f8fe7', NULL, '0', 1, NULL);
+INSERT INTO `employee` VALUES ('0dccbe35c3ce436f99df40194296fd30', 'wangxiaohu', '王小虎', '男', '2016-05-02', '13897968646', NULL, '上海市普陀区金沙江路 1518 弄', '本科', '传染病科', '主治医师', '2020-01-16', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '74372a49a81e41269907a0a67915c1b8');
+INSERT INTO `employee` VALUES ('1a87bf7f1d804630a0ccb1b771673838', 'wangxiaohu', '王小虎', '男', '2016-05-02', '13897968646', NULL, '上海市普陀区金沙江路 1518 弄', '本科', '传染病科', '主治医师', '2020-01-16', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '74372a49a81e41269907a0a67915c1b8');
+INSERT INTO `employee` VALUES ('2855d9bcea394f2897da57b2c3e1c8d1', 'yiwen1', '马翼文', '女', NULL, '13874758695', 'mayiwen@163.com', '吉林省吉林市', '本科', '1', '1', '2020-01-12', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '05880d8766974e19999a9c43a9f7b699');
+INSERT INTO `employee` VALUES ('28e5e623e2314c6fb76ff187ac411bb5', 'wenwen6', '马翼文', '女', NULL, '13874758695', 'mayiwen@163.com', '吉林省吉林市', '本科', '1', '1', '2020-01-12', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '05880d8766974e19999a9c43a9f7b699');
+INSERT INTO `employee` VALUES ('2d5fa5c87cfc4d1dbdafc16edc4ac644', 'yiwen5', '马翼文', '女', NULL, '13874758695', 'mayiwen@163.com', '吉林省吉林市', '本科', '1', '1', '2020-01-12', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '05880d8766974e19999a9c43a9f7b699');
+INSERT INTO `employee` VALUES ('2eac39bce7834ebb9d38cd5b3a8ec9c8', 'yiwen4', '马翼文', '女', NULL, '13874758695', 'mayiwen@163.com', '吉林省吉林市', '本科', '1', '1', '2020-01-12', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '05880d8766974e19999a9c43a9f7b699');
+INSERT INTO `employee` VALUES ('3d5bf358f4d74c54a01b67b8bc3b5d7e', 'yiwen3', '马翼文', '女', NULL, '13874758695', 'mayiwen@163.com', '吉林省吉林市', '本科', '1', '1', '2020-01-12', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '05880d8766974e19999a9c43a9f7b699');
+INSERT INTO `employee` VALUES ('5b9824cf300a41349a223bedbfd92981', 'wangxiaohu', '王小虎', '男', '2016-05-02', '13897968646', NULL, '上海市普陀区金沙江路 1518 弄', '本科', 'ni', '主治医师', '2020-01-18', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '957c43305b1e45f39257515b8426f98e');
+INSERT INTO `employee` VALUES ('6d2e6d61d365488d9f95ebc8aceaaf12', 'wangxiaohu', '王小虎', '男', '2016-05-02', '13897968646', NULL, '上海市普陀区金沙江路 1518 弄', '本科', '传染病科', '主治医师', '2020-01-16', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '74372a49a81e41269907a0a67915c1b8');
+INSERT INTO `employee` VALUES ('71729e0150614814b21cc60dc711b1f7', 'wenwen2', '马翼文', '女', NULL, '13874758695', 'mayiwen@163.com', '吉林省吉林市', '本科', '1', '1', '2020-01-12', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '05880d8766974e19999a9c43a9f7b699');
+INSERT INTO `employee` VALUES ('74372a49a81e41269907a0a67915c1b8', 'wangxiaohu', '王小虎', '男', '2016-05-02', '13897968646', NULL, '上海市普陀区金沙江路 1518 弄', '本科', '传染病科', '主治医师', '2020-01-16', '0192023a7bbd73250516f069df18b500', NULL, '0', 1, NULL);
+INSERT INTO `employee` VALUES ('7f7d4acaca0748d783922ff39b1d0603', 'wangxiaoghuang', '王小虎', '男', '2016-05-02', '13897968646', NULL, '上海市普陀区金沙江路 1518 弄', '本科', '骨伤外科', '主治医师', '2020-01-18', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, 'f3be0658e0734b6782f2c24949264bb5');
+INSERT INTO `employee` VALUES ('7f94b9ba7538483d9c07b0ed0b94ecfe', 'wangxiaohu', '王小虎', '男', '2016-05-02', '13897968646', NULL, '上海市普陀区金沙江路 1518 弄', '本科', '传染病科', '主治医师', '2020-01-16', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '74372a49a81e41269907a0a67915c1b8');
+INSERT INTO `employee` VALUES ('84bc14c7145445b689ff00b73b6a4f3e', 'wenwen4', '马翼文', '女', NULL, '13874758695', 'mayiwen@163.com', '吉林省吉林市', '本科', '1', '1', '2020-01-12', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '05880d8766974e19999a9c43a9f7b699');
+INSERT INTO `employee` VALUES ('8caa4f796dd94608b55702b1027764db', 'zxc1', '姓名1', '男', NULL, '13813450786', NULL, '旮旯胡同', '本科', '3', '5', '2019-10-31', 'asd1231', NULL, NULL, 1, '9004f903dd8541e685fb2328fc1a872b');
+INSERT INTO `employee` VALUES ('8d2fb8e442d840e8ba74690ca8d9f2f1', 'yiwen6', '马翼文', '女', NULL, '13874758695', 'mayiwen@163.com', '吉林省吉林市', '本科', '1', '1', '2020-01-16', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '05880d8766974e19999a9c43a9f7b699');
+INSERT INTO `employee` VALUES ('8e247acb20e44539840d56dfaf80479d', 'wenwen1', '马翼文', '女', NULL, '13874758695', 'mayiwen@163.com', '吉林省吉林市', '本科', '1', '1', '2020-01-12', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '05880d8766974e19999a9c43a9f7b699');
+INSERT INTO `employee` VALUES ('9004f903dd8541e685fb2328fc1a872b', 'asd', '曲宝来', '男', '2019-10-31', '13894658959', 'qblsiwen@163.com', '吉林省大安市', '本科', '4', '1', '2019-10-31', 'bfd59291e825b5f2bbf1eb76569f8fe7', NULL, '', 0, '9004f903dd8541e685fb2328fc1a872b');
+INSERT INTO `employee` VALUES ('94031af3be7d4cb7a71e50cdec10c0fb', 'zxc4', '姓名4', '男', NULL, '13843453786', NULL, '旮旯胡同', '本科', '1', '5', '2019-10-31', 'asd1234', NULL, NULL, 1, '9004f903dd8541e685fb2328fc1a872b');
+INSERT INTO `employee` VALUES ('957c43305b1e45f39257515b8426f98e', 'wangxiaohu', '王小虎', '男', '2016-05-02', '13897968646', NULL, '上海市普陀区金沙江路 1518 弄', '本科', 'ni', '主治医师', '2020-01-18', '0192023a7bbd73250516f069df18b500', NULL, '0', 1, NULL);
+INSERT INTO `employee` VALUES ('a40d56a7166e4ff4857f59425b8a28cc', 'zxc8', '姓名8', '男', NULL, '13883457786', NULL, '旮旯胡同', '本科', '1', '1', '2019-10-31', 'asd1238', NULL, NULL, 1, '9004f903dd8541e685fb2328fc1a872b');
+INSERT INTO `employee` VALUES ('ba439fe348034d7fbcac1531d61be9ef', 'yiwen', '马翼文', '女', NULL, '13874758695', 'mayiwen@163.com', '吉林省吉林市', '本科', '1', '1', '2020-01-12', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '05880d8766974e19999a9c43a9f7b699');
+INSERT INTO `employee` VALUES ('cccbf2606f8c466ba1d21e131f4ea1da', 'wangxiaohu', '王小虎', '男', '2016-05-02', '13897968646', NULL, '上海市普陀区金沙江路 1518 弄', '本科', '传染病科', '主治医师', '2020-01-16', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '74372a49a81e41269907a0a67915c1b8');
+INSERT INTO `employee` VALUES ('ce70b85b4591465eaaa1470c3edd6b84', 'wangxiaohu', '王小虎', '男', '2016-05-02', '13897968646', NULL, '上海市普陀区金沙江路 1518 弄', '本科', '传染病科', '主治医师', '2020-01-16', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '74372a49a81e41269907a0a67915c1b8');
+INSERT INTO `employee` VALUES ('d35a236e5d554e768ebdae94c5a4f640', 'wenwen3', '马翼文', '女', NULL, '13874758695', 'mayiwen@163.com', '吉林省吉林市', '本科', '1', '1', '2020-01-12', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '05880d8766974e19999a9c43a9f7b699');
+INSERT INTO `employee` VALUES ('d96066ea4c8840d99f5ad4a50a709e3c', 'wangxiaohu', '王小虎', '男', '2016-05-02', '13897968646', NULL, '上海市普陀区金沙江路 1518 弄', '本科', '传染病科', '主治医师', '2020-01-16', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '74372a49a81e41269907a0a67915c1b8');
+INSERT INTO `employee` VALUES ('d9833a2110c14a3f9046f0dc0302d3af', 'zxc2', '姓名2', '男', NULL, '13823451786', NULL, '旮旯胡同', '本科', '5', '3', '2019-10-31', 'asd1232', NULL, NULL, 1, '9004f903dd8541e685fb2328fc1a872b');
+INSERT INTO `employee` VALUES ('ec37c2cf9263415fbd1a1b7429841d03', 'wenwen5', '马翼文', '女', NULL, '13874758695', 'mayiwen@163.com', '吉林省吉林市', '本科', '1', '1', '2020-01-12', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '05880d8766974e19999a9c43a9f7b699');
+INSERT INTO `employee` VALUES ('f3878e95067e419a8141379d4faf371b', 'yiwen2', '马翼文', '女', NULL, '13874758695', 'mayiwen@163.com', '吉林省吉林市', '本科', '060637758fcf4f958e11e61ccd3935fe', '00b98b8059d6485a9356f14a0c31ec85', '2020-01-12', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '05880d8766974e19999a9c43a9f7b699');
+INSERT INTO `employee` VALUES ('f3be0658e0734b6782f2c24949264bb5', 'wangxiaoghuang', '王小虎', '男', '2016-05-02', '13897968646', NULL, '上海市普陀区金沙江路 1518 弄', '本科', '骨伤外科', '主治医师', '2020-01-16', '0192023a7bbd73250516f069df18b500', NULL, '0', 1, NULL);
+INSERT INTO `employee` VALUES ('faab5314ed514e1f8719f8a2fe19e9ac', 'wangxiaohu', '王小虎', '男', '2016-05-02', '13897968646', NULL, '上海市普陀区金沙江路 1518 弄', '本科', '传染病科', '主治医师', '2020-01-16', '0192023a7bbd73250516f069df18b500', NULL, NULL, 1, '74372a49a81e41269907a0a67915c1b8');
 
 -- ----------------------------
 -- Table structure for history
