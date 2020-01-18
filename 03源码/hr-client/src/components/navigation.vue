@@ -26,6 +26,7 @@
           </template>
           <el-menu-item-group>
             <el-menu-item
+              style="text-indent: 36px;"
               v-for="subItem in item.children"
               :key="subItem.id"
               :index="subItem.path"

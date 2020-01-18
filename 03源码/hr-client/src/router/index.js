@@ -76,23 +76,83 @@ export default new VueRouter({
       ]
     },
     {
-      path: "/ceshi",
-      name: "Test",
+      path: "/department",
+      name: "Department",
       hidden: false,
       meta: {
-        name: "测试",
-        icon: "user"
+        name: "部门管理",
+        icon: "department"
       },
       component: layout,
       children: [
         {
-          path: "/test",
-          name: "ceshi",
+          path: "/departmentList",
+          name: "DepartmentList",
           // hidden: false,
           meta: {
-            name: "ceshi"
+            name: "部门列表"
           },
-          component: () => import("../views/test/test.vue")
+          component: () => import("../views/department/departmentList.vue")
+        },
+        {
+          path: "/insertDepartment",
+          name: "InsertDepartment",
+          // hidden: false,
+          meta: {
+            name: "添加部门"
+          },
+          component: () => import("../views/department/insertDepartment.vue")
+        }
+      ]
+    },
+    {
+      path: "/holiday",
+      name: "Holiday",
+      hidden: false,
+      meta: {
+        name: "请假管理",
+        icon: "holiday"
+      },
+      component: layout,
+      children: [
+        {
+          path: "/approvalHoliday",
+          name: "ApprovalHoliday",
+          // hidden: false,
+          meta: {
+            name: "请假审批"
+          },
+          component: () => import("../views/holiday/approvalHoliday.vue")
+        },
+        {
+          path: "/applyHoliday",
+          name: "ApplyHoliday",
+          // hidden: false,
+          meta: {
+            name: "请假申请"
+          },
+          component: () => import("../views/holiday/applyHoliday.vue")
+        }
+      ]
+    },
+    {
+      path: "/systemConfig",
+      name: "SystemConfig",
+      hidden: false,
+      meta: {
+        name: "系统设置",
+        icon: "systemConfig"
+      },
+      component: layout,
+      children: [
+        {
+          path: "/updatePassword",
+          name: "UpdatePassword",
+          // hidden: false,
+          meta: {
+            name: "修改密码"
+          },
+          component: () => import("../views/system/updatePassword.vue")
         }
       ]
     }

@@ -1,13 +1,5 @@
 <template>
   <div class="main">
-    <div style="margin-top: 10px;">
-      <el-page-header
-        @back="goBack"
-        content="添加员工"
-        style="margin-left:10px;width: 40%;"
-      >
-      </el-page-header>
-    </div>
     <div class="leftMain">
       <el-row :gutter="8">
         <el-col :span="18"
@@ -168,7 +160,7 @@
             class="grid-content bg-purple"
             style="width: 100%;margin-left: 10%; margin-top: 5px;"
           >
-            <el-button @click="addEmp">添加</el-button>
+            <el-button @click="addEmp" :disabled="canInsert">添加</el-button>
             <el-button @click="reset">重置</el-button>
             <el-button
               @click="determine"
@@ -253,6 +245,8 @@ export default {
   name: "insertEmployee",
   data: () => {
     return {
+      //是否允许添加员工
+      canInsert: false,
       //按钮功能为提交还是确定
       determineStatu: false,
       //当前数据下标
@@ -307,24 +301,23 @@ export default {
   methods: {
     //用于向右侧展示区添加待插入数据
     addEmp() {
-      if (this.checkUserName(this.form.username)) {
-        if (this.tableData.length >= 10) {
-          this.$message.error("最多添加10条记录!");
-        } else {
-          const table = {
-            name: this.form.name,
-            username: this.form.username,
-            telephone: this.form.telephone,
-            gender: this.form.gender === "1" ? "男" : "女",
-            birthday: this.form.birthday,
-            address: this.form.address,
-            education: this.form.education,
-            departmentNumber: this.form.departmentNumber,
-            positionNumber: this.form.positionNumber
-          };
-          this.tableData.push(table);
-          this.reset();
-        }
+      //判断用户名是否可用
+      if (this.tableData.length >= 10) {
+        this.$message.error("最多添加10条记录!");
+      } else {
+        const table = {
+          name: this.form.name,
+          username: this.form.username,
+          telephone: this.form.telephone,
+          gender: this.form.gender === "1" ? "男" : "女",
+          birthday: this.form.birthday,
+          address: this.form.address,
+          education: this.form.education,
+          departmentNumber: this.form.departmentNumber,
+          positionNumber: this.form.positionNumber
+        };
+        this.tableData.push(table);
+        this.reset();
       }
     },
     //页面加载完成调用的初始化方法
@@ -339,6 +332,7 @@ export default {
     },
     //编辑按钮
     handleEdit(index, row) {
+      this.canInsert = true;
       this.form.name = row.name;
       this.form.username = row.username;
       this.form.telephone = row.telephone;
@@ -354,11 +348,19 @@ export default {
     //删除按钮
     handleDelete(index) {
       this.tableData.splice(index, 1);
+      debugger;
+      if (index == parseInt(this.tableindex)) {
+        this.reset();
+      }
+      if (this.tableData.length === 0) {
+        this.reset();
+      }
     },
     //提交和确认按钮方法
     determine() {
-      //determineStatu为true时,功能为向右侧展示区添加记录
+      //determineStatu为true时,功能为向右侧展示区修改记录
       if (this.determineStatu) {
+        this.canInsert = false;
         const table = {
           name: this.form.name,
           username: this.form.username,
@@ -380,14 +382,19 @@ export default {
         if (this.tableData.length > 0) {
           const options = this.initData.formData.options;
           const department = this.initData.formData.departments;
+          debugger;
           for (let i = 0; i < options.length; i++) {
-            if (this.form.positionNumber === options[i].label) {
-              this.form.positionNumber = options[i].value;
+            for (let j = 0; j < this.tableData.length; j++) {
+              if (this.tableData[j].positionNumber == options[i].label) {
+                this.tableData[j].positionNumber = options[i].value;
+              }
             }
           }
           for (let i = 0; i < department.length; i++) {
-            if (this.form.departmentNumber === department[i].label) {
-              this.form.departmentNumber = department[i].value;
+            for (let j = 0; j < this.tableData.length; j++) {
+              if (this.tableData[j].departmentNumber == department[i].label) {
+                this.tableData[j].departmentNumber = department[i].value;
+              }
             }
           }
           //声明传入后台的对象参数,springmvc转换json时需要通过key获取值 不能直接传对象数组到后台
@@ -413,6 +420,12 @@ export default {
       }
     },
     reset() {
+      //是否允许添加员工
+      this.canInsert = false;
+      //按钮功能为提交还是确定
+      this.determineStatu = false;
+      //当前数据下标
+      this.tableindex = "";
       this.form.name = "";
       this.form.username = "";
       this.form.telephone = "";
@@ -426,18 +439,14 @@ export default {
     },
     checkUserName() {
       if (this.form.username !== null && this.form.username !== "") {
-        let flag = true;
         checkEmpNum(this.form.username).then(response => {
-          debugger;
           const data = response.data;
           if (data.code !== 200 && data.data != null) {
             this.$alert("可用编号为:" + data.data, "员工编号重复", {
               confirmButtonText: "确定"
             });
-            flag = false;
           }
         });
-        return flag;
       }
     }
   },
@@ -473,6 +482,7 @@ span {
   padding-top: 10px;
 }
 .rightMain {
+  margin-top: 20px;
   width: 50%;
   float: left;
   box-flex: 1;

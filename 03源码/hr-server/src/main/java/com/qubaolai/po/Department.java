@@ -1,6 +1,8 @@
 package com.qubaolai.po;
 
-public class Department {
+import com.qubaolai.pojo.DepartmentFather;
+
+public class Department extends DepartmentFather {
     private String id;
 
     private Integer departmentNumber;

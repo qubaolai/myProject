@@ -1,7 +1,7 @@
 <template>
   <div class="basic-grey">
     <div
-      style="margin-bottom: 10px; background-color: #fff; width: 99%; padding: 3px; border-radius: 5px;"
+      style="margin-bottom: 10px; background-color: #fff; width: 91%; padding: 3px; border-radius: 5px; padding-left: 50px; padding-right: 50px;"
     >
       <el-row :gutter="20">
         <el-col :span="5">
@@ -37,13 +37,6 @@
             ></el-input>
           </div>
         </el-col>
-        <el-col :span="5">
-          <div class="grid-content bg-purple rowStyle">
-            <span>员工性别:</span>
-            <el-radio class="radio" v-model="form.sex" label="1">男</el-radio>
-            <el-radio class="radio" v-model="form.sex" label="2">女</el-radio>
-          </div>
-        </el-col>
         <el-col :span="4">
           <div class="grid-content bg-purple rowStyle">
             <el-button
@@ -55,83 +48,9 @@
             >
           </div>
         </el-col>
-      </el-row>
-      <el-row :gutter="20">
         <el-col :span="5">
           <div class="grid-content bg-purple rowStyle">
-            <span>部门:</span>
-            <el-select
-              class="formStyle"
-              v-model="form.departmentNumber"
-              filterable
-              clearable
-              placeholder="请选择部门"
-            >
-              <el-option
-                v-for="item in initData.formData.departments"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
-          </div>
-        </el-col>
-        <el-col :span="5">
-          <div class="grid-content bg-purple rowStyle">
-            <span>学历:</span>
-            <el-select
-              class="formStyle"
-              v-model="form.education"
-              filterable
-              clearable
-              placeholder="请选择"
-            >
-              <el-option
-                v-for="item in initData.formData.educations"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
-          </div>
-        </el-col>
-        <el-col :span="5">
-          <div class="grid-content bg-purple rowStyle">
-            <span>职称:</span>
-            <el-select
-              class="formStyle"
-              v-model="form.positionNumber"
-              clearable
-              placeholder="请选择"
-            >
-              <el-option
-                v-for="item in initData.formData.options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
-          </div>
-        </el-col>
-        <el-col :span="5">
-          <div class="grid-content bg-purple" style="width: 120%;">
-            <span>入职时间:</span>
-            <el-date-picker
-              class="timeStyle"
-              v-model="inTime"
-              type="daterange"
-              unlink-panels
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-            ></el-date-picker>
-          </div>
-        </el-col>
-        <el-col :span="4">
-          <div class="grid-content bg-purple1">
-            <el-button class="buttonStyle" type="primary" @click="reset()"
-              >重置</el-button
-            >
+            <el-button class="buttonStyle" type="primary">重置</el-button>
           </div>
         </el-col>
       </el-row>
@@ -333,7 +252,7 @@ export default {
   padding-right: 3px;
 }
 .rowStyle {
-  width: 105%;
+  width: 100%;
 }
 </style>
 <style lang="scss" scoped>
@@ -345,7 +264,7 @@ export default {
 }
 .buttonStyle {
   margin-top: 2px;
-  margin-left: 70px;
+  margin-left: 50px;
   width: 80px;
   height: 36px;
   line-height: 12px;

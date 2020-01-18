@@ -4,6 +4,7 @@ import com.qubaolai.po.Department;
 import com.qubaolai.vo.ResultVo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description qubaolai
@@ -16,4 +17,11 @@ public interface DepartmentService {
      * @return
      */
     public List<Department> getDepts();
+
+    /**
+     * 根据条件获取部门列表
+     * @param param
+     * @return
+     */
+    public List<Department> getDeptsByConditions(Map<String, Object> param);
 }

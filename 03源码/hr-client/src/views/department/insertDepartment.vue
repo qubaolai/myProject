@@ -344,11 +344,7 @@ export default {
     };
   },
   methods: {
-    onSubmit() {
-      console.log("submit!");
-    },
     goBack() {
-      console.log("go back");
       router.back(-1);
     },
     handleChange(value) {

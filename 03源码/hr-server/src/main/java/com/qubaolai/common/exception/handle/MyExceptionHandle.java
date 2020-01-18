@@ -45,4 +45,9 @@ public class MyExceptionHandle {
         log.error(e.getMessage());
         return ResultVo.sendResult(e.getCode(), e.getMessage());
     }
+    @ExceptionHandler(DataException.class)
+    public ResultVo DataExceptionHandle(DataException e) {
+        log.error(e.getMessage());
+        return ResultVo.sendResult(e.getCode(), e.getMessage());
+    }
 }

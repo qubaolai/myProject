@@ -4,9 +4,6 @@ $navMenu: 200px;
 $navMenuMin: 64px;
 $layoutHeader: 75px;
 
-// 主颜色
-$mainCcolor: #f56c6c;
-
 @mixin webkit($type, $value){
   -webkit-#{$type}: $value;
   -moz-#{$type}: $value;
