@@ -52,4 +52,11 @@ public interface EmployeeService extends BaseService {
      * @param employees
      */
     public void insertEmployee(List<Employee> employees);
+
+    /**
+     * 通过姓名查询员工信息
+     * @param name
+     * @return
+     */
+    public Employee getEmpByName(String name);
 }

@@ -187,5 +187,10 @@ public class MyTest {
         List<Employee> employeeByConditions = myEmployeeMapper.getEmployeeByConditions(param);
         System.out.println(1);
     }
-
+    @Test
+    public void test8(){
+        String a = "请假申请";
+        int le = a.length();
+        System.out.println(1);
+    }
 }

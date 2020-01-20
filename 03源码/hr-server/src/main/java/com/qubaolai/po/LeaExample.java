@@ -254,52 +254,62 @@ public class LeaExample {
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentNumberEqualTo(Integer value) {
+        public Criteria andDepartmentNumberEqualTo(String value) {
             addCriterion("department_number =", value, "departmentNumber");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentNumberNotEqualTo(Integer value) {
+        public Criteria andDepartmentNumberNotEqualTo(String value) {
             addCriterion("department_number <>", value, "departmentNumber");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentNumberGreaterThan(Integer value) {
+        public Criteria andDepartmentNumberGreaterThan(String value) {
             addCriterion("department_number >", value, "departmentNumber");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentNumberGreaterThanOrEqualTo(Integer value) {
+        public Criteria andDepartmentNumberGreaterThanOrEqualTo(String value) {
             addCriterion("department_number >=", value, "departmentNumber");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentNumberLessThan(Integer value) {
+        public Criteria andDepartmentNumberLessThan(String value) {
             addCriterion("department_number <", value, "departmentNumber");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentNumberLessThanOrEqualTo(Integer value) {
+        public Criteria andDepartmentNumberLessThanOrEqualTo(String value) {
             addCriterion("department_number <=", value, "departmentNumber");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentNumberIn(List<Integer> values) {
+        public Criteria andDepartmentNumberLike(String value) {
+            addCriterion("department_number like", value, "departmentNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentNumberNotLike(String value) {
+            addCriterion("department_number not like", value, "departmentNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentNumberIn(List<String> values) {
             addCriterion("department_number in", values, "departmentNumber");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentNumberNotIn(List<Integer> values) {
+        public Criteria andDepartmentNumberNotIn(List<String> values) {
             addCriterion("department_number not in", values, "departmentNumber");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentNumberBetween(Integer value1, Integer value2) {
+        public Criteria andDepartmentNumberBetween(String value1, String value2) {
             addCriterion("department_number between", value1, value2, "departmentNumber");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentNumberNotBetween(Integer value1, Integer value2) {
+        public Criteria andDepartmentNumberNotBetween(String value1, String value2) {
             addCriterion("department_number not between", value1, value2, "departmentNumber");
             return (Criteria) this;
         }

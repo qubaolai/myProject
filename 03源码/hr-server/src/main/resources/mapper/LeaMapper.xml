@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.qubaolai.po.Lea" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="employee_number" property="employeeNumber" jdbcType="VARCHAR" />
-    <result column="department_number" property="departmentNumber" jdbcType="INTEGER" />
+    <result column="department_number" property="departmentNumber" jdbcType="VARCHAR" />
     <result column="start_time" property="startTime" jdbcType="VARCHAR" />
     <result column="end_time" property="endTime" jdbcType="VARCHAR" />
     <result column="reason" property="reason" jdbcType="VARCHAR" />
@@ -110,7 +110,7 @@
       start_time, end_time, reason, 
       type, manager, status, notes
       )
-    values (#{id,jdbcType=VARCHAR}, #{employeeNumber,jdbcType=VARCHAR}, #{departmentNumber,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=VARCHAR}, #{employeeNumber,jdbcType=VARCHAR}, #{departmentNumber,jdbcType=VARCHAR}, 
       #{startTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR}, #{reason,jdbcType=VARCHAR}, 
       #{type,jdbcType=CHAR}, #{manager,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{notes,jdbcType=VARCHAR}
       )
@@ -157,7 +157,7 @@
         #{employeeNumber,jdbcType=VARCHAR},
       </if>
       <if test="departmentNumber != null" >
-        #{departmentNumber,jdbcType=INTEGER},
+        #{departmentNumber,jdbcType=VARCHAR},
       </if>
       <if test="startTime != null" >
         #{startTime,jdbcType=VARCHAR},
@@ -198,7 +198,7 @@
         employee_number = #{record.employeeNumber,jdbcType=VARCHAR},
       </if>
       <if test="record.departmentNumber != null" >
-        department_number = #{record.departmentNumber,jdbcType=INTEGER},
+        department_number = #{record.departmentNumber,jdbcType=VARCHAR},
       </if>
       <if test="record.startTime != null" >
         start_time = #{record.startTime,jdbcType=VARCHAR},
@@ -230,7 +230,7 @@
     update lea
     set id = #{record.id,jdbcType=VARCHAR},
       employee_number = #{record.employeeNumber,jdbcType=VARCHAR},
-      department_number = #{record.departmentNumber,jdbcType=INTEGER},
+      department_number = #{record.departmentNumber,jdbcType=VARCHAR},
       start_time = #{record.startTime,jdbcType=VARCHAR},
       end_time = #{record.endTime,jdbcType=VARCHAR},
       reason = #{record.reason,jdbcType=VARCHAR},
@@ -249,7 +249,7 @@
         employee_number = #{employeeNumber,jdbcType=VARCHAR},
       </if>
       <if test="departmentNumber != null" >
-        department_number = #{departmentNumber,jdbcType=INTEGER},
+        department_number = #{departmentNumber,jdbcType=VARCHAR},
       </if>
       <if test="startTime != null" >
         start_time = #{startTime,jdbcType=VARCHAR},
@@ -278,7 +278,7 @@
   <update id="updateByPrimaryKey" parameterType="com.qubaolai.po.Lea" >
     update lea
     set employee_number = #{employeeNumber,jdbcType=VARCHAR},
-      department_number = #{departmentNumber,jdbcType=INTEGER},
+      department_number = #{departmentNumber,jdbcType=VARCHAR},
       start_time = #{startTime,jdbcType=VARCHAR},
       end_time = #{endTime,jdbcType=VARCHAR},
       reason = #{reason,jdbcType=VARCHAR},

@@ -24,4 +24,18 @@ public interface DepartmentService {
      * @return
      */
     public List<Department> getDeptsByConditions(Map<String, Object> param);
+
+    /**
+     * 通过部门名称查询部门信息
+     * @param name
+     * @return
+     */
+    public Department getDeptByName(String name);
+
+    /**
+     * 修改部门信息
+     * @param department
+     * @return
+     */
+    public void updateDept(Department department);
 }

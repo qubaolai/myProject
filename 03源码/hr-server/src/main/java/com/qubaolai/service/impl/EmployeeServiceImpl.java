@@ -17,11 +17,14 @@ import com.qubaolai.mapper.LogsMapper;
 import com.qubaolai.mapper.PositionMapper;
 import com.qubaolai.mapper.myMapper.MyEmployeeMapper;
 import com.qubaolai.po.*;
+import com.qubaolai.service.DepartmentService;
 import com.qubaolai.service.EmployeeService;
 import com.qubaolai.vo.ResultVo;
 import lombok.extern.log4j.Log4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -46,7 +49,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
     @Resource
     private DepartmentMapper departmentMapper;
     @Resource
-    private PositionMapper positionMapper;
+    private DepartmentService departmentService;
 
     @Override
     public void updateEmployee(Employee employee) {
@@ -229,6 +232,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
         return null;
     }
 
+    @Transactional(propagation= Propagation.REQUIRED)
     @Override
     public void insertEmployee(List<Employee> employees) {
         for(Employee employee : employees){
@@ -250,11 +254,30 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
             if(null == employeeList1 || 0 >= employeeList1.size()){
                 //添加的员工为部门领导
                 employee.setDeviceid("0");
+                //修改部门信息表
+                Department department = departmentMapper.selectByPrimaryKey(employee.getDepartmentNumber());
+                department.setManager(employee.getId());
+                departmentService.updateDept(department);
             }else{
                 employee.setManageerId(employeeList1.get(0).getId());
             }
             employee.setInTime(DateUtil.getDate());
             employeeMapper.insert(employee);
         }
+    }
+
+    @Override
+    public Employee getEmpByName(String name) {
+        if("".equals(name) || null == name){
+            throw new ParamException(501, "参数异常");
+        }
+        EmployeeExample example = new EmployeeExample();
+        EmployeeExample.Criteria criteria = example.createCriteria();
+        criteria.andNameEqualTo(name);
+        List<Employee> employees = employeeMapper.selectByExample(example);
+        if(null == employees || 0 >= employees.size()){
+            throw new NoDataException(400, "数据为空");
+        }
+        return employees.get(0);
     }
 }

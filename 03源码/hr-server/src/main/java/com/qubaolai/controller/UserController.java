@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +69,7 @@ public class UserController {
     }
 
     /**
-     *  按添加查询员工信息
+     *  按条件查询员工信息
      * @param map
      * @return
      */
@@ -83,6 +84,11 @@ public class UserController {
         return ResultVo.sendResult(400, "NoData");
     }
 
+    /**
+     * 检查用户名是否可用
+     * @param empNum
+     * @return
+     */
     @GetMapping("/checkEmployeeNumber")
     public ResultVo checkEmpNum(String empNum){
         if(null == empNum || "".equals(empNum)){
@@ -95,13 +101,28 @@ public class UserController {
         return ResultVo.sendResult(208, "员工编号存在!", result);
     }
 
-    @RequestMapping("/insertEmp")
+    /**
+     * 添加员工
+     * @param map
+     * @return
+     */
+    @PostMapping("/insertEmp")
     public ResultVo insertEmp(@RequestBody Map<String, List<Employee>> map){
         if(null == map.get("employees") || map.get("employees") instanceof Employee){
             throw new ParamException(500, "参数异常!");
         }
         List<Employee> employeesList = map.get("employees");
         employeeService.insertEmployee(employeesList);
+        return ResultVo.sendResult(200, "success");
+    }
+
+    @RequestMapping("/logout")
+    public ResultVo logout(HttpServletRequest request){
+        //从session中删除当前登录用户
+        HttpSession session = request.getSession();
+        session.removeAttribute("user");
+        //token缓存清空
+
         return ResultVo.sendResult(200, "success");
     }
 }

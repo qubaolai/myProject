@@ -14,7 +14,7 @@
             <result column="deptName" property="name" jdbcType="VARCHAR"/>
         </association>
         <association property="employee" javaType="com.qubaolai.po.Employee">
-            <id column="eid" property="id" jdbcType="VARCHAR"/>
+            <id column="empId" property="id" jdbcType="VARCHAR"/>
             <result column="mangName" property="name" jdbcType="VARCHAR"/>
         </association>
         <association property="position" javaType="com.qubaolai.po.Position">
@@ -29,7 +29,8 @@
     d.ID as did,
 	d.NAME deptName,
 	e.in_time,
-	emp.NAME mangName,
+	e.manageer_id as empId,
+	emp.NAME AS mangName,
 	e.education,
 	e.telephone,
 	e.address,
@@ -42,7 +43,7 @@
         FROM employee e
         LEFT JOIN department d ON e.department_number = d.id
         LEFT JOIN position p ON e.position_number = p.id
-        INNER JOIN employee emp ON e.manageer_id = emp.id
+        LEFT JOIN employee emp ON e.manageer_id = emp.id
         <where>
             <!-- 员工姓名 -->
             <if test='empName != null'>
@@ -54,7 +55,7 @@
             </if>
             <!-- 入职时间 -->
             <if test='inTimeStart != null and inTimeEnd != null'>
-                and e.in_time = between #{inTimeStart} and #{inTimeEnd}
+                and e.in_time between #{inTimeStart} and #{inTimeEnd}
             </if>
             <!-- 员工性别 -->
             <if test='gender != null'>

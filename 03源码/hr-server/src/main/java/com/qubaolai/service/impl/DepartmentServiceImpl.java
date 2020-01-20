@@ -45,7 +45,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     /**
-     * 根据添加获取部门
+     * 根据条件获取部门
      * @param param
      * @return
      */
@@ -80,7 +80,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
         List<String> manageNum = new ArrayList<>();
         for(Employee employee : employeeList){
-            if(employee.getDeviceid() == "0"){
+            if("0".equals(employee.getDeviceid())){
                 manageNum.add(employee.getId());
             }
         }
@@ -107,5 +107,31 @@ public class DepartmentServiceImpl implements DepartmentService {
             department.setEmployee(employees.get(0));
         }
         return departments;
+    }
+
+    @Override
+    public Department getDeptByName(String name) {
+        if("".equals(name) || null == name){
+            throw new ParamException(501, "参数异常");
+        }
+        DepartmentExample example = new DepartmentExample();
+        DepartmentExample.Criteria criteria = example.createCriteria();
+        criteria.andNameEqualTo(name);
+        List<Department> departments = departmentMapper.selectByExample(example);
+        if(null == departments || 0 >= departments.size()){
+            throw new NoDataException(400, "部门不存在");
+        }
+        return departments.get(0);
+    }
+
+    @Override
+    public void updateDept(Department department) {
+        DepartmentExample example = new DepartmentExample();
+        DepartmentExample.Criteria criteria = example.createCriteria();
+        if(null == department.getId() || "".equals(department.getId())){
+            throw new ParamException(501, "参数异常");
+        }
+        criteria.andIdEqualTo(department.getId());
+        departmentMapper.updateByExampleSelective(department, example);
     }
 }

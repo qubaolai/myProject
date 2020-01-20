@@ -5,7 +5,7 @@ public class Lea {
 
     private String employeeNumber;
 
-    private Integer departmentNumber;
+    private String departmentNumber;
 
     private String startTime;
 
@@ -37,11 +37,11 @@ public class Lea {
         this.employeeNumber = employeeNumber;
     }
 
-    public Integer getDepartmentNumber() {
+    public String getDepartmentNumber() {
         return departmentNumber;
     }
 
-    public void setDepartmentNumber(Integer departmentNumber) {
+    public void setDepartmentNumber(String departmentNumber) {
         this.departmentNumber = departmentNumber;
     }
 
