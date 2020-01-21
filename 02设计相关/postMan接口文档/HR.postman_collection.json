@@ -1,0 +1,234 @@
+{
+	"variables": [],
+	"info": {
+		"name": "HR",
+		"_postman_id": "c0bf996a-f73a-cf92-2ca8-f1a04ef56b39",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "登录",
+			"request": {
+				"url": "http://localhost:8080/user/login",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"asd\",\n\t\"password\":\"asd123\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "请假",
+			"request": {
+				"url": "http://localhost:8080/lea/applyHoliday",
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRlIjoiU3VuIEphbiAxOSAxMTozMzo0OSBDU1QgMjAyMCIsImF1ZCI6ImFzZCIsImFzZCI6ImFzZCJ9.4pj8dpJoTbpV7P3WDjdDYSC0ub8vGmotTGtOr3ActR4",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"empNmae\":\"测试姓名\",\n\t\"deptName\":\"传染病科\",\n\t\"startTime\":\"2019-12-24\",\n\t\"endTime\":\"2019-12-25\",\n\t\"reason\":\"你管我啥原因呢\",\n\t\"type\":\"事假\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "查询员工",
+			"request": {
+				"url": "localhost:8080/user/employeeList",
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRlIjoiTW9uIEphbiAyMCAxMDo0ODoxNCBDU1QgMjAyMCIsImF1ZCI6ImFzZCIsImFzZCI6ImFzZCJ9.FQXcOLQqmGXPrtR6DAnNU7Pp686GG29IW3QnPfj6a9Q",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"empName\":\"曲\",\n\t\"employeeNumber\":\"asd\",\n\t\"inTimeStart\":\"2019-09\",\n\t\"inTimeEnd\":\"2019-12\",\n\t\"sex\":\"男\",\n\t\"education\":\"本科\",\n\t\"mangerName\":\"AA\",\n\t\"departmentNumber\":\"0206bf55ac944b7faf50aa822c9d9bb2\",\n\t\"positionNumber\":\"00b98b8059d6485a9356f14a0c31ec85\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "添加员工",
+			"request": {
+				"url": "localhost:8080/user/insertEmp",
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRlIjoiTW9uIEphbiAyMCAxMDo0ODoxNCBDU1QgMjAyMCIsImF1ZCI6ImFzZCIsImFzZCI6ImFzZCJ9.FQXcOLQqmGXPrtR6DAnNU7Pp686GG29IW3QnPfj6a9Q",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"employees\":[\n\t\t\t\t\t{\n\t\t\t\t\t\t\"name\":\"测试张三1\",\n\t\t\t\t\t\t\"username\":\"zhangsan1\",\n\t\t\t\t\t\t\"telephone\":\"13589562563\",\n\t\t\t\t\t\t\"gender\":\"男\",\n\t\t\t\t\t\t\"birthday\":\"2019-12-25\",\n\t\t\t\t\t\t\"address\":\"犄角旮旯\",\n    \t\t\t\t\t\"departmentNumber\":\"14d95859c7e74bd9a62bef3d98566360\",\n    \t\t\t\t\t\"positionNumber\":\"00b98b8059d6485a9356f14a0c31ec85\",\n    \t\t\t\t\t\"education\":\"本科\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"name\":\"测试张三2\",\n\t\t\t\t\t\t\"username\":\"zhangsan2\",\n\t\t\t\t\t\t\"telephone\":\"13589562563\",\n\t\t\t\t\t\t\"gender\":\"男\",\n\t\t\t\t\t\t\"birthday\":\"2019-12-25\",\n\t\t\t\t\t\t\"address\":\"犄角旮旯\",\n    \t\t\t\t\t\"departmentNumber\":\"14d95859c7e74bd9a62bef3d98566360\",\n    \t\t\t\t\t\"positionNumber\":\"00b98b8059d6485a9356f14a0c31ec85\",\n    \t\t\t\t\t\"education\":\"本科\"\n\t\t\t\t\t}\n\t\t\t\t]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "检查用户名",
+			"request": {
+				"url": {
+					"raw": "localhost:8080/user/checkEmployeeNumber?empNum=zhangsan1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"checkEmployeeNumber"
+					],
+					"query": [
+						{
+							"key": "empNum",
+							"value": "zhangsan1",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRlIjoiTW9uIEphbiAyMCAxMDo0ODoxNCBDU1QgMjAyMCIsImF1ZCI6ImFzZCIsImFzZCI6ImFzZCJ9.FQXcOLQqmGXPrtR6DAnNU7Pp686GG29IW3QnPfj6a9Q",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "签到",
+			"request": {
+				"url": "localhost:8080/attendance/workSingIn",
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRlIjoiTW9uIEphbiAyMCAxMDo0ODoxNCBDU1QgMjAyMCIsImF1ZCI6ImFzZCIsImFzZCI6ImFzZCJ9.FQXcOLQqmGXPrtR6DAnNU7Pp686GG29IW3QnPfj6a9Q",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "修改签到记录",
+			"request": {
+				"url": "localhost:8080/attendance/updateWorkSingIn",
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRlIjoiTW9uIEphbiAyMCAxMDo0ODoxNCBDU1QgMjAyMCIsImF1ZCI6ImFzZCIsImFzZCI6ImFzZCJ9.FQXcOLQqmGXPrtR6DAnNU7Pp686GG29IW3QnPfj6a9Q",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"employeeNumber\":\"asd\",\n\t\"date\":\"2020-01-20\",\n\t\"startDate\":\"2020-01-20 08:33:22\",\n\t\"endDate\":\"2020-01-20 18:33:22\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "查询部门",
+			"request": {
+				"url": "localhost:8080/department/departmentList",
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRlIjoiTW9uIEphbiAyMCAxMDo0ODoxNCBDU1QgMjAyMCIsImF1ZCI6ImFzZCIsImFzZCI6ImFzZCJ9.FQXcOLQqmGXPrtR6DAnNU7Pp686GG29IW3QnPfj6a9Q",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"departmentName\":\"\",\n\t\"departmentTel\":\"\",\n\t\"manageName\":\"测试张三1\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "请假",
+			"request": {
+				"url": "localhost:8080/lea/applyHoliday",
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRlIjoiTW9uIEphbiAyMCAxMDo0ODoxNCBDU1QgMjAyMCIsImF1ZCI6ImFzZCIsImFzZCI6ImFzZCJ9.FQXcOLQqmGXPrtR6DAnNU7Pp686GG29IW3QnPfj6a9Q",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"startTime\":\"2020-01-22\",\n\t\"endTime\":\"2020-01-31\",\n\t\"reason\":\"我他妈回家过年\",\n\t\"type\":\"事假\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
