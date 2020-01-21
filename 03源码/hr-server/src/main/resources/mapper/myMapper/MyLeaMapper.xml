@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qubaolai.mapper.myMapper.MyLeaMapper">
+    <resultMap id="BaseResultMap" type="com.qubaolai.po.Lea">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="employee_number" property="employeeNumber" jdbcType="VARCHAR"/>
+        <result column="department_number" property="departmentNumber" jdbcType="VARCHAR"/>
+        <result column="start_time" property="startTime" jdbcType="VARCHAR"/>
+        <result column="end_time" property="endTime" jdbcType="VARCHAR"/>
+        <result column="reason" property="reason" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="CHAR"/>
+        <result column="manager" property="manager" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="CHAR"/>
+        <result column="notes" property="notes" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="getLeasByConditions" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(l.id) from lea l
+        <where>
+            <if test='empNum != null and empNum != ""'>
+                and l.employee_number = #{empNum}
+            </if>
+            <if test='startTime != null and startTime != ""'>
+                and l.start_time = #{startTime}
+            </if>
+            <if test='endTime != null and endTime != ""'>
+                or l.end_time = #{endTime}
+            </if>
+        </where>
+    </select>
+</mapper>
