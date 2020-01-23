@@ -23,6 +23,11 @@ public class DepartmentController {
     @Resource
     private DepartmentService departmentService;
 
+    /**
+     * 查询部门
+     * @param param
+     * @return
+     */
     @RequestMapping("/departmentList")
     public ResultVo departmentList(@RequestBody Map<String, Object> param){
         if(null == param){
