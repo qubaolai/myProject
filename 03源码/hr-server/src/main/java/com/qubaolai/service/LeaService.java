@@ -15,10 +15,10 @@ public interface LeaService {
 
     /**
      * 审批请假信息
-     * @param leaId
+     * @param param
      * @return
      */
-    public ResultVo approvalHoliday(String leaId);
+    public void approvalHoliday(Map<String, Object> param);
 
     /**
      * 按条件查询请假信息

@@ -8,9 +8,9 @@
     <result column="start_time" property="startTime" jdbcType="VARCHAR" />
     <result column="end_time" property="endTime" jdbcType="VARCHAR" />
     <result column="reason" property="reason" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="CHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
     <result column="manager" property="manager" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
     <result column="notes" property="notes" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -108,12 +108,12 @@
   <insert id="insert" parameterType="com.qubaolai.po.Lea" >
     insert into lea (id, employee_number, department_number, 
       start_time, end_time, reason, 
-      type, manager, status, notes
-      )
+      type, manager, status, 
+      notes)
     values (#{id,jdbcType=VARCHAR}, #{employeeNumber,jdbcType=VARCHAR}, #{departmentNumber,jdbcType=VARCHAR}, 
       #{startTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR}, #{reason,jdbcType=VARCHAR}, 
-      #{type,jdbcType=CHAR}, #{manager,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{notes,jdbcType=VARCHAR}
-      )
+      #{type,jdbcType=INTEGER}, #{manager,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{notes,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.qubaolai.po.Lea" >
     insert into lea
@@ -169,13 +169,13 @@
         #{reason,jdbcType=VARCHAR},
       </if>
       <if test="type != null" >
-        #{type,jdbcType=CHAR},
+        #{type,jdbcType=INTEGER},
       </if>
       <if test="manager != null" >
         #{manager,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
-        #{status,jdbcType=CHAR},
+        #{status,jdbcType=INTEGER},
       </if>
       <if test="notes != null" >
         #{notes,jdbcType=VARCHAR},
@@ -210,13 +210,13 @@
         reason = #{record.reason,jdbcType=VARCHAR},
       </if>
       <if test="record.type != null" >
-        type = #{record.type,jdbcType=CHAR},
+        type = #{record.type,jdbcType=INTEGER},
       </if>
       <if test="record.manager != null" >
         manager = #{record.manager,jdbcType=VARCHAR},
       </if>
       <if test="record.status != null" >
-        status = #{record.status,jdbcType=CHAR},
+        status = #{record.status,jdbcType=INTEGER},
       </if>
       <if test="record.notes != null" >
         notes = #{record.notes,jdbcType=VARCHAR},
@@ -234,9 +234,9 @@
       start_time = #{record.startTime,jdbcType=VARCHAR},
       end_time = #{record.endTime,jdbcType=VARCHAR},
       reason = #{record.reason,jdbcType=VARCHAR},
-      type = #{record.type,jdbcType=CHAR},
+      type = #{record.type,jdbcType=INTEGER},
       manager = #{record.manager,jdbcType=VARCHAR},
-      status = #{record.status,jdbcType=CHAR},
+      status = #{record.status,jdbcType=INTEGER},
       notes = #{record.notes,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -261,13 +261,13 @@
         reason = #{reason,jdbcType=VARCHAR},
       </if>
       <if test="type != null" >
-        type = #{type,jdbcType=CHAR},
+        type = #{type,jdbcType=INTEGER},
       </if>
       <if test="manager != null" >
         manager = #{manager,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
-        status = #{status,jdbcType=CHAR},
+        status = #{status,jdbcType=INTEGER},
       </if>
       <if test="notes != null" >
         notes = #{notes,jdbcType=VARCHAR},
@@ -282,9 +282,9 @@
       start_time = #{startTime,jdbcType=VARCHAR},
       end_time = #{endTime,jdbcType=VARCHAR},
       reason = #{reason,jdbcType=VARCHAR},
-      type = #{type,jdbcType=CHAR},
+      type = #{type,jdbcType=INTEGER},
       manager = #{manager,jdbcType=VARCHAR},
-      status = #{status,jdbcType=CHAR},
+      status = #{status,jdbcType=INTEGER},
       notes = #{notes,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>

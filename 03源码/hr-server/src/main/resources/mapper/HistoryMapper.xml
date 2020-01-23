@@ -5,7 +5,7 @@
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="employee_number" property="employeeNumber" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="gender" property="gender" jdbcType="CHAR" />
+    <result column="gender" property="gender" jdbcType="INTEGER" />
     <result column="birthday" property="birthday" jdbcType="VARCHAR" />
     <result column="telephone" property="telephone" jdbcType="VARCHAR" />
     <result column="email" property="email" jdbcType="VARCHAR" />
@@ -15,7 +15,7 @@
     <result column="out_time" property="outTime" jdbcType="VARCHAR" />
     <result column="department_number" property="departmentNumber" jdbcType="INTEGER" />
     <result column="position_number" property="positionNumber" jdbcType="INTEGER" />
-    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
     <result column="notes" property="notes" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -118,10 +118,10 @@
       position_number, status, notes
       )
     values (#{id,jdbcType=VARCHAR}, #{employeeNumber,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{gender,jdbcType=CHAR}, #{birthday,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
+      #{gender,jdbcType=INTEGER}, #{birthday,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{education,jdbcType=VARCHAR}, 
       #{inTime,jdbcType=VARCHAR}, #{outTime,jdbcType=VARCHAR}, #{departmentNumber,jdbcType=INTEGER}, 
-      #{positionNumber,jdbcType=INTEGER}, #{status,jdbcType=CHAR}, #{notes,jdbcType=VARCHAR}
+      #{positionNumber,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{notes,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.qubaolai.po.History" >
@@ -184,7 +184,7 @@
         #{name,jdbcType=VARCHAR},
       </if>
       <if test="gender != null" >
-        #{gender,jdbcType=CHAR},
+        #{gender,jdbcType=INTEGER},
       </if>
       <if test="birthday != null" >
         #{birthday,jdbcType=VARCHAR},
@@ -214,7 +214,7 @@
         #{positionNumber,jdbcType=INTEGER},
       </if>
       <if test="status != null" >
-        #{status,jdbcType=CHAR},
+        #{status,jdbcType=INTEGER},
       </if>
       <if test="notes != null" >
         #{notes,jdbcType=VARCHAR},
@@ -240,7 +240,7 @@
         name = #{record.name,jdbcType=VARCHAR},
       </if>
       <if test="record.gender != null" >
-        gender = #{record.gender,jdbcType=CHAR},
+        gender = #{record.gender,jdbcType=INTEGER},
       </if>
       <if test="record.birthday != null" >
         birthday = #{record.birthday,jdbcType=VARCHAR},
@@ -270,7 +270,7 @@
         position_number = #{record.positionNumber,jdbcType=INTEGER},
       </if>
       <if test="record.status != null" >
-        status = #{record.status,jdbcType=CHAR},
+        status = #{record.status,jdbcType=INTEGER},
       </if>
       <if test="record.notes != null" >
         notes = #{record.notes,jdbcType=VARCHAR},
@@ -285,7 +285,7 @@
     set id = #{record.id,jdbcType=VARCHAR},
       employee_number = #{record.employeeNumber,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
-      gender = #{record.gender,jdbcType=CHAR},
+      gender = #{record.gender,jdbcType=INTEGER},
       birthday = #{record.birthday,jdbcType=VARCHAR},
       telephone = #{record.telephone,jdbcType=VARCHAR},
       email = #{record.email,jdbcType=VARCHAR},
@@ -295,7 +295,7 @@
       out_time = #{record.outTime,jdbcType=VARCHAR},
       department_number = #{record.departmentNumber,jdbcType=INTEGER},
       position_number = #{record.positionNumber,jdbcType=INTEGER},
-      status = #{record.status,jdbcType=CHAR},
+      status = #{record.status,jdbcType=INTEGER},
       notes = #{record.notes,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -311,7 +311,7 @@
         name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="gender != null" >
-        gender = #{gender,jdbcType=CHAR},
+        gender = #{gender,jdbcType=INTEGER},
       </if>
       <if test="birthday != null" >
         birthday = #{birthday,jdbcType=VARCHAR},
@@ -341,7 +341,7 @@
         position_number = #{positionNumber,jdbcType=INTEGER},
       </if>
       <if test="status != null" >
-        status = #{status,jdbcType=CHAR},
+        status = #{status,jdbcType=INTEGER},
       </if>
       <if test="notes != null" >
         notes = #{notes,jdbcType=VARCHAR},
@@ -353,7 +353,7 @@
     update history
     set employee_number = #{employeeNumber,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
-      gender = #{gender,jdbcType=CHAR},
+      gender = #{gender,jdbcType=INTEGER},
       birthday = #{birthday,jdbcType=VARCHAR},
       telephone = #{telephone,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
@@ -363,7 +363,7 @@
       out_time = #{outTime,jdbcType=VARCHAR},
       department_number = #{departmentNumber,jdbcType=INTEGER},
       position_number = #{positionNumber,jdbcType=INTEGER},
-      status = #{status,jdbcType=CHAR},
+      status = #{status,jdbcType=INTEGER},
       notes = #{notes,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>

@@ -394,62 +394,52 @@ public class AttendanceExample {
             return (Criteria) this;
         }
 
-        public Criteria andStartTypeEqualTo(String value) {
+        public Criteria andStartTypeEqualTo(Integer value) {
             addCriterion("start_type =", value, "startType");
             return (Criteria) this;
         }
 
-        public Criteria andStartTypeNotEqualTo(String value) {
+        public Criteria andStartTypeNotEqualTo(Integer value) {
             addCriterion("start_type <>", value, "startType");
             return (Criteria) this;
         }
 
-        public Criteria andStartTypeGreaterThan(String value) {
+        public Criteria andStartTypeGreaterThan(Integer value) {
             addCriterion("start_type >", value, "startType");
             return (Criteria) this;
         }
 
-        public Criteria andStartTypeGreaterThanOrEqualTo(String value) {
+        public Criteria andStartTypeGreaterThanOrEqualTo(Integer value) {
             addCriterion("start_type >=", value, "startType");
             return (Criteria) this;
         }
 
-        public Criteria andStartTypeLessThan(String value) {
+        public Criteria andStartTypeLessThan(Integer value) {
             addCriterion("start_type <", value, "startType");
             return (Criteria) this;
         }
 
-        public Criteria andStartTypeLessThanOrEqualTo(String value) {
+        public Criteria andStartTypeLessThanOrEqualTo(Integer value) {
             addCriterion("start_type <=", value, "startType");
             return (Criteria) this;
         }
 
-        public Criteria andStartTypeLike(String value) {
-            addCriterion("start_type like", value, "startType");
-            return (Criteria) this;
-        }
-
-        public Criteria andStartTypeNotLike(String value) {
-            addCriterion("start_type not like", value, "startType");
-            return (Criteria) this;
-        }
-
-        public Criteria andStartTypeIn(List<String> values) {
+        public Criteria andStartTypeIn(List<Integer> values) {
             addCriterion("start_type in", values, "startType");
             return (Criteria) this;
         }
 
-        public Criteria andStartTypeNotIn(List<String> values) {
+        public Criteria andStartTypeNotIn(List<Integer> values) {
             addCriterion("start_type not in", values, "startType");
             return (Criteria) this;
         }
 
-        public Criteria andStartTypeBetween(String value1, String value2) {
+        public Criteria andStartTypeBetween(Integer value1, Integer value2) {
             addCriterion("start_type between", value1, value2, "startType");
             return (Criteria) this;
         }
 
-        public Criteria andStartTypeNotBetween(String value1, String value2) {
+        public Criteria andStartTypeNotBetween(Integer value1, Integer value2) {
             addCriterion("start_type not between", value1, value2, "startType");
             return (Criteria) this;
         }
@@ -534,62 +524,52 @@ public class AttendanceExample {
             return (Criteria) this;
         }
 
-        public Criteria andEndTypeEqualTo(String value) {
+        public Criteria andEndTypeEqualTo(Integer value) {
             addCriterion("end_type =", value, "endType");
             return (Criteria) this;
         }
 
-        public Criteria andEndTypeNotEqualTo(String value) {
+        public Criteria andEndTypeNotEqualTo(Integer value) {
             addCriterion("end_type <>", value, "endType");
             return (Criteria) this;
         }
 
-        public Criteria andEndTypeGreaterThan(String value) {
+        public Criteria andEndTypeGreaterThan(Integer value) {
             addCriterion("end_type >", value, "endType");
             return (Criteria) this;
         }
 
-        public Criteria andEndTypeGreaterThanOrEqualTo(String value) {
+        public Criteria andEndTypeGreaterThanOrEqualTo(Integer value) {
             addCriterion("end_type >=", value, "endType");
             return (Criteria) this;
         }
 
-        public Criteria andEndTypeLessThan(String value) {
+        public Criteria andEndTypeLessThan(Integer value) {
             addCriterion("end_type <", value, "endType");
             return (Criteria) this;
         }
 
-        public Criteria andEndTypeLessThanOrEqualTo(String value) {
+        public Criteria andEndTypeLessThanOrEqualTo(Integer value) {
             addCriterion("end_type <=", value, "endType");
             return (Criteria) this;
         }
 
-        public Criteria andEndTypeLike(String value) {
-            addCriterion("end_type like", value, "endType");
-            return (Criteria) this;
-        }
-
-        public Criteria andEndTypeNotLike(String value) {
-            addCriterion("end_type not like", value, "endType");
-            return (Criteria) this;
-        }
-
-        public Criteria andEndTypeIn(List<String> values) {
+        public Criteria andEndTypeIn(List<Integer> values) {
             addCriterion("end_type in", values, "endType");
             return (Criteria) this;
         }
 
-        public Criteria andEndTypeNotIn(List<String> values) {
+        public Criteria andEndTypeNotIn(List<Integer> values) {
             addCriterion("end_type not in", values, "endType");
             return (Criteria) this;
         }
 
-        public Criteria andEndTypeBetween(String value1, String value2) {
+        public Criteria andEndTypeBetween(Integer value1, Integer value2) {
             addCriterion("end_type between", value1, value2, "endType");
             return (Criteria) this;
         }
 
-        public Criteria andEndTypeNotBetween(String value1, String value2) {
+        public Criteria andEndTypeNotBetween(Integer value1, Integer value2) {
             addCriterion("end_type not between", value1, value2, "endType");
             return (Criteria) this;
         }

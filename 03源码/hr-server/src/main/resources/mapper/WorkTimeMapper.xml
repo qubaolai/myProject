@@ -3,7 +3,7 @@
 <mapper namespace="com.qubaolai.mapper.WorkTimeMapper" >
   <resultMap id="BaseResultMap" type="com.qubaolai.po.WorkTime" >
     <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="department_number" property="departmentNumber" jdbcType="INTEGER" />
+    <result column="department_number" property="departmentNumber" jdbcType="VARCHAR" />
     <result column="employee_number" property="employeeNumber" jdbcType="VARCHAR" />
     <result column="day" property="day" jdbcType="VARCHAR" />
     <result column="working_hours" property="workingHours" jdbcType="VARCHAR" />
@@ -104,7 +104,7 @@
     insert into work_time (id, department_number, employee_number, 
       day, working_hours, notes
       )
-    values (#{id,jdbcType=VARCHAR}, #{departmentNumber,jdbcType=INTEGER}, #{employeeNumber,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{departmentNumber,jdbcType=VARCHAR}, #{employeeNumber,jdbcType=VARCHAR}, 
       #{day,jdbcType=VARCHAR}, #{workingHours,jdbcType=VARCHAR}, #{notes,jdbcType=VARCHAR}
       )
   </insert>
@@ -135,7 +135,7 @@
         #{id,jdbcType=VARCHAR},
       </if>
       <if test="departmentNumber != null" >
-        #{departmentNumber,jdbcType=INTEGER},
+        #{departmentNumber,jdbcType=VARCHAR},
       </if>
       <if test="employeeNumber != null" >
         #{employeeNumber,jdbcType=VARCHAR},
@@ -164,7 +164,7 @@
         id = #{record.id,jdbcType=VARCHAR},
       </if>
       <if test="record.departmentNumber != null" >
-        department_number = #{record.departmentNumber,jdbcType=INTEGER},
+        department_number = #{record.departmentNumber,jdbcType=VARCHAR},
       </if>
       <if test="record.employeeNumber != null" >
         employee_number = #{record.employeeNumber,jdbcType=VARCHAR},
@@ -186,7 +186,7 @@
   <update id="updateByExample" parameterType="map" >
     update work_time
     set id = #{record.id,jdbcType=VARCHAR},
-      department_number = #{record.departmentNumber,jdbcType=INTEGER},
+      department_number = #{record.departmentNumber,jdbcType=VARCHAR},
       employee_number = #{record.employeeNumber,jdbcType=VARCHAR},
       day = #{record.day,jdbcType=VARCHAR},
       working_hours = #{record.workingHours,jdbcType=VARCHAR},
@@ -199,7 +199,7 @@
     update work_time
     <set >
       <if test="departmentNumber != null" >
-        department_number = #{departmentNumber,jdbcType=INTEGER},
+        department_number = #{departmentNumber,jdbcType=VARCHAR},
       </if>
       <if test="employeeNumber != null" >
         employee_number = #{employeeNumber,jdbcType=VARCHAR},
@@ -218,7 +218,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.qubaolai.po.WorkTime" >
     update work_time
-    set department_number = #{departmentNumber,jdbcType=INTEGER},
+    set department_number = #{departmentNumber,jdbcType=VARCHAR},
       employee_number = #{employeeNumber,jdbcType=VARCHAR},
       day = #{day,jdbcType=VARCHAR},
       working_hours = #{workingHours,jdbcType=VARCHAR},

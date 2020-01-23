@@ -4,8 +4,8 @@
   <resultMap id="BaseResultMap" type="com.qubaolai.po.Move" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="employee_number" property="employeeNumber" jdbcType="VARCHAR" />
-    <result column="before" property="before" jdbcType="INTEGER" />
-    <result column="after" property="after" jdbcType="INTEGER" />
+    <result column="before" property="before" jdbcType="VARCHAR" />
+    <result column="after" property="after" jdbcType="VARCHAR" />
     <result column="time" property="time" jdbcType="VARCHAR" />
     <result column="manager" property="manager" jdbcType="VARCHAR" />
     <result column="notes" property="notes" jdbcType="VARCHAR" />
@@ -105,8 +105,8 @@
     insert into move (id, employee_number, before, 
       after, time, manager, 
       notes)
-    values (#{id,jdbcType=VARCHAR}, #{employeeNumber,jdbcType=VARCHAR}, #{before,jdbcType=INTEGER}, 
-      #{after,jdbcType=INTEGER}, #{time,jdbcType=VARCHAR}, #{manager,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{employeeNumber,jdbcType=VARCHAR}, #{before,jdbcType=VARCHAR}, 
+      #{after,jdbcType=VARCHAR}, #{time,jdbcType=VARCHAR}, #{manager,jdbcType=VARCHAR}, 
       #{notes,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.qubaolai.po.Move" >
@@ -142,10 +142,10 @@
         #{employeeNumber,jdbcType=VARCHAR},
       </if>
       <if test="before != null" >
-        #{before,jdbcType=INTEGER},
+        #{before,jdbcType=VARCHAR},
       </if>
       <if test="after != null" >
-        #{after,jdbcType=INTEGER},
+        #{after,jdbcType=VARCHAR},
       </if>
       <if test="time != null" >
         #{time,jdbcType=VARCHAR},
@@ -174,10 +174,10 @@
         employee_number = #{record.employeeNumber,jdbcType=VARCHAR},
       </if>
       <if test="record.before != null" >
-        before = #{record.before,jdbcType=INTEGER},
+        before = #{record.before,jdbcType=VARCHAR},
       </if>
       <if test="record.after != null" >
-        after = #{record.after,jdbcType=INTEGER},
+        after = #{record.after,jdbcType=VARCHAR},
       </if>
       <if test="record.time != null" >
         time = #{record.time,jdbcType=VARCHAR},
@@ -197,8 +197,8 @@
     update move
     set id = #{record.id,jdbcType=VARCHAR},
       employee_number = #{record.employeeNumber,jdbcType=VARCHAR},
-      before = #{record.before,jdbcType=INTEGER},
-      after = #{record.after,jdbcType=INTEGER},
+      before = #{record.before,jdbcType=VARCHAR},
+      after = #{record.after,jdbcType=VARCHAR},
       time = #{record.time,jdbcType=VARCHAR},
       manager = #{record.manager,jdbcType=VARCHAR},
       notes = #{record.notes,jdbcType=VARCHAR}
@@ -213,10 +213,10 @@
         employee_number = #{employeeNumber,jdbcType=VARCHAR},
       </if>
       <if test="before != null" >
-        before = #{before,jdbcType=INTEGER},
+        before = #{before,jdbcType=VARCHAR},
       </if>
       <if test="after != null" >
-        after = #{after,jdbcType=INTEGER},
+        after = #{after,jdbcType=VARCHAR},
       </if>
       <if test="time != null" >
         time = #{time,jdbcType=VARCHAR},
@@ -233,8 +233,8 @@
   <update id="updateByPrimaryKey" parameterType="com.qubaolai.po.Move" >
     update move
     set employee_number = #{employeeNumber,jdbcType=VARCHAR},
-      before = #{before,jdbcType=INTEGER},
-      after = #{after,jdbcType=INTEGER},
+      before = #{before,jdbcType=VARCHAR},
+      after = #{after,jdbcType=VARCHAR},
       time = #{time,jdbcType=VARCHAR},
       manager = #{manager,jdbcType=VARCHAR},
       notes = #{notes,jdbcType=VARCHAR}

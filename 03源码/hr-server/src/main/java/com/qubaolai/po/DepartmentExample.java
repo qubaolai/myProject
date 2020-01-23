@@ -174,66 +174,6 @@ public class DepartmentExample {
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentNumberIsNull() {
-            addCriterion("department_number is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDepartmentNumberIsNotNull() {
-            addCriterion("department_number is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDepartmentNumberEqualTo(Integer value) {
-            addCriterion("department_number =", value, "departmentNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andDepartmentNumberNotEqualTo(Integer value) {
-            addCriterion("department_number <>", value, "departmentNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andDepartmentNumberGreaterThan(Integer value) {
-            addCriterion("department_number >", value, "departmentNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andDepartmentNumberGreaterThanOrEqualTo(Integer value) {
-            addCriterion("department_number >=", value, "departmentNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andDepartmentNumberLessThan(Integer value) {
-            addCriterion("department_number <", value, "departmentNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andDepartmentNumberLessThanOrEqualTo(Integer value) {
-            addCriterion("department_number <=", value, "departmentNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andDepartmentNumberIn(List<Integer> values) {
-            addCriterion("department_number in", values, "departmentNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andDepartmentNumberNotIn(List<Integer> values) {
-            addCriterion("department_number not in", values, "departmentNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andDepartmentNumberBetween(Integer value1, Integer value2) {
-            addCriterion("department_number between", value1, value2, "departmentNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andDepartmentNumberNotBetween(Integer value1, Integer value2) {
-            addCriterion("department_number not between", value1, value2, "departmentNumber");
-            return (Criteria) this;
-        }
-
         public Criteria andNameIsNull() {
             addCriterion("name is null");
             return (Criteria) this;

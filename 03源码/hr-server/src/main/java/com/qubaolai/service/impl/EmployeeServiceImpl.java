@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.qubaolai.common.basic.impl.BaseServiceImpl;
 import com.qubaolai.common.enums.ErrorEmnus;
+import com.qubaolai.common.exception.exceptions.DataException;
 import com.qubaolai.common.exception.exceptions.LoginException;
 import com.qubaolai.common.exception.exceptions.NoDataException;
 import com.qubaolai.common.exception.exceptions.ParamException;
@@ -108,6 +109,9 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
         if (StringUtils.isBlank(oldPassword)) {
             throw new ParamException(209, ErrorEmnus.getMsg(209));
         }
+        if(!MD5Tools.string2MD5(oldPassword).equals(currentLoginEmployee.getPassword())){
+            throw new DataException(502, "旧密码错误!");
+        }
         String newPassword = map.get("newPassword");
         if (StringUtils.isBlank(newPassword)) {
             throw new ParamException(209, ErrorEmnus.getMsg(209));
@@ -122,7 +126,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
         //正则表达式：允许数字字母下划线组成，不能少于6个字符
         String check = "^[a-zA-Z0-9]\\w{5}$";
         if (!newPassword.matches(check)) {
-            throw new ParamException(209, "密码长度少于6位字符");
+            throw new ParamException(209, "密码格式不符");
         }
         //判断旧密码与新密码是否相同
         if (StringUtils.equals(map.get("newPassword"), map.get("oldPassword"))) {

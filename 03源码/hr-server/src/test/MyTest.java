@@ -148,19 +148,6 @@ public class MyTest {
 
     @Test
     public void test6(){
-        for(int i = 1;i <= 10; i++){
-            Employee employee = new Employee();
-            employee.setId(UUIDUtil.getUUID());
-            employee.setName("姓名"+i);
-            employee.setPassword("asd123"+i);
-            employee.setUsername("zxc"+i);
-            employee.setGender("男");
-            employee.setTelephone("138"+i+"345"+(i-1)+"786");
-            employee.setAddress("旮旯胡同");
-            employee.setEducation("本科");
-            employee.setRole(1);
-            employeeMapper.insert(employee);
-        }
     }
     @Test
 //    @Pagination(countPerPage = "1", currentPageNumber = "2")
@@ -189,8 +176,7 @@ public class MyTest {
     }
     @Test
     public void test8(){
-        String a = "请假申请";
-        int le = a.length();
+        String asd = MD5Tools.string2MD5("asd");
         System.out.println(1);
     }
 }

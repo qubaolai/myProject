@@ -39,7 +39,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     public void singIn(Map<String, Object> map){
         Attendance attendance = new Attendance();
         attendance.setId(UUIDUtil.getUUID());
-        attendance.setEmployeeNumber(((Employee)map.get("user")).getUsername());
+        attendance.setEmployeeNumber(((Employee)map.get("user")).getId());
         //向签到记录添加数据
         attendance.setDay(DateUtil.getDate());
         if(null != map.get("startTime")){
@@ -47,13 +47,13 @@ public class AttendanceServiceImpl implements AttendanceService {
             attendance.setStartTime(DateUtil.convert2String(startTime,"yyyy-MM-dd HH:mm:ss"));
         }
         if(null != map.get("startType")){
-            attendance.setStartType((String)map.get("startType"));
+            attendance.setStartType((Integer)map.get("startType"));
         }
         if(null != map.get("endTime")){
             attendance.setEndTime(DateUtil.convert2String((Date)map.get("endTime"),"yyyy-MM-dd HH:mm:ss"));
         }
         if(null != map.get("endType")){
-            attendance.setEndType((String)map.get("endType"));
+            attendance.setEndType((Integer)map.get("endType"));
         }
         attendanceMapper.insert(attendance);
     }
@@ -86,7 +86,7 @@ public class AttendanceServiceImpl implements AttendanceService {
         //获取上班签到记录
         Attendance attendance = (Attendance) map.get("attendance");
         attendance.setEndTime(DateUtil.convert2String((Date)map.get("endTime"),"yyyy-MM-dd HH:mm:ss"));
-        attendance.setEndType((String)map.get("endType"));
+        attendance.setEndType((Integer)map.get("endType"));
         attendanceMapper.updateByPrimaryKey(attendance);
     }
 
@@ -123,12 +123,12 @@ public class AttendanceServiceImpl implements AttendanceService {
                     //正常上班
                     if (date.before(eight) || (date.after(eight) && date.before(nine))) {
                         param.put("startTime", date);
-                        param.put("startType", "正常");
+                        param.put("startType", 0);
                     }
                     //上班迟到
                     if (date.after(nine) && date.before(twelve)) {
                         param.put("startTime", date);
-                        param.put("startType", "迟到");
+                        param.put("startType", 1);
                     }
                     //插入上班签到记录
                     singIn(param);
@@ -138,7 +138,7 @@ public class AttendanceServiceImpl implements AttendanceService {
                 if(date.after(twelve)){
                     //插入上班签到记录
                     param.put("startTime", date);
-                    param.put("startType", "缺勤");
+                    param.put("startType", 2);
                     singIn(param);
                     return ResultVo.sendResult(200, "上午缺勤!");
                 }
@@ -160,17 +160,17 @@ public class AttendanceServiceImpl implements AttendanceService {
                 //早退
                 if(date.before(seventeen)){
                     param.put("endTime", date);
-                    param.put("endType", "早退");
+                    param.put("endType", 1);
                 }
                 //正常下班
                 if(date.after(seventeen) && date.before(nineteen)){
                     param.put("endTime", date);
-                    param.put("endType", "正常");
+                    param.put("endType", 0);
                 }
                 //加班
                 if(date.after(nineteen)){
                     param.put("endTime", date);
-                    param.put("endType", "加班");
+                    param.put("endType", 2);
                 }
                 //修改上班签到记录
                 outWorkSingIn(param);
@@ -179,17 +179,17 @@ public class AttendanceServiceImpl implements AttendanceService {
             //早退
             if(date.before(seventeen)){
                 param.put("endTime", date);
-                param.put("endType", "早退");
+                param.put("endType", 1);
             }
             //正常下班
             if(date.after(seventeen) && date.before(nineteen)){
                 param.put("endTime", date);
-                param.put("endType", "正常");
+                param.put("endType", 0);
             }
             //加班
             if(date.after(nineteen)){
                 param.put("endTime", date);
-                param.put("endType", "加班");
+                param.put("endType", 2);
             }
             singIn(param);
             return resultVo;
@@ -220,9 +220,9 @@ public class AttendanceServiceImpl implements AttendanceService {
         String dateStr = (String) map.get("date");
         String date = dateStr.substring(0,10);
         String startTime = null;
-        String startType = null;
+        Integer startType = null;
         String endTime = null;
-        String endType = null;
+        Integer endType = null;
         //获取上班签到时间
         if(null != map.get("startDate")){
             String startDateStr = (String)map.get("startDate");
@@ -232,15 +232,15 @@ public class AttendanceServiceImpl implements AttendanceService {
             //判断上班签到类型
             //正常上班
             if (startDate.before(eight) || (startDate.after(eight) && startDate.before(nine))) {
-                startType = "正常";
+                startType = 0;
             }
             //上班迟到
             if (startDate.after(nine) && startDate.before(twelve)) {
-                startType = "迟到";
+                startType = 1;
             }
             //签到时间过期
             if(startDate.after(twelve)){
-                startType = "缺勤";
+                startType = 2;
             }
         }
         //获取下班签到时间
@@ -252,15 +252,15 @@ public class AttendanceServiceImpl implements AttendanceService {
             //判断下班签到类型
             //早退
             if(endDate.before(seventeen)){
-                endType = "早退";
+                endType = 1;
             }
             //正常下班
             if(endDate.after(seventeen) && endDate.before(nineteen)){
-                endType = "正常";
+                endType = 0;
             }
             //加班
             if(endDate.after(nineteen)){
-                endType = "加班";
+                endType = 2;
             }
         }
         //修改DB数据

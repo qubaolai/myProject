@@ -7,7 +7,7 @@ public class History {
 
     private String name;
 
-    private String gender;
+    private Integer gender;
 
     private String birthday;
 
@@ -27,7 +27,7 @@ public class History {
 
     private Integer positionNumber;
 
-    private String status;
+    private Integer status;
 
     private String notes;
 
@@ -55,11 +55,11 @@ public class History {
         this.name = name;
     }
 
-    public String getGender() {
+    public Integer getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Integer gender) {
         this.gender = gender;
     }
 
@@ -135,11 +135,11 @@ public class History {
         this.positionNumber = positionNumber;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

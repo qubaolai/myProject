@@ -58,6 +58,13 @@ public class DateUtil {
         return new SimpleDateFormat("yyyy-MM-dd").format(new Date()).toString();
     }
     /**
+     * 获取年月日 格式化
+     * @return
+     */
+    public static String getDate(Date date){
+        return new SimpleDateFormat("yyyy-MM-dd").format(date).toString();
+    }
+    /**
      * 获取时分秒 格式化
      * @return
      */

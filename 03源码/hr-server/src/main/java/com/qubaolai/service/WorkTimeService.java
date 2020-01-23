@@ -16,4 +16,10 @@ public interface WorkTimeService {
      * @param map
      */
     public Double calculateWorkTime(Map<String, String> map);
+
+    /**
+     * 统计当天工时
+     * @return
+     */
+    public void statisticalWorkTime();
 }

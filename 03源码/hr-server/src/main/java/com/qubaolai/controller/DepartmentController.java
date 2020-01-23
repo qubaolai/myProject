@@ -4,6 +4,7 @@ import com.qubaolai.common.exception.exceptions.ParamException;
 import com.qubaolai.po.Department;
 import com.qubaolai.service.DepartmentService;
 import com.qubaolai.vo.ResultVo;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,17 +24,21 @@ public class DepartmentController {
     @Resource
     private DepartmentService departmentService;
 
-    /**
-     * 查询部门
-     * @param param
-     * @return
-     */
     @RequestMapping("/departmentList")
-    public ResultVo departmentList(@RequestBody Map<String, Object> param){
-        if(null == param){
+    public ResultVo departmentList(@RequestBody Map<String, Object> param) {
+        if (null == param) {
             throw new ParamException(501, "参数异常");
         }
         List<Department> depts = departmentService.getDeptsByConditions(param);
         return ResultVo.sendResult(200, "success", depts);
+    }
+
+    @PostMapping("/insertDept")
+    public ResultVo insertDept(@RequestBody Map<String, Object> param) {
+        if (null == param) {
+            throw new ParamException(501, "参数异常");
+        }
+        departmentService.insertdept(param);
+        return ResultVo.sendResult(200, "success");
     }
 }

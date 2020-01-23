@@ -38,4 +38,10 @@ public interface DepartmentService {
      * @return
      */
     public void updateDept(Department department);
+
+    /**
+     * 添加部门信息
+     * @param param
+     */
+    public void insertdept(Map<String, Object> param);
 }

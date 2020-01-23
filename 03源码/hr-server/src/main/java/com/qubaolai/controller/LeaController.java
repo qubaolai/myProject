@@ -39,7 +39,7 @@ public class LeaController {
      * @param param
      * @return
      */
-    @GetMapping("/getLeasByConditions")
+    @PostMapping("/getLeasByConditions")
     public ResultVo getLeasByConditions(@RequestBody Map<String, Object> param){
         if(null == param){
             throw new ParamException(501, "参数异常!");
@@ -50,14 +50,15 @@ public class LeaController {
 
     /**
      * 审批请假信息
-     * @param leaId
+     * @param param
      * @return
      */
-    @RequestMapping("/approvalHoliday")
-    public ResultVo approvalHoliday(String leaId){
-        if(null == leaId || "".equals(leaId)){
+    @PutMapping("/approvalHoliday")
+    public ResultVo approvalHoliday(@RequestBody Map<String, Object> param){
+        if(null == param || "".equals(param)){
             throw new ParamException(501, "参数异常");
         }
-        return null;
+        leaService.approvalHoliday(param);
+        return ResultVo.sendResult(200, "success");
     }
 }

@@ -5,8 +5,6 @@ import com.qubaolai.pojo.DepartmentFather;
 public class Department extends DepartmentFather {
     private String id;
 
-    private Integer departmentNumber;
-
     private String name;
 
     private String manager;
@@ -21,14 +19,6 @@ public class Department extends DepartmentFather {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public Integer getDepartmentNumber() {
-        return departmentNumber;
-    }
-
-    public void setDepartmentNumber(Integer departmentNumber) {
-        this.departmentNumber = departmentNumber;
     }
 
     public String getName() {

@@ -3,7 +3,7 @@ package com.qubaolai.po;
 public class WorkTime {
     private String id;
 
-    private Integer departmentNumber;
+    private String departmentNumber;
 
     private String employeeNumber;
 
@@ -21,11 +21,11 @@ public class WorkTime {
         this.id = id;
     }
 
-    public Integer getDepartmentNumber() {
+    public String getDepartmentNumber() {
         return departmentNumber;
     }
 
-    public void setDepartmentNumber(Integer departmentNumber) {
+    public void setDepartmentNumber(String departmentNumber) {
         this.departmentNumber = departmentNumber;
     }
 

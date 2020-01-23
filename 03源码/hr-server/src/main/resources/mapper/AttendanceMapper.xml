@@ -6,9 +6,9 @@
     <result column="employee_number" property="employeeNumber" jdbcType="VARCHAR" />
     <result column="day" property="day" jdbcType="VARCHAR" />
     <result column="start_time" property="startTime" jdbcType="VARCHAR" />
-    <result column="start_type" property="startType" jdbcType="CHAR" />
+    <result column="start_type" property="startType" jdbcType="INTEGER" />
     <result column="end_time" property="endTime" jdbcType="VARCHAR" />
-    <result column="end_type" property="endType" jdbcType="CHAR" />
+    <result column="end_type" property="endType" jdbcType="INTEGER" />
     <result column="notes" property="notes" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -107,8 +107,8 @@
       start_time, start_type, end_time, 
       end_type, notes)
     values (#{id,jdbcType=VARCHAR}, #{employeeNumber,jdbcType=VARCHAR}, #{day,jdbcType=VARCHAR}, 
-      #{startTime,jdbcType=VARCHAR}, #{startType,jdbcType=CHAR}, #{endTime,jdbcType=VARCHAR}, 
-      #{endType,jdbcType=CHAR}, #{notes,jdbcType=VARCHAR})
+      #{startTime,jdbcType=VARCHAR}, #{startType,jdbcType=INTEGER}, #{endTime,jdbcType=VARCHAR}, 
+      #{endType,jdbcType=INTEGER}, #{notes,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.qubaolai.po.Attendance" >
     insert into attendance
@@ -152,13 +152,13 @@
         #{startTime,jdbcType=VARCHAR},
       </if>
       <if test="startType != null" >
-        #{startType,jdbcType=CHAR},
+        #{startType,jdbcType=INTEGER},
       </if>
       <if test="endTime != null" >
         #{endTime,jdbcType=VARCHAR},
       </if>
       <if test="endType != null" >
-        #{endType,jdbcType=CHAR},
+        #{endType,jdbcType=INTEGER},
       </if>
       <if test="notes != null" >
         #{notes,jdbcType=VARCHAR},
@@ -187,13 +187,13 @@
         start_time = #{record.startTime,jdbcType=VARCHAR},
       </if>
       <if test="record.startType != null" >
-        start_type = #{record.startType,jdbcType=CHAR},
+        start_type = #{record.startType,jdbcType=INTEGER},
       </if>
       <if test="record.endTime != null" >
         end_time = #{record.endTime,jdbcType=VARCHAR},
       </if>
       <if test="record.endType != null" >
-        end_type = #{record.endType,jdbcType=CHAR},
+        end_type = #{record.endType,jdbcType=INTEGER},
       </if>
       <if test="record.notes != null" >
         notes = #{record.notes,jdbcType=VARCHAR},
@@ -209,9 +209,9 @@
       employee_number = #{record.employeeNumber,jdbcType=VARCHAR},
       day = #{record.day,jdbcType=VARCHAR},
       start_time = #{record.startTime,jdbcType=VARCHAR},
-      start_type = #{record.startType,jdbcType=CHAR},
+      start_type = #{record.startType,jdbcType=INTEGER},
       end_time = #{record.endTime,jdbcType=VARCHAR},
-      end_type = #{record.endType,jdbcType=CHAR},
+      end_type = #{record.endType,jdbcType=INTEGER},
       notes = #{record.notes,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -230,13 +230,13 @@
         start_time = #{startTime,jdbcType=VARCHAR},
       </if>
       <if test="startType != null" >
-        start_type = #{startType,jdbcType=CHAR},
+        start_type = #{startType,jdbcType=INTEGER},
       </if>
       <if test="endTime != null" >
         end_time = #{endTime,jdbcType=VARCHAR},
       </if>
       <if test="endType != null" >
-        end_type = #{endType,jdbcType=CHAR},
+        end_type = #{endType,jdbcType=INTEGER},
       </if>
       <if test="notes != null" >
         notes = #{notes,jdbcType=VARCHAR},
@@ -249,9 +249,9 @@
     set employee_number = #{employeeNumber,jdbcType=VARCHAR},
       day = #{day,jdbcType=VARCHAR},
       start_time = #{startTime,jdbcType=VARCHAR},
-      start_type = #{startType,jdbcType=CHAR},
+      start_type = #{startType,jdbcType=INTEGER},
       end_time = #{endTime,jdbcType=VARCHAR},
-      end_type = #{endType,jdbcType=CHAR},
+      end_type = #{endType,jdbcType=INTEGER},
       notes = #{notes,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>

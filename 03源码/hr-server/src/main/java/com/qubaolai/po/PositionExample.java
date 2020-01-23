@@ -184,113 +184,63 @@ public class PositionExample {
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentNumberEqualTo(Integer value) {
+        public Criteria andDepartmentNumberEqualTo(String value) {
             addCriterion("department_number =", value, "departmentNumber");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentNumberNotEqualTo(Integer value) {
+        public Criteria andDepartmentNumberNotEqualTo(String value) {
             addCriterion("department_number <>", value, "departmentNumber");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentNumberGreaterThan(Integer value) {
+        public Criteria andDepartmentNumberGreaterThan(String value) {
             addCriterion("department_number >", value, "departmentNumber");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentNumberGreaterThanOrEqualTo(Integer value) {
+        public Criteria andDepartmentNumberGreaterThanOrEqualTo(String value) {
             addCriterion("department_number >=", value, "departmentNumber");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentNumberLessThan(Integer value) {
+        public Criteria andDepartmentNumberLessThan(String value) {
             addCriterion("department_number <", value, "departmentNumber");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentNumberLessThanOrEqualTo(Integer value) {
+        public Criteria andDepartmentNumberLessThanOrEqualTo(String value) {
             addCriterion("department_number <=", value, "departmentNumber");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentNumberIn(List<Integer> values) {
+        public Criteria andDepartmentNumberLike(String value) {
+            addCriterion("department_number like", value, "departmentNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentNumberNotLike(String value) {
+            addCriterion("department_number not like", value, "departmentNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentNumberIn(List<String> values) {
             addCriterion("department_number in", values, "departmentNumber");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentNumberNotIn(List<Integer> values) {
+        public Criteria andDepartmentNumberNotIn(List<String> values) {
             addCriterion("department_number not in", values, "departmentNumber");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentNumberBetween(Integer value1, Integer value2) {
+        public Criteria andDepartmentNumberBetween(String value1, String value2) {
             addCriterion("department_number between", value1, value2, "departmentNumber");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentNumberNotBetween(Integer value1, Integer value2) {
+        public Criteria andDepartmentNumberNotBetween(String value1, String value2) {
             addCriterion("department_number not between", value1, value2, "departmentNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andPositionNumberIsNull() {
-            addCriterion("position_number is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPositionNumberIsNotNull() {
-            addCriterion("position_number is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPositionNumberEqualTo(Integer value) {
-            addCriterion("position_number =", value, "positionNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andPositionNumberNotEqualTo(Integer value) {
-            addCriterion("position_number <>", value, "positionNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andPositionNumberGreaterThan(Integer value) {
-            addCriterion("position_number >", value, "positionNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andPositionNumberGreaterThanOrEqualTo(Integer value) {
-            addCriterion("position_number >=", value, "positionNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andPositionNumberLessThan(Integer value) {
-            addCriterion("position_number <", value, "positionNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andPositionNumberLessThanOrEqualTo(Integer value) {
-            addCriterion("position_number <=", value, "positionNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andPositionNumberIn(List<Integer> values) {
-            addCriterion("position_number in", values, "positionNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andPositionNumberNotIn(List<Integer> values) {
-            addCriterion("position_number not in", values, "positionNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andPositionNumberBetween(Integer value1, Integer value2) {
-            addCriterion("position_number between", value1, value2, "positionNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andPositionNumberNotBetween(Integer value1, Integer value2) {
-            addCriterion("position_number not between", value1, value2, "positionNumber");
             return (Criteria) this;
         }
 

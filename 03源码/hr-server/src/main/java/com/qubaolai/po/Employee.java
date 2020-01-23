@@ -1,17 +1,15 @@
 package com.qubaolai.po;
 
-import com.qubaolai.pojo.EmployeeFather;
-
 import java.util.Date;
 
-public class Employee extends EmployeeFather {
+public class Employee {
     private String id;
 
     private String username;
 
     private String name;
 
-    private String gender;
+    private Integer gender;
 
     private Date birthday;
 
@@ -63,11 +61,11 @@ public class Employee extends EmployeeFather {
         this.name = name;
     }
 
-    public String getGender() {
+    public Integer getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Integer gender) {
         this.gender = gender;
     }
 

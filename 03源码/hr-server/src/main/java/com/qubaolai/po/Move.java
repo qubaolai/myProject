@@ -5,9 +5,9 @@ public class Move {
 
     private String employeeNumber;
 
-    private Integer before;
+    private String before;
 
-    private Integer after;
+    private String after;
 
     private String time;
 
@@ -31,19 +31,19 @@ public class Move {
         this.employeeNumber = employeeNumber;
     }
 
-    public Integer getBefore() {
+    public String getBefore() {
         return before;
     }
 
-    public void setBefore(Integer before) {
+    public void setBefore(String before) {
         this.before = before;
     }
 
-    public Integer getAfter() {
+    public String getAfter() {
         return after;
     }
 
-    public void setAfter(Integer after) {
+    public void setAfter(String after) {
         this.after = after;
     }
 

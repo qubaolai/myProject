@@ -13,11 +13,11 @@ public class Lea {
 
     private String reason;
 
-    private String type;
+    private Integer type;
 
     private String manager;
 
-    private String status;
+    private Integer status;
 
     private String notes;
 
@@ -69,11 +69,11 @@ public class Lea {
         this.reason = reason;
     }
 
-    public String getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
@@ -85,11 +85,11 @@ public class Lea {
         this.manager = manager;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

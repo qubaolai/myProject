@@ -52,7 +52,7 @@ public class MD5Tools {
 
     // 测试主函数
     public static void main(String args[]) {
-        String s = new String("asd");
+        String s = new String("asd123");
         System.out.println("原始：" + s);
         System.out.println("MD5后：" + string2MD5(s));
         System.out.println("MD5后：" + string2MD5(s));

@@ -94,8 +94,9 @@ public class LeaServiceImpl implements LeaService {
         }
         lea.setReason((String) param.get("reason"));
         //设置请假类型
-        lea.setType((String) param.get("type"));
+        lea.setType((Integer) param.get("type"));
         //审批状态 默认为未审批
+        lea.setStatus(0);
         //数据落库
         leaMapper.insertSelective(lea);
         return ResultVo.sendResult(200, "success");
@@ -118,7 +119,7 @@ public class LeaServiceImpl implements LeaService {
             List<Employee> employees = employeeMapper.selectByExample(example1);
             List<String> empNums = new ArrayList<>();
             for (Employee employee : employees) {
-                empNums.add(employee.getInTime());
+                empNums.add(employee.getId());
             }
             if (null != empNums && 0 < empNums.size()) {
                 criteria.andEmployeeNumberIn(empNums);
@@ -143,7 +144,7 @@ public class LeaServiceImpl implements LeaService {
         }
         //审批状态查询
         if (null != param.get("status") && "".equals((String) param.get("status"))) {
-            criteria.andStatusEqualTo((String) param.get("status"));
+            criteria.andStatusEqualTo(1);
         }
         List<Lea> leas = leaMapper.selectByExample(example);
         if (null == leas && 0 >= leas.size()) {
@@ -153,9 +154,30 @@ public class LeaServiceImpl implements LeaService {
     }
 
     @Override
-    public ResultVo approvalHoliday(String leaId) {
-
-        return null;
+    public void approvalHoliday(Map<String, Object> param) {
+        if(null == param.get("leaId") && "".equals((String)param.get("leaId"))){
+            throw new ParamException(501, "参数异常");
+        }
+        Lea lea = leaMapper.selectByPrimaryKey((String) param.get("leaId"));
+        if(null == lea){
+            throw new NoDataException(400, "数据为空");
+        }
+        //未审批
+        if(lea.getStatus() == 0){
+            if(null == param.get("status")){
+                throw new ParamException(501, "参数异常");
+            }
+            lea.setStatus((Integer)param.get("status"));
+            if(2 == (Integer)param.get("status")){
+                if(null == param.get("notes") || "".equals((String)param.get("notes"))){
+                    throw new ParamException(501, "请输入审批意见");
+                }
+                lea.setNotes((String)param.get("notes"));
+            }
+        }else{
+            throw new DataException(502, "该记录已被审批");
+        }
+        leaMapper.updateByPrimaryKey(lea);
     }
 
 }

@@ -54,7 +54,7 @@ public class HrHandlerIntercepter implements HandlerInterceptor {
             JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(employees.get(0).getPassword() + dateString)).build();
             jwtVerifier.verify(token);
         } catch (JWTVerificationException e) {
-            throw new NoTokenException(204, "token以失效");
+            throw new NoTokenException(204, "token已失效");
         }
         HttpSession session = httpServletRequest.getSession();
         session.setAttribute("user",employees.get(0));

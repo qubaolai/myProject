@@ -3,7 +3,6 @@
 <mapper namespace="com.qubaolai.mapper.DepartmentMapper" >
   <resultMap id="BaseResultMap" type="com.qubaolai.po.Department" >
     <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="department_number" property="departmentNumber" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="manager" property="manager" jdbcType="VARCHAR" />
     <result column="telephone" property="telephone" jdbcType="VARCHAR" />
@@ -68,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, department_number, name, manager, telephone, notes
+    id, name, manager, telephone, notes
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.qubaolai.po.DepartmentExample" >
     select
@@ -101,21 +100,16 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.qubaolai.po.Department" >
-    insert into department (id, department_number, name, 
-      manager, telephone, notes
-      )
-    values (#{id,jdbcType=VARCHAR}, #{departmentNumber,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{manager,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, #{notes,jdbcType=VARCHAR}
-      )
+    insert into department (id, name, manager, 
+      telephone, notes)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{manager,jdbcType=VARCHAR}, 
+      #{telephone,jdbcType=VARCHAR}, #{notes,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.qubaolai.po.Department" >
     insert into department
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
-      </if>
-      <if test="departmentNumber != null" >
-        department_number,
       </if>
       <if test="name != null" >
         name,
@@ -133,9 +127,6 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
-      </if>
-      <if test="departmentNumber != null" >
-        #{departmentNumber,jdbcType=INTEGER},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -163,9 +154,6 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=VARCHAR},
       </if>
-      <if test="record.departmentNumber != null" >
-        department_number = #{record.departmentNumber,jdbcType=INTEGER},
-      </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
@@ -186,7 +174,6 @@
   <update id="updateByExample" parameterType="map" >
     update department
     set id = #{record.id,jdbcType=VARCHAR},
-      department_number = #{record.departmentNumber,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       manager = #{record.manager,jdbcType=VARCHAR},
       telephone = #{record.telephone,jdbcType=VARCHAR},
@@ -198,9 +185,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.qubaolai.po.Department" >
     update department
     <set >
-      <if test="departmentNumber != null" >
-        department_number = #{departmentNumber,jdbcType=INTEGER},
-      </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
@@ -218,8 +202,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.qubaolai.po.Department" >
     update department
-    set department_number = #{departmentNumber,jdbcType=INTEGER},
-      name = #{name,jdbcType=VARCHAR},
+    set name = #{name,jdbcType=VARCHAR},
       manager = #{manager,jdbcType=VARCHAR},
       telephone = #{telephone,jdbcType=VARCHAR},
       notes = #{notes,jdbcType=VARCHAR}

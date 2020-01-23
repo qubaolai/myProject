@@ -254,52 +254,62 @@ public class MoveExample {
             return (Criteria) this;
         }
 
-        public Criteria andBeforeEqualTo(Integer value) {
+        public Criteria andBeforeEqualTo(String value) {
             addCriterion("before =", value, "before");
             return (Criteria) this;
         }
 
-        public Criteria andBeforeNotEqualTo(Integer value) {
+        public Criteria andBeforeNotEqualTo(String value) {
             addCriterion("before <>", value, "before");
             return (Criteria) this;
         }
 
-        public Criteria andBeforeGreaterThan(Integer value) {
+        public Criteria andBeforeGreaterThan(String value) {
             addCriterion("before >", value, "before");
             return (Criteria) this;
         }
 
-        public Criteria andBeforeGreaterThanOrEqualTo(Integer value) {
+        public Criteria andBeforeGreaterThanOrEqualTo(String value) {
             addCriterion("before >=", value, "before");
             return (Criteria) this;
         }
 
-        public Criteria andBeforeLessThan(Integer value) {
+        public Criteria andBeforeLessThan(String value) {
             addCriterion("before <", value, "before");
             return (Criteria) this;
         }
 
-        public Criteria andBeforeLessThanOrEqualTo(Integer value) {
+        public Criteria andBeforeLessThanOrEqualTo(String value) {
             addCriterion("before <=", value, "before");
             return (Criteria) this;
         }
 
-        public Criteria andBeforeIn(List<Integer> values) {
+        public Criteria andBeforeLike(String value) {
+            addCriterion("before like", value, "before");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeforeNotLike(String value) {
+            addCriterion("before not like", value, "before");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeforeIn(List<String> values) {
             addCriterion("before in", values, "before");
             return (Criteria) this;
         }
 
-        public Criteria andBeforeNotIn(List<Integer> values) {
+        public Criteria andBeforeNotIn(List<String> values) {
             addCriterion("before not in", values, "before");
             return (Criteria) this;
         }
 
-        public Criteria andBeforeBetween(Integer value1, Integer value2) {
+        public Criteria andBeforeBetween(String value1, String value2) {
             addCriterion("before between", value1, value2, "before");
             return (Criteria) this;
         }
 
-        public Criteria andBeforeNotBetween(Integer value1, Integer value2) {
+        public Criteria andBeforeNotBetween(String value1, String value2) {
             addCriterion("before not between", value1, value2, "before");
             return (Criteria) this;
         }
@@ -314,52 +324,62 @@ public class MoveExample {
             return (Criteria) this;
         }
 
-        public Criteria andAfterEqualTo(Integer value) {
+        public Criteria andAfterEqualTo(String value) {
             addCriterion("after =", value, "after");
             return (Criteria) this;
         }
 
-        public Criteria andAfterNotEqualTo(Integer value) {
+        public Criteria andAfterNotEqualTo(String value) {
             addCriterion("after <>", value, "after");
             return (Criteria) this;
         }
 
-        public Criteria andAfterGreaterThan(Integer value) {
+        public Criteria andAfterGreaterThan(String value) {
             addCriterion("after >", value, "after");
             return (Criteria) this;
         }
 
-        public Criteria andAfterGreaterThanOrEqualTo(Integer value) {
+        public Criteria andAfterGreaterThanOrEqualTo(String value) {
             addCriterion("after >=", value, "after");
             return (Criteria) this;
         }
 
-        public Criteria andAfterLessThan(Integer value) {
+        public Criteria andAfterLessThan(String value) {
             addCriterion("after <", value, "after");
             return (Criteria) this;
         }
 
-        public Criteria andAfterLessThanOrEqualTo(Integer value) {
+        public Criteria andAfterLessThanOrEqualTo(String value) {
             addCriterion("after <=", value, "after");
             return (Criteria) this;
         }
 
-        public Criteria andAfterIn(List<Integer> values) {
+        public Criteria andAfterLike(String value) {
+            addCriterion("after like", value, "after");
+            return (Criteria) this;
+        }
+
+        public Criteria andAfterNotLike(String value) {
+            addCriterion("after not like", value, "after");
+            return (Criteria) this;
+        }
+
+        public Criteria andAfterIn(List<String> values) {
             addCriterion("after in", values, "after");
             return (Criteria) this;
         }
 
-        public Criteria andAfterNotIn(List<Integer> values) {
+        public Criteria andAfterNotIn(List<String> values) {
             addCriterion("after not in", values, "after");
             return (Criteria) this;
         }
 
-        public Criteria andAfterBetween(Integer value1, Integer value2) {
+        public Criteria andAfterBetween(String value1, String value2) {
             addCriterion("after between", value1, value2, "after");
             return (Criteria) this;
         }
 
-        public Criteria andAfterNotBetween(Integer value1, Integer value2) {
+        public Criteria andAfterNotBetween(String value1, String value2) {
             addCriterion("after not between", value1, value2, "after");
             return (Criteria) this;
         }

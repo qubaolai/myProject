@@ -8,9 +8,9 @@
         <result column="start_time" property="startTime" jdbcType="VARCHAR"/>
         <result column="end_time" property="endTime" jdbcType="VARCHAR"/>
         <result column="reason" property="reason" jdbcType="VARCHAR"/>
-        <result column="type" property="type" jdbcType="CHAR"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
         <result column="manager" property="manager" jdbcType="VARCHAR"/>
-        <result column="status" property="status" jdbcType="CHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
         <result column="notes" property="notes" jdbcType="VARCHAR"/>
     </resultMap>
     <select id="getLeasByConditions" parameterType="java.util.Map" resultType="java.lang.Integer">

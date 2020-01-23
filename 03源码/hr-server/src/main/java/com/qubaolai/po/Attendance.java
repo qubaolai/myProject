@@ -9,11 +9,11 @@ public class Attendance {
 
     private String startTime;
 
-    private String startType;
+    private Integer startType;
 
     private String endTime;
 
-    private String endType;
+    private Integer endType;
 
     private String notes;
 
@@ -49,11 +49,11 @@ public class Attendance {
         this.startTime = startTime;
     }
 
-    public String getStartType() {
+    public Integer getStartType() {
         return startType;
     }
 
-    public void setStartType(String startType) {
+    public void setStartType(Integer startType) {
         this.startType = startType;
     }
 
@@ -65,11 +65,11 @@ public class Attendance {
         this.endTime = endTime;
     }
 
-    public String getEndType() {
+    public Integer getEndType() {
         return endType;
     }
 
-    public void setEndType(String endType) {
+    public void setEndType(Integer endType) {
         this.endType = endType;
     }
 
