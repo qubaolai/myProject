@@ -20,7 +20,7 @@
         <property name="jobDetail" ref="exampleJobDetail" />
         <!-- 每天凌晨1点运行 -->
         <!--<property name="cronExpression" value="0 00 01 * * ?" />-->
-        <property name="cronExpression" value="0 55 17 * * ?" />
+        <property name="cronExpression" value="0 20 16 * * ?" />
     </bean>
 
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">

@@ -1,6 +1,7 @@
 package com.qubaolai.service.impl;
 
 import com.qubaolai.common.exception.exceptions.DataException;
+import com.qubaolai.common.exception.exceptions.NoDataException;
 import com.qubaolai.common.utils.DateUtil;
 import com.qubaolai.common.utils.UUIDUtil;
 import com.qubaolai.mapper.AttendanceMapper;
@@ -15,10 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Description qubaolai
@@ -39,95 +37,78 @@ public class WorkTimeServiceImpl implements WorkTimeService {
     /**
      * 计算员工工时
      *
-     * @param map
+     * @param
      */
     @Override
-    public Double calculateWorkTime(Map<String, String> map) {
-        //获取字符串时间
-        String startStr = map.get("startTime");
-        String endStr = map.get("endTime");
+    public Double calculateWorkTime(String startStr,String endStr) {
         //将字符串时间转为时间戳
         Long StartTimeStamp = DateUtil.getTimeStamp(startStr);
         Long endStrStamp = DateUtil.getTimeStamp(endStr);
         BigDecimal startTime = new BigDecimal(StartTimeStamp);
         BigDecimal endTime = new BigDecimal(endStrStamp);
         //时级
-        Double difference = endTime.subtract(startTime).divide(new BigDecimal(3600000)).subtract(BigDecimal.ONE).doubleValue();
-        return difference;
+        BigDecimal subtract = endTime.subtract(startTime).divide(new BigDecimal(3600000)).subtract(BigDecimal.ONE);
+        double result = subtract.setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return result;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void statisticalWorkTime() {
-        String date = DateUtil.getDate();
-        //获取当前登录的员工
-        AttendanceExample example = new AttendanceExample();
-        AttendanceExample.Criteria criteria = example.createCriteria();
-
-        criteria.andDayEqualTo(DateUtil.getDate(DateUtil.subNowDays()));
-        List<Attendance> attendances = attendanceMapper.selectByExample(example);
-        if (null != attendances && 1 < attendances.size()) {
-            throw new DataException(502, "数据异常");
+        //获取当前年月日的前一天
+        Date date = DateUtil.subNowDays();
+        String yesterday = DateUtil.getDate(date);
+        //查询当前日期的前一天的所有签到记录
+        AttendanceExample attendanceExample = new AttendanceExample();
+        AttendanceExample.Criteria criteria = attendanceExample.createCriteria();
+        criteria.andDayEqualTo(yesterday);
+        List<Attendance> attendances = attendanceMapper.selectByExample(attendanceExample);
+        Map<String, Attendance> maps = new HashMap<>();
+        if (null == attendances || 0 >= attendances.size()) {
+            throw new NoDataException(400, "签到记录为空!");
         }
-        String startTime = attendances.get(0).getStartTime();
-        String endTime = attendances.get(0).getEndTime();
-        Map<String, String> param = new HashMap<>();
-        //声明前一天工时
-        Double workTime = null;
-        //签到开始时间为空
-        if (null == startTime || "".equals(startTime)) {
-            workTime = 0.0;
+        //遍历签到记录 存入map
+        for (Attendance attendance : attendances) {
+            maps.put(attendance.getEmployeeNumber(), attendance);
         }
-        //下班签到时间为空
-        if (null == endTime || "".equals(endTime)) {
-            workTime = 8.0;
+        if (null == maps) {
+            throw new NoDataException(400, "签到记录集合为空");
         }
-        if (null != startTime && !"".equals(startTime) && null != endTime && !"".equals(endTime)) {
-            param.put("startTime", startTime);
-            param.put("endTime", endTime);
-            Double time = calculateWorkTime(param);
-            workTime = time;
+        //循环map 计算工时并存入db
+        for (Map.Entry<String, Attendance> map : maps.entrySet()) {
+            //获取到map的key
+            String key = map.getKey();
+            Attendance attendance = map.getValue();
+            Double workTime = null;
+            if (key.equals(attendance.getEmployeeNumber())) {
+                /**
+                 * 计算工时
+                 */
+                //如果下班签到为空则工时计算为8小时
+                if (null == attendance.getEndTime() || "".equals(attendance.getEndTime())) {
+                    workTime = 4.0;
+                }
+                //上班签到记录为空则工时计算为0
+                if (null == attendance.getStartTime() || "".equals(attendance.getStartTime())) {
+                    workTime = 0.0;
+                }
+                if (null != attendance.getStartTime() && null != attendance.getEndTime() && !"".equals(attendance.getStartTime()) && !"".equals(attendance.getEndTime())) {
+                    workTime = calculateWorkTime(attendance.getStartTime(), attendance.getEndTime());
+                }
+                //向工时统计表中插入记录
+                WorkTime workTimePo = new WorkTime();
+                workTimePo.setId(UUIDUtil.getUUID());
+                //查询员工所在部门
+                EmployeeExample employeeExample = new EmployeeExample();
+                EmployeeExample.Criteria criteria1 = employeeExample.createCriteria();
+                criteria1.andIdEqualTo(key);
+                List<Employee> employeeList = employeeMapper.selectByExample(employeeExample);
+                workTimePo.setDepartmentNumber(employeeList.get(0).getDepartmentNumber());
+                workTimePo.setEmployeeNumber(key);
+                workTimePo.setDay(DateUtil.getDate());
+                workTimePo.setWorkingHours(workTime.toString());
+                workTimeMapper.insert(workTimePo);
+            }
         }
-        WorkTime workTime1 = new WorkTime();
-        //主键
-        workTime1.setId(UUIDUtil.getUUID());
-        //修改时间
-        workTime1.setDay(date);
-        //查询当前登录员工信息
-        EmployeeExample employeeExample = new EmployeeExample();
-        EmployeeExample.Criteria criteria1 = employeeExample.createCriteria();
-        criteria1.andIdEqualTo(attendances.get(0).getEmployeeNumber());
-        List<Employee> employees = employeeMapper.selectByExample(employeeExample);
-        if(null == employees || 0 >= employees.size()){
-            throw new DataException(400, "获取员工信息为空");
-        }
-        //获取当前员工的部门id
-        String departmentNumber = employees.get(0).getDepartmentNumber();
-        workTime1.setDepartmentNumber(departmentNumber);
-        workTime1.setEmployeeNumber(attendances.get(0).getEmployeeNumber());
-        //设置工时
-        workTime1.setWorkingHours(workTime.toString());
-        //查询当前员工之前是否存在计算工时的记录
-        WorkTimeExample workTimeExample = new WorkTimeExample();
-        WorkTimeExample.Criteria criteria2 = workTimeExample.createCriteria();
-        criteria2.andEmployeeNumberEqualTo(workTime1.getEmployeeNumber());
-        //获取当前年月日前一天
-        criteria2.andDayEqualTo(DateUtil.getDate(DateUtil.subNowDays()));
-        List<WorkTime> workTimes = workTimeMapper.selectByExample(workTimeExample);
-        //为空则插入
-        if(null == workTimes || 0 >= workTimes.size()){
-            workTimeMapper.insert(workTime1);
-        }else{
-            //获取上次的工时 累加计算 然后修改
-            Double workingHours = Double.valueOf(workTimes.get(0).getWorkingHours());
-            BigDecimal time = new BigDecimal(workingHours);
-            BigDecimal newTime = new BigDecimal(workTime);
-            BigDecimal endWorkTime = time.add(newTime);
-            workTime1.setWorkingHours(endWorkTime.toString());
-            workTimeMapper.updateByExampleSelective(workTime1,workTimeExample);
-        }
-
-
-
     }
 }

@@ -11,7 +11,6 @@ import com.qubaolai.po.DepartmentExample;
 import com.qubaolai.po.Employee;
 import com.qubaolai.po.EmployeeExample;
 import com.qubaolai.service.DepartmentService;
-import com.qubaolai.vo.ResultVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

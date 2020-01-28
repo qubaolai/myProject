@@ -15,10 +15,10 @@ public interface WorkTimeService {
      * 计算员工当天工时
      * @param map
      */
-    public Double calculateWorkTime(Map<String, String> map);
+    public Double calculateWorkTime(String startStr,String endStr);
 
     /**
-     * 统计当天工时
+     * 用于每天凌晨1点统计前一天的员工工时
      * @return
      */
     public void statisticalWorkTime();

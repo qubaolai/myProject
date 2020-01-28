@@ -623,7 +623,7 @@ public class DateUtil {
 
     /**
      * @return java.util.Date
-     * @Author shichuanqi
+     * @Author qubaolai
      * @Description 获取当前天数-1
      * @Date 15:14 2019/8/1
      * @Param []
@@ -637,7 +637,7 @@ public class DateUtil {
 
     /**
      * @return java.util.Date
-     * @Author shichuanqi
+     * @Author qubaolai
      * @Description 获取前一年当月第一天
      * @Date 16:08 2019/8/16
      * @Param []
