@@ -79,18 +79,23 @@ public class DepartmentServiceImpl implements DepartmentService {
             }
         }
         List<String> manageNum = new ArrayList<>();
-        for (Employee employee : employeeList) {
-            if ("0".equals(employee.getDeviceid())) {
-                manageNum.add(employee.getId());
+        if(null != employeeList && 0 < employeeList.size()){
+            for (Employee employee : employeeList) {
+                if ("0".equals(employee.getDeviceid())) {
+                    manageNum.add(employee.getId());
+                }
             }
         }
-        if (null == manageNum || 0 >= manageNum.size()) {
-            throw new NoDataException(400, "部门领导为空");
-        }
+//        if (null == manageNum || 0 >= manageNum.size()) {
+//            throw new NoDataException(400, "部门领导为空");
+//        }
         if (1 < manageNum.size()) {
             throw new DataException(502, "数据异常!");
         }
-        criteria.andManagerEqualTo(manageNum.get(0));
+        if (null != manageNum && 0 < manageNum.size()){
+            criteria.andManagerEqualTo(manageNum.get(0));
+        }
+        criteria.andValidEqualTo(0);
         List<Department> departments = departmentMapper.selectByExample(departmentExample);
         if (null == departments || 0 >= departments.size()) {
             throw new NoDataException(400, "数据为空");
@@ -178,5 +183,14 @@ public class DepartmentServiceImpl implements DepartmentService {
             department.setNotes((String) param.get("notes"));
         }
         departmentMapper.insert(department);
+    }
+
+    @Override
+    public void deleteDept(String id) {
+        //逻辑删除 暂时不需要关联修改员工信息
+        Department department = new Department();
+        department.setId(id);
+        department.setValid(1);
+        departmentMapper.updateByPrimaryKeySelective(department);
     }
 }

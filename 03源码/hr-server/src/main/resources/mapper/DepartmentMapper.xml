@@ -6,6 +6,7 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="manager" property="manager" jdbcType="VARCHAR" />
     <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="valid" property="valid" jdbcType="INTEGER" />
     <result column="notes" property="notes" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -67,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, manager, telephone, notes
+    id, name, manager, telephone, valid, notes
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.qubaolai.po.DepartmentExample" >
     select
@@ -101,9 +102,11 @@
   </delete>
   <insert id="insert" parameterType="com.qubaolai.po.Department" >
     insert into department (id, name, manager, 
-      telephone, notes)
+      telephone, valid, notes
+      )
     values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{manager,jdbcType=VARCHAR}, 
-      #{telephone,jdbcType=VARCHAR}, #{notes,jdbcType=VARCHAR})
+      #{telephone,jdbcType=VARCHAR}, #{valid,jdbcType=INTEGER}, #{notes,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.qubaolai.po.Department" >
     insert into department
@@ -119,6 +122,9 @@
       </if>
       <if test="telephone != null" >
         telephone,
+      </if>
+      <if test="valid != null" >
+        valid,
       </if>
       <if test="notes != null" >
         notes,
@@ -136,6 +142,9 @@
       </if>
       <if test="telephone != null" >
         #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="valid != null" >
+        #{valid,jdbcType=INTEGER},
       </if>
       <if test="notes != null" >
         #{notes,jdbcType=VARCHAR},
@@ -163,6 +172,9 @@
       <if test="record.telephone != null" >
         telephone = #{record.telephone,jdbcType=VARCHAR},
       </if>
+      <if test="record.valid != null" >
+        valid = #{record.valid,jdbcType=INTEGER},
+      </if>
       <if test="record.notes != null" >
         notes = #{record.notes,jdbcType=VARCHAR},
       </if>
@@ -177,6 +189,7 @@
       name = #{record.name,jdbcType=VARCHAR},
       manager = #{record.manager,jdbcType=VARCHAR},
       telephone = #{record.telephone,jdbcType=VARCHAR},
+      valid = #{record.valid,jdbcType=INTEGER},
       notes = #{record.notes,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -194,6 +207,9 @@
       <if test="telephone != null" >
         telephone = #{telephone,jdbcType=VARCHAR},
       </if>
+      <if test="valid != null" >
+        valid = #{valid,jdbcType=INTEGER},
+      </if>
       <if test="notes != null" >
         notes = #{notes,jdbcType=VARCHAR},
       </if>
@@ -205,6 +221,7 @@
     set name = #{name,jdbcType=VARCHAR},
       manager = #{manager,jdbcType=VARCHAR},
       telephone = #{telephone,jdbcType=VARCHAR},
+      valid = #{valid,jdbcType=INTEGER},
       notes = #{notes,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>

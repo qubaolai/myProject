@@ -11,6 +11,8 @@ public class Department extends DepartmentFather {
 
     private String telephone;
 
+    private Integer valid;
+
     private String notes;
 
     public String getId() {
@@ -43,6 +45,14 @@ public class Department extends DepartmentFather {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    public Integer getValid() {
+        return valid;
+    }
+
+    public void setValid(Integer valid) {
+        this.valid = valid;
     }
 
     public String getNotes() {

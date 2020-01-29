@@ -9,7 +9,6 @@ import com.qubaolai.po.Department;
 import com.qubaolai.po.Position;
 import com.qubaolai.po.PositionExample;
 import com.qubaolai.service.PositionService;
-import com.qubaolai.vo.ResultVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

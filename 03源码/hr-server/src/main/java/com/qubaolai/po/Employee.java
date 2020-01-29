@@ -1,8 +1,10 @@
 package com.qubaolai.po;
 
+import com.qubaolai.pojo.EmployeeFather;
+
 import java.util.Date;
 
-public class Employee {
+public class Employee extends EmployeeFather {
     private String id;
 
     private String username;

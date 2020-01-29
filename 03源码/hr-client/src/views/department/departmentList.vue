@@ -1,34 +1,23 @@
 <template>
   <div class="basic-grey">
     <div
-      style="margin-bottom: 10px; background-color: #fff; width: 91%; padding: 3px; border-radius: 5px; padding-left: 50px; padding-right: 50px;"
+      style="margin-bottom: 10px; background-color: #fff; width: 99%; padding: 3px; border-radius: 5px; padding-left: 8px; height: 70px;"
     >
       <el-row :gutter="20">
-        <el-col :span="5">
+        <el-col :span="6">
           <div class="grid-content bg-purple rowStyle">
-            <span>姓名:</span>
+            <span>部门名称:</span>
             <el-input
               class="formStyle"
-              placeholder="员工姓名"
-              v-model="form.empName"
+              placeholder="部门名称"
+              v-model="form.departmentName"
               clearable
             ></el-input>
           </div>
         </el-col>
-        <el-col :span="5">
+        <el-col :span="6">
           <div class="grid-content bg-purple rowStyle">
-            <span>编号:</span>
-            <el-input
-              class="formStyle"
-              placeholder="员工编号"
-              v-model="form.employeeNumber"
-              clearable
-            ></el-input>
-          </div>
-        </el-col>
-        <el-col :span="5">
-          <div class="grid-content bg-purple rowStyle">
-            <span>领导:</span>
+            <span>领导姓名:</span>
             <el-input
               class="formStyle"
               placeholder="领导姓名"
@@ -37,7 +26,18 @@
             ></el-input>
           </div>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="6">
+          <div class="grid-content bg-purple rowStyle">
+            <span>电话:</span>
+            <el-input
+              class="formStyle"
+              placeholder="电话"
+              v-model="form.departmentTel"
+              clearable
+            ></el-input>
+          </div>
+        </el-col>
+        <el-col :span="6">
           <div class="grid-content bg-purple rowStyle">
             <el-button
               class="buttonStyle"
@@ -46,11 +46,9 @@
               @click="submitForm()"
               >查询</el-button
             >
-          </div>
-        </el-col>
-        <el-col :span="5">
-          <div class="grid-content bg-purple rowStyle">
-            <el-button class="buttonStyle" type="primary">重置</el-button>
+            <el-button class="buttonStyle" type="primary" @click="reset()"
+              >重置</el-button
+            >
           </div>
         </el-col>
       </el-row>
@@ -58,36 +56,69 @@
     <div class="line"></div>
     <div style="height: 200%; background-color: #fff;">
       <el-row>
-        <el-col :span="24"
-          ><div class="grid-content bg-purple-dark">
-            <el-table
-              :data="pageData"
-              style="width: 100%"
-              height="400"
-              :default-sort="{ prop: 'date', order: 'descending' }"
+        <div>
+          <el-table
+            v-show="adminShow"
+            :data="pageData"
+            style="width: 100%; padding-left: 50px;padding-right: 50px;"
+          >
+            <el-table-column type="index"> </el-table-column>
+            <el-table-column label="部门名称" width="400">
+              <template slot-scope="scope">
+                <span>{{ scope.row.departmentName }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="领导姓名" width="400">
+              <template slot-scope="scope">
+                <span>{{ scope.row.manageName }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="部门电话" width="400">
+              <template slot-scope="scope">
+                <span>{{ scope.row.departmentTel }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="操作"
+              style="margin-right: 0;float: center;"
             >
-              <el-table-column prop="empName" label="姓名" width="165">
-              </el-table-column>
-              <el-table-column prop="deptName" label="部门" width="165">
-              </el-table-column>
-              <el-table-column prop="mangName" label="领导姓名" width="165">
-              </el-table-column>
-              <el-table-column prop="education" label="学历" width="150">
-              </el-table-column>
-              <el-table-column prop="option" label="职称" width="165">
-              </el-table-column>
-              <el-table-column prop="telephone" label="电话" width="165">
-              </el-table-column>
-              <el-table-column prop="address" label="地址"> </el-table-column>
-              <el-table-column
-                prop="inTime"
-                label="入职日期"
-                sortable
-                width="165"
-              >
-              </el-table-column>
-            </el-table></div
-        ></el-col>
+              <template slot-scope="scope">
+                <el-button size="mini" @click="handleEdit(scope.row)"
+                  >编辑</el-button
+                >
+                <el-button
+                  size="mini"
+                  type="danger"
+                  @click="handleDelete(scope.row)"
+                  >删除</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
+
+          <el-table
+            v-show="userShow"
+            :data="pageData"
+            style="width: 100%; padding-left: 50px;padding-right: 50px;"
+          >
+            <el-table-column type="index"> </el-table-column>
+            <el-table-column label="部门名称" width="400">
+              <template slot-scope="scope">
+                <span>{{ scope.row.departmentName }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="领导姓名" width="400">
+              <template slot-scope="scope">
+                <span>{{ scope.row.manageName }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="部门电话" width="400">
+              <template slot-scope="scope">
+                <span>{{ scope.row.departmentTel }}</span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
         <div class="block">
           <el-pagination
             class="page"
@@ -103,17 +134,52 @@
         </div>
       </el-row>
     </div>
+
+    <el-dialog
+      title="编辑部门"
+      :visible.sync="dialogFormVisible"
+      :append-to-body="true"
+    >
+      <el-form>
+        <el-form-item
+          label="部门名称:"
+          :label-width="formLabelWidth"
+          style="margin-bottom: 10px;"
+        >
+          <el-input
+            style="width: 250px;"
+            v-model="dialogForm.departmentName"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="部门电话:" :label-width="formLabelWidth">
+          <el-input
+            style="width: 250px;"
+            v-model="dialogForm.departmentTel"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="updateDept()">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
-import { getEmpList } from "@/api/user/getEmployees.js";
-import formData from "@/store/data.js";
-import { initPage } from "@/api/page/init.js";
-import { formatDate } from "@/utils/dateUtil.js";
+import { getDeptList } from "@/api/department/getDepartments.js";
+import { deleteDept } from "@/api/department/deleteDepartment.js";
+import { updateDept } from "@/api/department/updateDepartment.js";
 export default {
   name: "userList",
   data() {
     return {
+      adminShow: true,
+      userShow: false,
+      //弹层
+      dialogFormVisible: false,
+      formLabelWidth: "240px",
       //分页
       //显示数据总数
       sumNum: 0,
@@ -122,28 +188,41 @@ export default {
       //当前页
       currentPage: 1,
       //分页
+      //查询按钮状态
+      disable: false,
       //页面表单start
       form: {
-        pageNo: 1,
-        pageSize: 0,
-        empName: "",
-        employeeNumber: "",
-        mangerName: "",
-        sex: "1",
-        education: "",
-        departmentNumber: "",
-        positionNumber: "",
-        intimeStart: "",
-        intimeEnd: ""
+        departmentName: "",
+        manageName: "",
+        departmentTel: ""
       },
-      //入职日期数组 绑定在日期选择器
-      inTime: [],
-      //用于初始页面显示的数据: 部门和职称
-      initData: formData,
-      //查询按钮控制
-      disable: false,
+      //弹层数据
+      dialogForm: {
+        id: "",
+        departmentName: "",
+        departmentTel: ""
+      },
       //查询数据容器
-      tableData: []
+      tableData: [
+        {
+          id: "",
+          departmentName: "2016-05-03",
+          manageName: "王小虎",
+          departmentTel: "上海市普陀区金沙江路 1518 弄"
+        },
+        {
+          id: "",
+          departmentName: "2016-05-03",
+          manageName: "王小虎",
+          departmentTel: "上海市普陀区金沙江路 1518 弄"
+        },
+        {
+          id: "",
+          departmentName: "2016-05-03",
+          manageName: "王小虎",
+          departmentTel: "上海市普陀区金沙江路 1518 弄"
+        }
+      ]
     };
   },
   methods: {
@@ -155,83 +234,98 @@ export default {
     },
     //提交查询参数
     submitForm() {
-      if (this.form.intimeStart !== "" && this.form.intimeEnd !== "") {
-        this.form.intimeStart = formatDate(this.inTime[0]);
-        this.form.intimeEnd = formatDate(this.inTime[1]);
-      }
-      this.form.sex = this.form.sex === "1" ? "男" : "女";
-      //设置每页条数
-      this.form.pageSize = this.pageSize;
-      //设置页数
-      this.form.pageNo = this.currentPage;
-      getEmpList(this.form).then(response => {
-        this.form.sex = this.form.sex === "男" ? "1" : "2";
+      this.tableData = [];
+      getDeptList(this.form).then(response => {
         const data = response.data;
-        debugger;
-        if (data.code === 400) {
-          this.tableData = [];
-          this.$message("数据为空!");
-        } else {
-          const tableList = data.data.list;
-          this.tableData = [];
-          this.sumNum = tableList.length;
-          for (let i = 0; i < tableList.length; i++) {
+        if (data.code !== 200) {
+          this.$message({
+            message: data.msg,
+            type: "warning"
+          });
+        }
+        if (data.code == 200) {
+          const tableInfo = data.data;
+          this.sumNum = tableInfo.length;
+          for (let i = 0; i < tableInfo.length; i++) {
             const table = {
-              empName: "",
-              deptName: "",
-              mangName: "",
-              inTime: "",
-              education: "",
-              option: "",
-              telephone: "",
-              address: ""
+              id: "",
+              departmentName: "",
+              manageName: "",
+              departmentTel: ""
             };
-            table.empName = tableList[i].name;
-            if (tableList[i].department !== null) {
-              table.deptName = tableList[i].department.name;
+            table.id = tableInfo[i].id;
+            table.departmentName = tableInfo[i].name;
+            if (
+              tableInfo[i].employee.name != null ||
+              tableInfo[i].employee.name != ""
+            ) {
+              table.manageName = tableInfo[i].employee.name;
             } else {
-              table.deptName = "无";
+              table.manageName = "无";
             }
-            if (tableList[i].employee !== null) {
-              table.mangName = tableList[i].employee.name;
-            } else {
-              table.mangName = "无";
-            }
-            if (tableList[i].position !== null) {
-              table.option = tableList[i].position.name;
-            } else {
-              table.option = "无";
-            }
-            table.inTime = tableList[i].inTime;
-            table.education = tableList[i].education;
-            table.telephone = tableList[i].telephone;
-            table.address = tableList[i].address;
+            table.departmentTel = tableInfo[i].telephone;
             this.tableData.push(table);
           }
         }
       });
     },
-    reset() {
-      this.disable = false;
-      this.form.empName = "";
-      this.form.employeeNumber = "";
-      this.form.mangerName = "";
-      this.form.sex = "1";
-      this.form.input = "";
-      this.form.education = "";
-      this.form.departmentName = "";
-      this.form.intimeStart = "";
-      this.form.intimeEnd = "";
+    //删除按钮
+    handleDelete(table) {
+      this.$confirm("此操作将永久删除该记录, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          deleteDept(table.id).then(response => {
+            const data = response.data;
+            if (data.code == 200) {
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
     },
-    init() {
-      //页面初始化 发送请求获取所有部门和职称
-      initPage();
-      this.submitForm();
-      this.initData = formData;
-    }
+    //编辑按钮
+    handleEdit(table) {
+      this.dialogFormVisible = true;
+      this.dialogForm.id = table.id;
+      this.dialogForm.departmentName = table.departmentName;
+      this.dialogForm.departmentTel = table.departmentTel;
+    },
+    updateDept() {
+      this.dialogFormVisible = false;
+      debugger;
+      updateDept(this.dialogForm).then(response => {
+        const data = response.data;
+        if (data.code == 200) {
+          this.$message({
+            type: "success",
+            message: "修改成功!"
+          });
+        }
+      });
+    },
+    reset() {}
   },
   created: function() {
-    this.init();
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    if (user.role == 0) {
+      this.adminShow = true;
+      this.userShow = false;
+    } else {
+      this.adminShow = false;
+      this.userShow = true;
+    }
+    this.submitForm();
   },
   computed: {
     //自动计算页面数据展示
@@ -244,15 +338,12 @@ export default {
   }
 };
 </script>
-<style>
+<style lang="scss" scoped>
 .main-content[data-v-5c886d6e] {
   width: 100%;
   padding-top: 3px;
   padding-left: 3px;
   padding-right: 3px;
-}
-.rowStyle {
-  width: 100%;
 }
 </style>
 <style lang="scss" scoped>
@@ -261,17 +352,6 @@ export default {
   position: fixed;
   right: 20%;
   bottom: 20px;
-}
-.buttonStyle {
-  margin-top: 2px;
-  margin-left: 50px;
-  width: 80px;
-  height: 36px;
-  line-height: 12px;
-}
-.timeStyle {
-  width: 75%;
-  margin-left: 10px;
 }
 .line {
   margin: 0 8px 9px 0px;
@@ -302,12 +382,8 @@ export default {
   width: auto;
   margin-left: 10px;
 }
-.radio {
-  margin-top: 9px;
-  margin-left: 14px;
-  color: rgb(85, 85, 85);
-}
 .el-row {
+  margin-top: 16px;
   margin-bottom: 20px;
   &:last-child {
     margin-bottom: 0;

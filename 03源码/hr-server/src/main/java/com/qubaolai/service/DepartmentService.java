@@ -1,7 +1,6 @@
 package com.qubaolai.service;
 
 import com.qubaolai.po.Department;
-import com.qubaolai.vo.ResultVo;
 
 import java.util.List;
 import java.util.Map;
@@ -44,4 +43,10 @@ public interface DepartmentService {
      * @param param
      */
     public void insertdept(Map<String, Object> param);
+
+    /**
+     * 通过主键删除部门记录
+     * @param id
+     */
+    public void deleteDept(String id);
 }

@@ -55,11 +55,11 @@
             <span style="padding-top: 10px;">:</span>
             <el-radio
               v-model="form.gender"
-              label="1"
+              label="0"
               style="margin-left: 5px; margin-right: 5px;padding-top: 10px;"
               >男</el-radio
             >
-            <el-radio v-model="form.gender" label="2">女</el-radio>
+            <el-radio v-model="form.gender" label="1">女</el-radio>
           </div></el-col
         >
       </el-row>
@@ -256,7 +256,7 @@ export default {
         name: "",
         username: "",
         telephone: "",
-        gender: "1",
+        gender: "0",
         birthday: "",
         address: "",
         education: "",
@@ -309,7 +309,7 @@ export default {
           name: this.form.name,
           username: this.form.username,
           telephone: this.form.telephone,
-          gender: this.form.gender === "1" ? "男" : "女",
+          gender: this.form.gender === "0" ? "男" : "女",
           birthday: this.form.birthday,
           address: this.form.address,
           education: this.form.education,
@@ -336,7 +336,7 @@ export default {
       this.form.name = row.name;
       this.form.username = row.username;
       this.form.telephone = row.telephone;
-      this.form.gender = row.gender == "男" ? "1" : "2";
+      this.form.gender = row.gender == "男" ? "0" : "1";
       this.form.birthday = row.birthday;
       this.form.address = row.address;
       this.form.education = row.education;
@@ -348,7 +348,6 @@ export default {
     //删除按钮
     handleDelete(index) {
       this.tableData.splice(index, 1);
-      debugger;
       if (index == parseInt(this.tableindex)) {
         this.reset();
       }
@@ -365,7 +364,7 @@ export default {
           name: this.form.name,
           username: this.form.username,
           telephone: this.form.telephone,
-          gender: this.form.gender === "1" ? "男" : "女",
+          gender: this.form.gender === "0" ? "男" : "女",
           birthday: this.form.birthday,
           address: this.form.address,
           education: this.form.education,
@@ -382,7 +381,6 @@ export default {
         if (this.tableData.length > 0) {
           const options = this.initData.formData.options;
           const department = this.initData.formData.departments;
-          debugger;
           for (let i = 0; i < options.length; i++) {
             for (let j = 0; j < this.tableData.length; j++) {
               if (this.tableData[j].positionNumber == options[i].label) {
@@ -397,11 +395,21 @@ export default {
               }
             }
           }
+          for (let i = 0; i < department.length; i++) {
+            for (let j = 0; j < this.tableData.length; j++) {
+              if (this.tableData[j].gender == "男") {
+                this.tableData[j].gender = 0;
+              } else {
+                this.tableData[j].gender = 1;
+              }
+            }
+          }
           //声明传入后台的对象参数,springmvc转换json时需要通过key获取值 不能直接传对象数组到后台
           const emplist = {
             employees: []
           };
           emplist.employees = this.tableData;
+          debugger;
           //调用后台api接口
           insertEmp(emplist).then(response => {
             const data = response.data;
@@ -429,7 +437,7 @@ export default {
       this.form.name = "";
       this.form.username = "";
       this.form.telephone = "";
-      this.form.gender = "1";
+      this.form.gender = "0";
       this.form.birthday = "";
       this.form.address = "";
       this.form.education = "";

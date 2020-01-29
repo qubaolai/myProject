@@ -40,8 +40,8 @@
         <el-col :span="5">
           <div class="grid-content bg-purple rowStyle">
             <span>员工性别:</span>
-            <el-radio class="radio" v-model="form.sex" label="1">男</el-radio>
-            <el-radio class="radio" v-model="form.sex" label="2">女</el-radio>
+            <el-radio class="radio" v-model="form.sex" label="0">男</el-radio>
+            <el-radio class="radio" v-model="form.sex" label="1">女</el-radio>
           </div>
         </el-col>
         <el-col :span="4">
@@ -210,7 +210,7 @@ export default {
         empName: "",
         employeeNumber: "",
         mangerName: "",
-        sex: "1",
+        sex: "0",
         education: "",
         departmentNumber: "",
         positionNumber: "",
@@ -240,15 +240,12 @@ export default {
         this.form.intimeStart = formatDate(this.inTime[0]);
         this.form.intimeEnd = formatDate(this.inTime[1]);
       }
-      this.form.sex = this.form.sex === "1" ? "男" : "女";
       //设置每页条数
       this.form.pageSize = this.pageSize;
       //设置页数
       this.form.pageNo = this.currentPage;
       getEmpList(this.form).then(response => {
-        this.form.sex = this.form.sex === "男" ? "1" : "2";
         const data = response.data;
-        debugger;
         if (data.code === 400) {
           this.tableData = [];
           this.$message("数据为空!");
@@ -293,16 +290,18 @@ export default {
       });
     },
     reset() {
+      debugger;
       this.disable = false;
       this.form.empName = "";
       this.form.employeeNumber = "";
       this.form.mangerName = "";
-      this.form.sex = "1";
+      this.form.sex = "0";
       this.form.input = "";
       this.form.education = "";
       this.form.departmentName = "";
       this.form.intimeStart = "";
       this.form.intimeEnd = "";
+      this.inTime = [];
     },
     init() {
       //页面初始化 发送请求获取所有部门和职称

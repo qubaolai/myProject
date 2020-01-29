@@ -71,7 +71,7 @@
                         <!--</props>-->
                     <!--</property>-->
                 <!--</bean>-->
-                <!--<bean id="timeIntercepter" class="com.qubaolai.common.intercepter.TimeIntercepter"></bean>-->
+                <bean id="timeIntercepter" class="com.qubaolai.common.intercepter.TimeIntercepter"></bean>
             </array>
         </property>
     </bean>
