@@ -116,6 +116,16 @@ public class UserController {
         return ResultVo.sendResult(200, "success");
     }
 
+    /**
+     * 获取所有员工
+     * @return
+     */
+    @GetMapping("/getEmpList")
+    public ResultVo getEmps(){
+        List<Employee> emps = employeeService.getEmps();
+        return ResultVo.sendResult(200, "success", emps);
+    }
+
     @RequestMapping("/logout")
     public ResultVo logout(HttpServletRequest request){
         //从session中删除当前登录用户

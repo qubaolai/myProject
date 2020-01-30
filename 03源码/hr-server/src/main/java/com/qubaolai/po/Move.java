@@ -5,13 +5,13 @@ public class Move {
 
     private String employeeNumber;
 
-    private String before;
+    private String deptBefore;
 
-    private String after;
+    private String deptAfter;
 
-    private String time;
+    private String updateTime;
 
-    private String manager;
+    private String managerId;
 
     private String notes;
 
@@ -31,36 +31,36 @@ public class Move {
         this.employeeNumber = employeeNumber;
     }
 
-    public String getBefore() {
-        return before;
+    public String getDeptBefore() {
+        return deptBefore;
     }
 
-    public void setBefore(String before) {
-        this.before = before;
+    public void setDeptBefore(String deptBefore) {
+        this.deptBefore = deptBefore;
     }
 
-    public String getAfter() {
-        return after;
+    public String getDeptAfter() {
+        return deptAfter;
     }
 
-    public void setAfter(String after) {
-        this.after = after;
+    public void setDeptAfter(String deptAfter) {
+        this.deptAfter = deptAfter;
     }
 
-    public String getTime() {
-        return time;
+    public String getUpdateTime() {
+        return updateTime;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
     }
 
-    public String getManager() {
-        return manager;
+    public String getManagerId() {
+        return managerId;
     }
 
-    public void setManager(String manager) {
-        this.manager = manager;
+    public void setManagerId(String managerId) {
+        this.managerId = managerId;
     }
 
     public String getNotes() {

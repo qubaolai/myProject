@@ -3,15 +3,16 @@ package com.qubaolai.service.impl;
 import com.qubaolai.common.exception.exceptions.DataException;
 import com.qubaolai.common.exception.exceptions.NoDataException;
 import com.qubaolai.common.exception.exceptions.ParamException;
+import com.qubaolai.common.utils.DateUtil;
 import com.qubaolai.common.utils.UUIDUtil;
 import com.qubaolai.mapper.DepartmentMapper;
 import com.qubaolai.mapper.EmployeeMapper;
-import com.qubaolai.po.Department;
-import com.qubaolai.po.DepartmentExample;
-import com.qubaolai.po.Employee;
-import com.qubaolai.po.EmployeeExample;
+import com.qubaolai.mapper.MoveMapper;
+import com.qubaolai.po.*;
 import com.qubaolai.service.DepartmentService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -29,6 +30,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     private DepartmentMapper departmentMapper;
     @Resource
     private EmployeeMapper employeeMapper;
+    @Resource
+    private MoveMapper moveMapper;
 
     /**
      * 获取所有部门
@@ -140,6 +143,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         departmentMapper.updateByExampleSelective(department, example);
     }
 
+    @Transactional(propagation= Propagation.REQUIRED)
     @Override
     public void insertdept(Map<String, Object> param) {
         Department department = new Department();
@@ -147,7 +151,6 @@ public class DepartmentServiceImpl implements DepartmentService {
         if (null == param.get("deptName") || "".equals((String) param.get("deptName"))) {
             throw new ParamException(501, "参数异常");
         }
-
         department.setName((String) param.get("deptName"));
         DepartmentExample departmentExample = new DepartmentExample();
         DepartmentExample.Criteria dcriteria = departmentExample.createCriteria();
@@ -170,18 +173,32 @@ public class DepartmentServiceImpl implements DepartmentService {
         if (null == param.get("manageName") || "".equals((String) param.get("manageName"))) {
             throw new ParamException(501, "参数异常");
         }
-        EmployeeExample example = new EmployeeExample();
-        EmployeeExample.Criteria criteria = example.createCriteria();
-        //使用员工编号 避免因为重名员工出现异常
-        criteria.andUsernameEqualTo((String) param.get("manageName"));
-        List<Employee> employees = employeeMapper.selectByExample(example);
-        if (null == employees || 0 >= employees.size()) {
+        Employee employee = employeeMapper.selectByPrimaryKey((String) param.get("manageName"));
+        if (null == employee) {
             throw new NoDataException(400, "员工不存在");
         }
-        department.setManager(employees.get(0).getId());
+        //判断员工是否已经为某部门领导
+        if(null != employee.getDeviceid() && !"".equals(employee.getDeviceid())){
+            throw new DataException(401, "员工已是其他部门领导!");
+        }
+        //向员工调度表中添加信息
+        Move move = new Move();
+        move.setId(UUIDUtil.getUUID());
+        move.setDeptBefore(employee.getDepartmentNumber());
+        move.setManagerId(employee.getManageerId());
+        //修改员工部门
+        employee.setDeviceid("0");
+        employee.setDepartmentNumber(department.getId());
+        employeeMapper.updateByPrimaryKeySelective(employee);
+        move.setDeptAfter(employee.getDepartmentNumber());
+        move.setEmployeeNumber(employee.getId());
+        move.setUpdateTime(DateUtil.getDate());
+        moveMapper.insertSelective(move);
+        department.setManager(employee.getId());
         if (null != param.get("notes") || !"".equals((String) param.get("notes"))) {
             department.setNotes((String) param.get("notes"));
         }
+        department.setValid(0);
         departmentMapper.insert(department);
     }
 

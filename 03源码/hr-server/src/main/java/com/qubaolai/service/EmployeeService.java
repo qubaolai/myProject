@@ -59,4 +59,10 @@ public interface EmployeeService extends BaseService {
      * @return
      */
     public Employee getEmpByName(String name);
+
+    /**
+     * 获取所有员工
+     * @return
+     */
+    public List<Employee> getEmps();
 }

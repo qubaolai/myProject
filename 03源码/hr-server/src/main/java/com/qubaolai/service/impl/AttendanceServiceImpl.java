@@ -37,8 +37,13 @@ public class AttendanceServiceImpl implements AttendanceService {
      */
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void singIn(Map<String, Object> map){
-        Attendance attendance = new Attendance();
-        attendance.setId(UUIDUtil.getUUID());
+        Attendance attendance = null;
+        if(null == (Attendance)map.get("attendance")){
+            attendance = new Attendance();
+            attendance.setId(UUIDUtil.getUUID());
+        }else{
+            attendance = (Attendance)map.get("attendance");
+        }
         attendance.setEmployeeNumber(((Employee)map.get("user")).getId());
         //向签到记录添加数据
         attendance.setDay(DateUtil.getDate());
@@ -68,7 +73,7 @@ public class AttendanceServiceImpl implements AttendanceService {
         AttendanceExample example = new AttendanceExample();
         AttendanceExample.Criteria criteria = example.createCriteria();
         //当前登录系统用户
-        criteria.andEmployeeNumberEqualTo(employeeService.getCurrentLoginEmployee().getUsername());
+        criteria.andEmployeeNumberEqualTo(employeeService.getCurrentLoginEmployee().getId());
         criteria.andDayEqualTo(DateUtil.getDate());
         List<Attendance> attendances = attendanceMapper.selectByExample(example);
         if(0 >= attendances.size() || null == attendances){

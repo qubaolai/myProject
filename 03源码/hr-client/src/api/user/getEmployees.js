@@ -7,3 +7,9 @@ export function getEmpList(data) {
     data: data
   });
 }
+export function getEmps() {
+  return intercept.request({
+    method: "get",
+    url: "/user/getEmpList"
+  });
+}

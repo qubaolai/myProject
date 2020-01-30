@@ -123,15 +123,6 @@ export default new VueRouter({
             name: "请假审批"
           },
           component: () => import("../views/holiday/approvalHoliday.vue")
-        },
-        {
-          path: "/applyHoliday",
-          name: "ApplyHoliday",
-          // hidden: false,
-          meta: {
-            name: "请假申请"
-          },
-          component: () => import("../views/holiday/applyHoliday.vue")
         }
       ]
     },
@@ -153,6 +144,27 @@ export default new VueRouter({
             name: "修改密码"
           },
           component: () => import("../views/system/updatePassword.vue")
+        }
+      ]
+    },
+    {
+      path: "/test",
+      name: "Test",
+      hidden: false,
+      meta: {
+        name: "测试",
+        icon: "systemConfig"
+      },
+      component: layout,
+      children: [
+        {
+          path: "/test",
+          name: "Test",
+          // hidden: false,
+          meta: {
+            name: "修改密码"
+          },
+          component: () => import("../views/test/test.vue")
         }
       ]
     }

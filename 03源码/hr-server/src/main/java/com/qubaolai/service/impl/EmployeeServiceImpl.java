@@ -284,4 +284,11 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
         }
         return employees.get(0);
     }
+
+    @Override
+    public List<Employee> getEmps() {
+        EmployeeExample employeeExample = new EmployeeExample();
+        List<Employee> employeeList = employeeMapper.selectByExample(employeeExample);
+        return employeeList;
+    }
 }
