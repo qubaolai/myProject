@@ -290,7 +290,6 @@ export default {
       });
     },
     reset() {
-      debugger;
       this.disable = false;
       this.form.empName = "";
       this.form.employeeNumber = "";

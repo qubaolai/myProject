@@ -86,7 +86,7 @@ public class LeaServiceImpl implements LeaService {
         lea.setEndTime((String) param.get("endTime"));
         //设置请假原因
         if (null == param.get("reason") || "".equals(param.get("reason"))) {
-            throw new ParamException(501, "参数异常");
+            throw new ParamException(501, "请输入请假原因!");
         }
         //判断原因长度
         if (200 <= StringUtil.length((String) param.get("reason"))) {
@@ -94,7 +94,8 @@ public class LeaServiceImpl implements LeaService {
         }
         lea.setReason((String) param.get("reason"));
         //设置请假类型
-        lea.setType((Integer) param.get("type"));
+        int type = Integer.parseInt((String) param.get("type"));
+        lea.setType(type);
         //审批状态 默认为未审批
         lea.setStatus(0);
         //数据落库

@@ -1,9 +1,5 @@
 import intercept from "@/utils/intercepter";
 /**
- * 获取验证码
- */
-
-/**
  * 登录
  */
 export function login(formData) {
@@ -19,6 +15,3 @@ export function login(formData) {
     }
   });
 }
-/**
- * 注册
- */

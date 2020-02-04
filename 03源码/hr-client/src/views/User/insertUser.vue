@@ -409,7 +409,7 @@ export default {
             employees: []
           };
           emplist.employees = this.tableData;
-          debugger;
+          this.tableData = [];
           //调用后台api接口
           insertEmp(emplist).then(response => {
             const data = response.data;
@@ -418,7 +418,6 @@ export default {
                 message: "添加成功",
                 type: "success"
               });
-              this.tableData = [];
             }
           });
           this.reset();

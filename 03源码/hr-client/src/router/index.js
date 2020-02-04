@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import layout from "../views/Layout/layout.vue";
+import layout from "../views/layout/layout.vue";
 
 Vue.use(VueRouter);
 
@@ -21,7 +21,7 @@ export default new VueRouter({
       meta: {
         name: "登录"
       },
-      component: () => import("../views/Login/index.vue")
+      component: () => import("../views/login/index.vue")
     },
     {
       path: "/console",
@@ -41,7 +41,7 @@ export default new VueRouter({
           meta: {
             name: "首页"
           },
-          component: () => import("../views/Console/index.vue")
+          component: () => import("../views/console/index.vue")
         }
       ]
     },
@@ -62,7 +62,7 @@ export default new VueRouter({
           meta: {
             name: "员工列表"
           },
-          component: () => import("../views/User/userList.vue")
+          component: () => import("../views/user/userList.vue")
         },
         {
           path: "/insetUser",
@@ -71,7 +71,7 @@ export default new VueRouter({
           meta: {
             name: "添加员工"
           },
-          component: () => import("../views/User/insertUser.vue")
+          component: () => import("../views/user/insertUser.vue")
         }
       ]
     },
@@ -144,27 +144,6 @@ export default new VueRouter({
             name: "修改密码"
           },
           component: () => import("../views/system/updatePassword.vue")
-        }
-      ]
-    },
-    {
-      path: "/test",
-      name: "Test",
-      hidden: false,
-      meta: {
-        name: "测试",
-        icon: "systemConfig"
-      },
-      component: layout,
-      children: [
-        {
-          path: "/test",
-          name: "Test",
-          // hidden: false,
-          meta: {
-            name: "修改密码"
-          },
-          component: () => import("../views/test/test.vue")
         }
       ]
     }

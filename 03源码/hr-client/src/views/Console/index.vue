@@ -20,16 +20,19 @@
     </div>
     <Modal
       type="confirm"
-      @took="okfall"
+      @took="applyHoliday"
       @tocancel="cancelfall"
       :showstate="loading"
+      ref="childModal"
     >
-      <span slot="tlt">假期时间:</span>
+      <span slot="tlt"></span>
     </Modal>
   </div>
 </template>
 <script>
 import { singin } from "@/api/user/signin.js";
+import { apply } from "@/api/lea/apply.js";
+import { formatDate } from "@/utils/dateUtil.js";
 import Modal from "@/components/load.vue";
 export default {
   name: "console",
@@ -75,6 +78,30 @@ export default {
         });
       });
     },
+    applyHoliday() {
+      //获取子组件的值
+      const value = this.$refs.childModal.value;
+      const textarea = this.$refs.childModal.textarea;
+      const applyType = this.$refs.childModal.applyType;
+      const form = {
+        startTime: formatDate(value[0]),
+        endTime: formatDate(value[1]),
+        reason: textarea,
+        type: applyType
+      };
+      apply(form).then(response => {
+        const data = response.data;
+        if (data.code === 200) {
+          this.loading = false;
+          this.$message({
+            message: "申请成功!",
+            type: "success"
+          });
+        } else {
+          this.$message(data.msg);
+        }
+      });
+    },
     setNowTimes() {
       let myDate = new Date();
       this.nowTimes.yy = myDate.getFullYear();
@@ -95,10 +122,6 @@ export default {
           ? "0" + myDate.getSeconds()
           : myDate.getSeconds()
       );
-    },
-    okfall() {
-      this.loading = false;
-      alert("tijiao");
     },
     cancelfall() {
       this.loading = false;

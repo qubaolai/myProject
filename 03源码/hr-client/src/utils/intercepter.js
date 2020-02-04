@@ -1,4 +1,5 @@
 import axios from "axios";
+import router from "@/router";
 import { Message } from "element-ui";
 import { setData } from "@/store/data.js";
 const BASEURL = process.env.NODE_ENV === "production" ? "" : "/api";
@@ -14,7 +15,12 @@ intercept.interceptors.request.use(
     //如果不是登录请求,在请求头添加token
     const url = config.url;
     if (url !== "/user/login") {
-      config.headers["token"] = window.localStorage.getItem("token");
+      const token = window.localStorage.getItem("token");
+      if (token !== null) {
+        config.headers["token"] = token;
+      } else {
+        config.headers["token"] = "";
+      }
     }
     return config;
   },
@@ -32,6 +38,8 @@ intercept.interceptors.response.use(
       Message.error("系统异常!");
     } else if (data.msg === "initPage") {
       setData(data.data);
+    } else if (data.code === 302) {
+      router.push({ name: "Login" });
     } else {
       //返回response
       return response;
@@ -43,7 +51,6 @@ intercept.interceptors.response.use(
   }
 );
 // function setDept(data) {
-//   debugger;
 //   const dept = data["dept"];
 //   // const position = data["option"];
 //   formData.departments = [];

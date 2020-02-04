@@ -67,6 +67,7 @@ export default {
       insertDept(this.form).then(response => {
         const data = response.data;
         if (data.code == 200) {
+          this.reset();
           this.$message({
             message: "添加成功!",
             type: "success"

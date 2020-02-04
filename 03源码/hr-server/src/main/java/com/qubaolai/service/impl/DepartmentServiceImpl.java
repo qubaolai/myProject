@@ -188,6 +188,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         move.setManagerId(employee.getManageerId());
         //修改员工部门
         employee.setDeviceid("0");
+        employee.setManageerId(employee.getId());
         employee.setDepartmentNumber(department.getId());
         employeeMapper.updateByPrimaryKeySelective(employee);
         move.setDeptAfter(employee.getDepartmentNumber());
@@ -202,12 +203,31 @@ public class DepartmentServiceImpl implements DepartmentService {
         departmentMapper.insert(department);
     }
 
+    @Transactional(propagation= Propagation.REQUIRED)
     @Override
     public void deleteDept(String id) {
         //逻辑删除 暂时不需要关联修改员工信息
         Department department = new Department();
         department.setId(id);
         department.setValid(1);
+        //修改员工信息将部门和部门身份设置为空
+        EmployeeExample employeeExample = new EmployeeExample();
+        EmployeeExample.Criteria criteria = employeeExample.createCriteria();
+        criteria.andDepartmentNumberEqualTo(id);
+        List<Employee> employeeList = employeeMapper.selectByExample(employeeExample);
+        if(null == employeeList || 0 >= employeeList.size()){
+            throw new NoDataException(400, "数据为空");
+        }
+        for(Employee employee : employeeList){
+            if(employee.getDepartmentNumber().equals(id) && employee.getDeviceid().equals("0")){
+                employee.setDeviceid(null);
+            }
+            if(employee.getDepartmentNumber().equals(id)){
+                employee.setDepartmentNumber(null);
+                employee.setManageerId(null);
+            }
+            employeeMapper.updateByExample(employee,employeeExample);
+        }
         departmentMapper.updateByPrimaryKeySelective(department);
     }
 }

@@ -8,13 +8,15 @@
         <img src="@/assets/images/face.jpg" alt />
         {{ user.username }}
       </div>
-      <div class="header-icon pull-left">
+      <div class="header-icon pull-left" @click="exit()">
         <svg-icon iconClass="logout" class="logout" />
       </div>
     </div>
   </div>
 </template>
 <script>
+import router from "@/router";
+import { logout } from "@/api/user/logout.js";
 export default {
   data: () => {
     return {
@@ -28,8 +30,31 @@ export default {
   },
   mounted() {
     const user = JSON.parse(sessionStorage.getItem("user"));
+    if (user === null) {
+      this.$message({
+        message: "请登录!",
+        type: "warning"
+      });
+      router.push({ name: "Login" });
+    }
     this.user.username = user.name;
     this.user.userRole = user.role;
+  },
+  methods: {
+    exit() {
+      logout().then(response => {
+        const data = response.data;
+        if (data.code === 200) {
+          window.sessionStorage.clear();
+          router.push({ name: "Login" });
+        } else {
+          this.$message({
+            message: data.msg,
+            type: "warning"
+          });
+        }
+      });
+    }
   }
 };
 </script>

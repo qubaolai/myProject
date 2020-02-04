@@ -32,42 +32,9 @@
               :index="subItem.path"
               >{{ subItem.meta.name }}</el-menu-item
             >
-            <!-- <el-menu-item index="1-2">个人信息</el-menu-item> -->
           </el-menu-item-group>
-          <!-- <el-submenu index="1-4">
-          <span slot="title">员工</span>
-          <el-menu-item index="1-4-1">选项1</el-menu-item>
-          </el-submenu>-->
         </el-submenu>
       </template>
-      <!-- <el-submenu index="2">
-        <template slot="title">
-          <i class="el-icon-location"></i>
-          <span slot="title">员工</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="2-1">共1</el-menu-item>
-          <el-menu-item index="2-2">功能2</el-menu-item>
-        </el-menu-item-group>
-        <el-submenu index="2-3">
-          <span slot="title">员工</span>
-          <el-menu-item index="2-1-1">选项1</el-menu-item>
-        </el-submenu>
-      </el-submenu>
-      <el-submenu index="3">
-        <template slot="title">
-          <i class="el-icon-menu"></i>
-          <span slot="title">部门</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="3-1">功能一</el-menu-item>
-          <el-menu-item index="3-2">功能二</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu>
-      <el-menu-item index="4">
-        <i class="el-icon-setting"></i>
-        <span slot="title">系统设置</span>
-      </el-menu-item>-->
     </el-menu>
   </div>
 </template>
@@ -84,7 +51,7 @@ export default {
   methods: {
     handleOpen() {
       // console.log(key, keyPath);
-      // console.log(this.routers);
+      console.log(this.routers);
     },
     handleClose() {
       // console.log(key, keyPath);

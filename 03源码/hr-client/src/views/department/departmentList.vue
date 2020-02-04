@@ -58,22 +58,23 @@
       <el-row>
         <div>
           <el-table
+            height="400"
             v-show="adminShow"
             :data="pageData"
             style="width: 100%; padding-left: 50px;padding-right: 50px;"
           >
             <el-table-column type="index"> </el-table-column>
-            <el-table-column label="部门名称" width="400">
+            <el-table-column label="部门名称" width="300">
               <template slot-scope="scope">
                 <span>{{ scope.row.departmentName }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="领导姓名" width="400">
+            <el-table-column label="领导姓名" width="300">
               <template slot-scope="scope">
                 <span>{{ scope.row.manageName }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="部门电话" width="400">
+            <el-table-column label="部门电话" width="300">
               <template slot-scope="scope">
                 <span>{{ scope.row.departmentTel }}</span>
               </template>
@@ -303,7 +304,6 @@ export default {
     },
     updateDept() {
       this.dialogFormVisible = false;
-      debugger;
       updateDept(this.dialogForm).then(response => {
         const data = response.data;
         if (data.code == 200) {

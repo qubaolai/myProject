@@ -27,7 +27,7 @@
         <el-form-item prop="password" class="item-from">
           <label>密码</label>
           <el-input
-            type="text"
+            type="password"
             v-model="ruleForm.password"
             autocomplete="off"
             maxlength="20"
@@ -144,7 +144,7 @@ export default {
         { txt: "注册", current: false, type: "registered" }
       ],
       ruleForm: {
-        username: "asidun",
+        username: "asd",
         password: "asd123",
         confirmPassword: "",
         age: ""
