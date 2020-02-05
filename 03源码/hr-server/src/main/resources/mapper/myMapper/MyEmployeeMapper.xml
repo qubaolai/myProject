@@ -6,6 +6,8 @@
         <result column="empName" property="name" jdbcType="VARCHAR"/>
         <result column="telephone" property="telephone" jdbcType="VARCHAR"/>
         <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="birthday" property="birthday" jdbcType="VARCHAR"/>
         <result column="education" property="education" jdbcType="VARCHAR"/>
         <result column="in_time" property="inTime" jdbcType="DATE"/>
         <result column="manageer_id" property="manageerId" jdbcType="VARCHAR"/>
@@ -29,6 +31,8 @@
     d.ID as did,
 	d.NAME deptName,
 	e.in_time,
+	e.email,
+	e.birthday,
 	e.manageer_id as empId,
 	emp.NAME AS mangName,
 	e.education,

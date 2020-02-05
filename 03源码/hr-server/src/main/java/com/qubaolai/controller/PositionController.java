@@ -1,14 +1,13 @@
 package com.qubaolai.controller;
 
 import com.qubaolai.common.exception.exceptions.ParamException;
+import com.qubaolai.po.Position;
 import com.qubaolai.service.PositionService;
 import com.qubaolai.vo.ResultVo;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,5 +28,14 @@ public class PositionController {
         }
         positionService.insertOption(param);
         return ResultVo.sendResult(200, "success");
+    }
+
+    @GetMapping("/getPositionByDeptId")
+    public ResultVo getPositionByDeptId(String deptId){
+        if(deptId == null || "".equals(deptId)){
+            throw new ParamException(501, "参数异常");
+        }
+        List<Position> positionByDeptNum = positionService.getPositionByDeptNum(deptId);
+        return ResultVo.sendResult(200, "success", positionByDeptNum);
     }
 }

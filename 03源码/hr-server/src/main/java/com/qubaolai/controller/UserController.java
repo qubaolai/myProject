@@ -9,6 +9,7 @@ import com.qubaolai.service.EmployeeService;
 import com.qubaolai.vo.ResultVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -31,54 +32,57 @@ public class UserController {
 
     /**
      * 用户登录
+     *
      * @param employee
      * @return
      */
     @PostMapping("/login")
-    public ResultVo login(@RequestBody Employee employee){
+    public ResultVo login(@RequestBody Employee employee) {
         //判断传入用户是否为空
-        if(employee == null){
+        if (employee == null) {
             throw new ParamException("参数信息为空！");
         }
         ResultVo resultVo = employeeService.login(employee);
         Employee employee1 = new Employee();
-        if(resultVo.getCode() == 200){
+        if (resultVo.getCode() == 200) {
             employee1 = (Employee) resultVo.getData();
             //生成token
             String token = JWTUtil.encrypt(employee);
             //定义返回数据
             Map<String, Object> map = new HashMap<>();
             map.put("user", employee1);
-            map.put("token",token);
+            map.put("token", token);
             log.info(token);
-            return ResultVo.sendResult(200,"success",map);
-        }else {
+            return ResultVo.sendResult(200, "success", map);
+        } else {
             return resultVo;
         }
     }
 
     /**
      * 用户密码修改
+     *
      * @param map
      * @return
      */
     @PutMapping("/updatePassword")
-    public ResultVo updatePassword(@RequestBody Map<String,String> map){
+    public ResultVo updatePassword(@RequestBody Map<String, String> map) {
         ResultVo resultVo = employeeService.updatePassword(map);
         return resultVo;
     }
 
     /**
-     *  按条件查询员工信息
+     * 按条件查询员工信息
+     *
      * @param map
      * @return
      */
     @PostMapping("/employeeList")
-    public ResultVo getEmployeeList(@RequestBody Map<String,Object> map){
-        if(null != map){
+    public ResultVo getEmployeeList(@RequestBody Map<String, Object> map) {
+        if (null != map) {
             PageInfo pageInfo = employeeService.getEmployeeByConditions(map);
-            if(null != pageInfo.getList() && 0 < pageInfo.getList().size()){
-                return ResultVo.sendResult(200, "success",pageInfo);
+            if (null != pageInfo.getList() && 0 < pageInfo.getList().size()) {
+                return ResultVo.sendResult(200, "success", pageInfo);
             }
         }
         return ResultVo.sendResult(400, "NoData");
@@ -86,16 +90,17 @@ public class UserController {
 
     /**
      * 检查用户名是否可用
+     *
      * @param empNum
      * @return
      */
     @GetMapping("/checkEmployeeNumber")
-    public ResultVo checkEmpNum(String empNum){
-        if(null == empNum || "".equals(empNum)){
+    public ResultVo checkEmpNum(String empNum) {
+        if (null == empNum || "".equals(empNum)) {
             throw new ParamException(500, "参数异常");
         }
         String result = employeeService.checkEmpNum(empNum);
-        if(null == result){
+        if (null == result) {
             return ResultVo.sendResult(200, "success");
         }
         return ResultVo.sendResult(208, "员工编号存在!", result);
@@ -103,12 +108,13 @@ public class UserController {
 
     /**
      * 添加员工
+     *
      * @param map
      * @return
      */
     @PostMapping("/insertEmp")
-    public ResultVo insertEmp(@RequestBody Map<String, List<Employee>> map){
-        if(null == map.get("employees") || map.get("employees") instanceof Employee){
+    public ResultVo insertEmp(@RequestBody Map<String, List<Employee>> map) {
+        if (null == map.get("employees") || map.get("employees") instanceof Employee) {
             throw new ParamException(500, "参数异常!");
         }
         List<Employee> employeesList = map.get("employees");
@@ -118,21 +124,72 @@ public class UserController {
 
     /**
      * 获取所有员工
+     *
      * @return
      */
     @GetMapping("/getEmpList")
-    public ResultVo getEmps(){
+    public ResultVo getEmps() {
         List<Employee> emps = employeeService.getEmps();
         return ResultVo.sendResult(200, "success", emps);
     }
 
+    /**
+     * 注销
+     *
+     * @param request
+     * @return
+     */
     @RequestMapping("/logout")
-    public ResultVo logout(HttpServletRequest request){
+    public ResultVo logout(HttpServletRequest request) {
         //从session中删除当前登录用户
         HttpSession session = request.getSession();
         session.removeAttribute("user");
         //token缓存清空
 
         return ResultVo.sendResult(200, "success");
+    }
+
+    /**
+     * 修改员工信息
+     *
+     * @param employee
+     * @return
+     */
+    @PutMapping("/updateEmployee")
+    public ResultVo updateEmployee(@RequestBody Employee employee) {
+        if (employee == null) {
+            throw new ParamException(501, "参数异常");
+        }
+        employeeService.updateEmployee(employee);
+        return ResultVo.sendResult(200, "success");
+    }
+
+    /**
+     * 删除员工信息
+     *
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/deleteEmployee")
+    public ResultVo deleteEmployee(String id) {
+        if (null == id) {
+            throw new ParamException(501, "参数异常");
+        }
+        employeeService.deleteEmployee(id);
+        return ResultVo.sendResult(200, "success");
+    }
+
+    /**
+     * 通过员工编号查询员工
+     * @param id
+     * @return
+     */
+    @GetMapping("/getEmployee")
+    public ResultVo getEmployee(String id){
+        if(null == id || "".equals(id)){
+            throw new ParamException(501, "参数异常");
+        }
+        Employee employee = employeeService.getEmployee(id);
+        return ResultVo.sendResult(200, "success", employee);
     }
 }

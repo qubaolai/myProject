@@ -7,3 +7,9 @@ export function getDeptList(data) {
     data: data
   });
 }
+export function getDepts() {
+  return intercept.request({
+    method: "get",
+    url: "/department/getAllPartment"
+  });
+}

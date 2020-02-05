@@ -1,6 +1,8 @@
 package com.qubaolai.po;
 
-public class Lea {
+import com.qubaolai.pojo.LeaFather;
+
+public class Lea extends LeaFather {
     private String id;
 
     private String employeeNumber;

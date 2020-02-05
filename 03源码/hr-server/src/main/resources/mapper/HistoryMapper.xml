@@ -6,16 +6,15 @@
     <result column="employee_number" property="employeeNumber" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="gender" property="gender" jdbcType="INTEGER" />
-    <result column="birthday" property="birthday" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
     <result column="telephone" property="telephone" jdbcType="VARCHAR" />
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="address" property="address" jdbcType="VARCHAR" />
     <result column="education" property="education" jdbcType="VARCHAR" />
     <result column="in_time" property="inTime" jdbcType="VARCHAR" />
     <result column="out_time" property="outTime" jdbcType="VARCHAR" />
-    <result column="department_number" property="departmentNumber" jdbcType="INTEGER" />
-    <result column="position_number" property="positionNumber" jdbcType="INTEGER" />
-    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="department_number" property="departmentNumber" jdbcType="VARCHAR" />
+    <result column="position_number" property="positionNumber" jdbcType="VARCHAR" />
     <result column="notes" property="notes" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -78,7 +77,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, employee_number, name, gender, birthday, telephone, email, address, education, 
-    in_time, out_time, department_number, position_number, status, notes
+    in_time, out_time, department_number, position_number, notes
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.qubaolai.po.HistoryExample" >
     select
@@ -115,14 +114,12 @@
       gender, birthday, telephone, 
       email, address, education, 
       in_time, out_time, department_number, 
-      position_number, status, notes
-      )
+      position_number, notes)
     values (#{id,jdbcType=VARCHAR}, #{employeeNumber,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{gender,jdbcType=INTEGER}, #{birthday,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
+      #{gender,jdbcType=INTEGER}, #{birthday,jdbcType=DATE}, #{telephone,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{education,jdbcType=VARCHAR}, 
-      #{inTime,jdbcType=VARCHAR}, #{outTime,jdbcType=VARCHAR}, #{departmentNumber,jdbcType=INTEGER}, 
-      #{positionNumber,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{notes,jdbcType=VARCHAR}
-      )
+      #{inTime,jdbcType=VARCHAR}, #{outTime,jdbcType=VARCHAR}, #{departmentNumber,jdbcType=VARCHAR}, 
+      #{positionNumber,jdbcType=VARCHAR}, #{notes,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.qubaolai.po.History" >
     insert into history
@@ -166,9 +163,6 @@
       <if test="positionNumber != null" >
         position_number,
       </if>
-      <if test="status != null" >
-        status,
-      </if>
       <if test="notes != null" >
         notes,
       </if>
@@ -187,7 +181,7 @@
         #{gender,jdbcType=INTEGER},
       </if>
       <if test="birthday != null" >
-        #{birthday,jdbcType=VARCHAR},
+        #{birthday,jdbcType=DATE},
       </if>
       <if test="telephone != null" >
         #{telephone,jdbcType=VARCHAR},
@@ -208,13 +202,10 @@
         #{outTime,jdbcType=VARCHAR},
       </if>
       <if test="departmentNumber != null" >
-        #{departmentNumber,jdbcType=INTEGER},
+        #{departmentNumber,jdbcType=VARCHAR},
       </if>
       <if test="positionNumber != null" >
-        #{positionNumber,jdbcType=INTEGER},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=INTEGER},
+        #{positionNumber,jdbcType=VARCHAR},
       </if>
       <if test="notes != null" >
         #{notes,jdbcType=VARCHAR},
@@ -243,7 +234,7 @@
         gender = #{record.gender,jdbcType=INTEGER},
       </if>
       <if test="record.birthday != null" >
-        birthday = #{record.birthday,jdbcType=VARCHAR},
+        birthday = #{record.birthday,jdbcType=DATE},
       </if>
       <if test="record.telephone != null" >
         telephone = #{record.telephone,jdbcType=VARCHAR},
@@ -264,13 +255,10 @@
         out_time = #{record.outTime,jdbcType=VARCHAR},
       </if>
       <if test="record.departmentNumber != null" >
-        department_number = #{record.departmentNumber,jdbcType=INTEGER},
+        department_number = #{record.departmentNumber,jdbcType=VARCHAR},
       </if>
       <if test="record.positionNumber != null" >
-        position_number = #{record.positionNumber,jdbcType=INTEGER},
-      </if>
-      <if test="record.status != null" >
-        status = #{record.status,jdbcType=INTEGER},
+        position_number = #{record.positionNumber,jdbcType=VARCHAR},
       </if>
       <if test="record.notes != null" >
         notes = #{record.notes,jdbcType=VARCHAR},
@@ -286,16 +274,15 @@
       employee_number = #{record.employeeNumber,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       gender = #{record.gender,jdbcType=INTEGER},
-      birthday = #{record.birthday,jdbcType=VARCHAR},
+      birthday = #{record.birthday,jdbcType=DATE},
       telephone = #{record.telephone,jdbcType=VARCHAR},
       email = #{record.email,jdbcType=VARCHAR},
       address = #{record.address,jdbcType=VARCHAR},
       education = #{record.education,jdbcType=VARCHAR},
       in_time = #{record.inTime,jdbcType=VARCHAR},
       out_time = #{record.outTime,jdbcType=VARCHAR},
-      department_number = #{record.departmentNumber,jdbcType=INTEGER},
-      position_number = #{record.positionNumber,jdbcType=INTEGER},
-      status = #{record.status,jdbcType=INTEGER},
+      department_number = #{record.departmentNumber,jdbcType=VARCHAR},
+      position_number = #{record.positionNumber,jdbcType=VARCHAR},
       notes = #{record.notes,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -314,7 +301,7 @@
         gender = #{gender,jdbcType=INTEGER},
       </if>
       <if test="birthday != null" >
-        birthday = #{birthday,jdbcType=VARCHAR},
+        birthday = #{birthday,jdbcType=DATE},
       </if>
       <if test="telephone != null" >
         telephone = #{telephone,jdbcType=VARCHAR},
@@ -335,13 +322,10 @@
         out_time = #{outTime,jdbcType=VARCHAR},
       </if>
       <if test="departmentNumber != null" >
-        department_number = #{departmentNumber,jdbcType=INTEGER},
+        department_number = #{departmentNumber,jdbcType=VARCHAR},
       </if>
       <if test="positionNumber != null" >
-        position_number = #{positionNumber,jdbcType=INTEGER},
-      </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=INTEGER},
+        position_number = #{positionNumber,jdbcType=VARCHAR},
       </if>
       <if test="notes != null" >
         notes = #{notes,jdbcType=VARCHAR},
@@ -354,16 +338,15 @@
     set employee_number = #{employeeNumber,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       gender = #{gender,jdbcType=INTEGER},
-      birthday = #{birthday,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=DATE},
       telephone = #{telephone,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
       education = #{education,jdbcType=VARCHAR},
       in_time = #{inTime,jdbcType=VARCHAR},
       out_time = #{outTime,jdbcType=VARCHAR},
-      department_number = #{departmentNumber,jdbcType=INTEGER},
-      position_number = #{positionNumber,jdbcType=INTEGER},
-      status = #{status,jdbcType=INTEGER},
+      department_number = #{departmentNumber,jdbcType=VARCHAR},
+      position_number = #{positionNumber,jdbcType=VARCHAR},
       notes = #{notes,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>

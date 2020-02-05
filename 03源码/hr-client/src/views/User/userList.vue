@@ -147,19 +147,24 @@
               height="400"
               :default-sort="{ prop: 'date', order: 'descending' }"
             >
-              <el-table-column prop="empName" label="姓名" width="165">
+              <el-table-column type="index"> </el-table-column>
+              <el-table-column prop="empName" label="姓名" width="120">
               </el-table-column>
-              <el-table-column prop="deptName" label="部门" width="165">
+              <el-table-column prop="deptName" label="部门" width="120">
               </el-table-column>
-              <el-table-column prop="mangName" label="领导姓名" width="165">
+              <el-table-column prop="mangName" label="领导姓名" width="120">
               </el-table-column>
-              <el-table-column prop="education" label="学历" width="150">
+              <el-table-column prop="education" label="学历" width="80">
               </el-table-column>
-              <el-table-column prop="option" label="职称" width="165">
+              <el-table-column prop="option" label="职称" width="110">
               </el-table-column>
-              <el-table-column prop="telephone" label="电话" width="165">
+              <el-table-column prop="telephone" label="电话" width="140">
               </el-table-column>
-              <el-table-column prop="address" label="地址"> </el-table-column>
+              <el-table-column
+                prop="address"
+                label="地址"
+                width="150"
+              ></el-table-column>
               <el-table-column
                 prop="inTime"
                 label="入职日期"
@@ -167,8 +172,26 @@
                 width="165"
               >
               </el-table-column>
-            </el-table></div
-        ></el-col>
+              <el-table-column
+                v-if="role"
+                label="操作"
+                style="margin-right: 0;float: center;"
+              >
+                <template slot-scope="scope">
+                  <el-button size="mini" @click="handleEdit(scope.row)"
+                    >编辑</el-button
+                  >
+                  <el-button
+                    size="mini"
+                    type="danger"
+                    @click="handleDelete(scope.row)"
+                    >删除</el-button
+                  >
+                </template>
+              </el-table-column>
+            </el-table>
+          </div></el-col
+        >
         <div class="block">
           <el-pagination
             class="page"
@@ -184,6 +207,95 @@
         </div>
       </el-row>
     </div>
+    <el-dialog
+      title="编辑员工"
+      :visible.sync="dialogFormVisible"
+      :append-to-body="true"
+    >
+      <el-form>
+        <el-form-item
+          label="姓名:"
+          :label-width="formLabelWidth"
+          style="margin-bottom: 6px;"
+        >
+          <el-input
+            style="width: 250px;"
+            v-model="dialogForm.employeeName"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          label="生日:"
+          :label-width="formLabelWidth"
+          style="margin-bottom: 6px;"
+        >
+          <el-date-picker
+            style="width: 250px;"
+            v-model="dialogForm.birthday"
+            type="date"
+            placeholder="选择日期"
+          >
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item
+          label="电话:"
+          :label-width="formLabelWidth"
+          style="margin-bottom: 6px;"
+        >
+          <el-input
+            style="width: 250px;"
+            v-model="dialogForm.telephone"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          label="邮箱:"
+          :label-width="formLabelWidth"
+          style="margin-bottom: 6px;"
+        >
+          <el-input
+            style="width: 250px;"
+            v-model="dialogForm.email"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          label="地址:"
+          :label-width="formLabelWidth"
+          style="margin-bottom: 6px;"
+        >
+          <el-input
+            style="width: 250px;"
+            v-model="dialogForm.address"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          label="学历:"
+          :label-width="formLabelWidth"
+          style="margin-bottom: 6px;"
+        >
+          <el-select
+            v-model="dialogForm.education"
+            clearable
+            style="width: 250px;"
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="item in educations"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="updateEmp()">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -191,10 +303,45 @@ import { getEmpList } from "@/api/user/getEmployees.js";
 import formData from "@/store/data.js";
 import { initPage } from "@/api/page/init.js";
 import { formatDate } from "@/utils/dateUtil.js";
+import { updateEmployee } from "@/api/user/updateEmployee.js";
+import { deleteEmployee } from "@/api/user/deleteEmployee.js";
 export default {
   name: "userList",
   data() {
     return {
+      //操作列显示
+      role: false,
+      //弹层
+      dialogFormVisible: false,
+      formLabelWidth: "240px",
+      //弹层数据
+      dialogForm: {
+        id: "",
+        employeeName: "",
+        telephone: "",
+        birthday: "",
+        email: "",
+        address: "",
+        education: ""
+      },
+      educations: [
+        {
+          value: "专科",
+          label: "专科"
+        },
+        {
+          value: "本科",
+          label: "本科"
+        },
+        {
+          value: "硕士",
+          label: "硕士"
+        },
+        {
+          value: "研究生",
+          label: "研究生"
+        }
+      ],
       //分页
       //显示数据总数
       sumNum: 0,
@@ -210,7 +357,7 @@ export default {
         empName: "",
         employeeNumber: "",
         mangerName: "",
-        sex: "0",
+        sex: "",
         education: "",
         departmentNumber: "",
         positionNumber: "",
@@ -255,9 +402,11 @@ export default {
           this.sumNum = tableList.length;
           for (let i = 0; i < tableList.length; i++) {
             const table = {
+              id: "",
               empName: "",
               deptName: "",
               mangName: "",
+              email: "",
               inTime: "",
               education: "",
               option: "",
@@ -280,10 +429,13 @@ export default {
             } else {
               table.option = "无";
             }
+            table.id = tableList[i].id;
             table.inTime = tableList[i].inTime;
             table.education = tableList[i].education;
             table.telephone = tableList[i].telephone;
             table.address = tableList[i].address;
+            table.email = tableList[i].email;
+            table.birthday = tableList[i].birthday;
             this.tableData.push(table);
           }
         }
@@ -294,13 +446,64 @@ export default {
       this.form.empName = "";
       this.form.employeeNumber = "";
       this.form.mangerName = "";
-      this.form.sex = "0";
+      this.form.sex = "";
       this.form.input = "";
       this.form.education = "";
       this.form.departmentName = "";
       this.form.intimeStart = "";
       this.form.intimeEnd = "";
       this.inTime = [];
+    },
+    //删除按钮
+    handleDelete(table) {
+      this.$confirm("此操作将永久删除该记录, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          deleteEmployee(table.id).then(response => {
+            const data = response.data;
+            if (data.code === 200) {
+              this.$message({
+                type: "success",
+                message: "删除成功"
+              });
+              this.submitForm();
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+    //确认修改按钮
+    updateEmp() {
+      updateEmployee(this.dialogForm).then(response => {
+        const data = response.data;
+        if (data.code === 200) {
+          this.$message({
+            message: "修改成功",
+            type: "success"
+          });
+          this.dialogFormVisible = false;
+          this.submitForm();
+        }
+      });
+    },
+    //编辑按钮
+    handleEdit(table) {
+      this.dialogFormVisible = true;
+      this.dialogForm.id = table.id;
+      this.dialogForm.employeeName = table.empName;
+      this.dialogForm.telephone = table.telephone;
+      this.dialogForm.birthday = table.birthday;
+      this.dialogForm.email = table.email;
+      this.dialogForm.address = table.address;
+      this.dialogForm.education = table.education;
     },
     init() {
       //页面初始化 发送请求获取所有部门和职称
@@ -310,6 +513,10 @@ export default {
     }
   },
   created: function() {
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    if (user.role == 0) {
+      this.role = true;
+    }
     this.init();
   },
   computed: {

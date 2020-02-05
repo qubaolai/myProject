@@ -244,143 +244,143 @@ public class MoveExample {
             return (Criteria) this;
         }
 
-        public Criteria andDeptBeforeIsNull() {
-            addCriterion("dept_before is null");
+        public Criteria andMoveBeforeIsNull() {
+            addCriterion("move_before is null");
             return (Criteria) this;
         }
 
-        public Criteria andDeptBeforeIsNotNull() {
-            addCriterion("dept_before is not null");
+        public Criteria andMoveBeforeIsNotNull() {
+            addCriterion("move_before is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDeptBeforeEqualTo(String value) {
-            addCriterion("dept_before =", value, "deptBefore");
+        public Criteria andMoveBeforeEqualTo(String value) {
+            addCriterion("move_before =", value, "moveBefore");
             return (Criteria) this;
         }
 
-        public Criteria andDeptBeforeNotEqualTo(String value) {
-            addCriterion("dept_before <>", value, "deptBefore");
+        public Criteria andMoveBeforeNotEqualTo(String value) {
+            addCriterion("move_before <>", value, "moveBefore");
             return (Criteria) this;
         }
 
-        public Criteria andDeptBeforeGreaterThan(String value) {
-            addCriterion("dept_before >", value, "deptBefore");
+        public Criteria andMoveBeforeGreaterThan(String value) {
+            addCriterion("move_before >", value, "moveBefore");
             return (Criteria) this;
         }
 
-        public Criteria andDeptBeforeGreaterThanOrEqualTo(String value) {
-            addCriterion("dept_before >=", value, "deptBefore");
+        public Criteria andMoveBeforeGreaterThanOrEqualTo(String value) {
+            addCriterion("move_before >=", value, "moveBefore");
             return (Criteria) this;
         }
 
-        public Criteria andDeptBeforeLessThan(String value) {
-            addCriterion("dept_before <", value, "deptBefore");
+        public Criteria andMoveBeforeLessThan(String value) {
+            addCriterion("move_before <", value, "moveBefore");
             return (Criteria) this;
         }
 
-        public Criteria andDeptBeforeLessThanOrEqualTo(String value) {
-            addCriterion("dept_before <=", value, "deptBefore");
+        public Criteria andMoveBeforeLessThanOrEqualTo(String value) {
+            addCriterion("move_before <=", value, "moveBefore");
             return (Criteria) this;
         }
 
-        public Criteria andDeptBeforeLike(String value) {
-            addCriterion("dept_before like", value, "deptBefore");
+        public Criteria andMoveBeforeLike(String value) {
+            addCriterion("move_before like", value, "moveBefore");
             return (Criteria) this;
         }
 
-        public Criteria andDeptBeforeNotLike(String value) {
-            addCriterion("dept_before not like", value, "deptBefore");
+        public Criteria andMoveBeforeNotLike(String value) {
+            addCriterion("move_before not like", value, "moveBefore");
             return (Criteria) this;
         }
 
-        public Criteria andDeptBeforeIn(List<String> values) {
-            addCriterion("dept_before in", values, "deptBefore");
+        public Criteria andMoveBeforeIn(List<String> values) {
+            addCriterion("move_before in", values, "moveBefore");
             return (Criteria) this;
         }
 
-        public Criteria andDeptBeforeNotIn(List<String> values) {
-            addCriterion("dept_before not in", values, "deptBefore");
+        public Criteria andMoveBeforeNotIn(List<String> values) {
+            addCriterion("move_before not in", values, "moveBefore");
             return (Criteria) this;
         }
 
-        public Criteria andDeptBeforeBetween(String value1, String value2) {
-            addCriterion("dept_before between", value1, value2, "deptBefore");
+        public Criteria andMoveBeforeBetween(String value1, String value2) {
+            addCriterion("move_before between", value1, value2, "moveBefore");
             return (Criteria) this;
         }
 
-        public Criteria andDeptBeforeNotBetween(String value1, String value2) {
-            addCriterion("dept_before not between", value1, value2, "deptBefore");
+        public Criteria andMoveBeforeNotBetween(String value1, String value2) {
+            addCriterion("move_before not between", value1, value2, "moveBefore");
             return (Criteria) this;
         }
 
-        public Criteria andDeptAfterIsNull() {
-            addCriterion("dept_after is null");
+        public Criteria andMoveAfterIsNull() {
+            addCriterion("move_after is null");
             return (Criteria) this;
         }
 
-        public Criteria andDeptAfterIsNotNull() {
-            addCriterion("dept_after is not null");
+        public Criteria andMoveAfterIsNotNull() {
+            addCriterion("move_after is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDeptAfterEqualTo(String value) {
-            addCriterion("dept_after =", value, "deptAfter");
+        public Criteria andMoveAfterEqualTo(String value) {
+            addCriterion("move_after =", value, "moveAfter");
             return (Criteria) this;
         }
 
-        public Criteria andDeptAfterNotEqualTo(String value) {
-            addCriterion("dept_after <>", value, "deptAfter");
+        public Criteria andMoveAfterNotEqualTo(String value) {
+            addCriterion("move_after <>", value, "moveAfter");
             return (Criteria) this;
         }
 
-        public Criteria andDeptAfterGreaterThan(String value) {
-            addCriterion("dept_after >", value, "deptAfter");
+        public Criteria andMoveAfterGreaterThan(String value) {
+            addCriterion("move_after >", value, "moveAfter");
             return (Criteria) this;
         }
 
-        public Criteria andDeptAfterGreaterThanOrEqualTo(String value) {
-            addCriterion("dept_after >=", value, "deptAfter");
+        public Criteria andMoveAfterGreaterThanOrEqualTo(String value) {
+            addCriterion("move_after >=", value, "moveAfter");
             return (Criteria) this;
         }
 
-        public Criteria andDeptAfterLessThan(String value) {
-            addCriterion("dept_after <", value, "deptAfter");
+        public Criteria andMoveAfterLessThan(String value) {
+            addCriterion("move_after <", value, "moveAfter");
             return (Criteria) this;
         }
 
-        public Criteria andDeptAfterLessThanOrEqualTo(String value) {
-            addCriterion("dept_after <=", value, "deptAfter");
+        public Criteria andMoveAfterLessThanOrEqualTo(String value) {
+            addCriterion("move_after <=", value, "moveAfter");
             return (Criteria) this;
         }
 
-        public Criteria andDeptAfterLike(String value) {
-            addCriterion("dept_after like", value, "deptAfter");
+        public Criteria andMoveAfterLike(String value) {
+            addCriterion("move_after like", value, "moveAfter");
             return (Criteria) this;
         }
 
-        public Criteria andDeptAfterNotLike(String value) {
-            addCriterion("dept_after not like", value, "deptAfter");
+        public Criteria andMoveAfterNotLike(String value) {
+            addCriterion("move_after not like", value, "moveAfter");
             return (Criteria) this;
         }
 
-        public Criteria andDeptAfterIn(List<String> values) {
-            addCriterion("dept_after in", values, "deptAfter");
+        public Criteria andMoveAfterIn(List<String> values) {
+            addCriterion("move_after in", values, "moveAfter");
             return (Criteria) this;
         }
 
-        public Criteria andDeptAfterNotIn(List<String> values) {
-            addCriterion("dept_after not in", values, "deptAfter");
+        public Criteria andMoveAfterNotIn(List<String> values) {
+            addCriterion("move_after not in", values, "moveAfter");
             return (Criteria) this;
         }
 
-        public Criteria andDeptAfterBetween(String value1, String value2) {
-            addCriterion("dept_after between", value1, value2, "deptAfter");
+        public Criteria andMoveAfterBetween(String value1, String value2) {
+            addCriterion("move_after between", value1, value2, "moveAfter");
             return (Criteria) this;
         }
 
-        public Criteria andDeptAfterNotBetween(String value1, String value2) {
-            addCriterion("dept_after not between", value1, value2, "deptAfter");
+        public Criteria andMoveAfterNotBetween(String value1, String value2) {
+            addCriterion("move_after not between", value1, value2, "moveAfter");
             return (Criteria) this;
         }
 
@@ -451,6 +451,66 @@ public class MoveExample {
 
         public Criteria andUpdateTimeNotBetween(String value1, String value2) {
             addCriterion("update_time not between", value1, value2, "updateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andMoveTypeIsNull() {
+            addCriterion("move_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMoveTypeIsNotNull() {
+            addCriterion("move_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMoveTypeEqualTo(Integer value) {
+            addCriterion("move_type =", value, "moveType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMoveTypeNotEqualTo(Integer value) {
+            addCriterion("move_type <>", value, "moveType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMoveTypeGreaterThan(Integer value) {
+            addCriterion("move_type >", value, "moveType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMoveTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("move_type >=", value, "moveType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMoveTypeLessThan(Integer value) {
+            addCriterion("move_type <", value, "moveType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMoveTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("move_type <=", value, "moveType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMoveTypeIn(List<Integer> values) {
+            addCriterion("move_type in", values, "moveType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMoveTypeNotIn(List<Integer> values) {
+            addCriterion("move_type not in", values, "moveType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMoveTypeBetween(Integer value1, Integer value2) {
+            addCriterion("move_type between", value1, value2, "moveType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMoveTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("move_type not between", value1, value2, "moveType");
             return (Criteria) this;
         }
 

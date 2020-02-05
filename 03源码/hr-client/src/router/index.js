@@ -72,6 +72,15 @@ export default new VueRouter({
             name: "添加员工"
           },
           component: () => import("../views/user/insertUser.vue")
+        },
+        {
+          path: "/schedulingUser",
+          name: "SchedulingUser",
+          // hidden: false,
+          meta: {
+            name: "员工调度"
+          },
+          component: () => import("../views/user/schedulingUser.vue")
         }
       ]
     },

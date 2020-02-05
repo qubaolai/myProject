@@ -184,16 +184,17 @@ public class DepartmentServiceImpl implements DepartmentService {
         //向员工调度表中添加信息
         Move move = new Move();
         move.setId(UUIDUtil.getUUID());
-        move.setDeptBefore(employee.getDepartmentNumber());
+        move.setMoveBefore(employee.getDepartmentNumber());
         move.setManagerId(employee.getManageerId());
         //修改员工部门
         employee.setDeviceid("0");
         employee.setManageerId(employee.getId());
         employee.setDepartmentNumber(department.getId());
         employeeMapper.updateByPrimaryKeySelective(employee);
-        move.setDeptAfter(employee.getDepartmentNumber());
+        move.setMoveAfter(employee.getDepartmentNumber());
         move.setEmployeeNumber(employee.getId());
         move.setUpdateTime(DateUtil.getDate());
+        move.setMoveType(0);
         moveMapper.insertSelective(move);
         department.setManager(employee.getId());
         if (null != param.get("notes") || !"".equals((String) param.get("notes"))) {
@@ -229,5 +230,15 @@ public class DepartmentServiceImpl implements DepartmentService {
             employeeMapper.updateByExample(employee,employeeExample);
         }
         departmentMapper.updateByPrimaryKeySelective(department);
+    }
+
+    @Override
+    public List<Department> getAll() {
+        DepartmentExample example = new DepartmentExample();
+        List<Department> departments = departmentMapper.selectByExample(example);
+        if(departments == null || departments.size() <= 0){
+            throw new NoDataException(400, "部门为空");
+        }
+        return departments;
     }
 }

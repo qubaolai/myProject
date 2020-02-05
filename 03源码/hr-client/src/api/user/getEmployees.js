@@ -13,3 +13,12 @@ export function getEmps() {
     url: "/user/getEmpList"
   });
 }
+export function getEmp(data) {
+  return intercept.request({
+    method: "get",
+    url: "/user/getEmployee",
+    params: {
+      id: data
+    }
+  });
+}

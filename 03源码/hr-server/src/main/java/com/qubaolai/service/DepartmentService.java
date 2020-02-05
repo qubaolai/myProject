@@ -49,4 +49,10 @@ public interface DepartmentService {
      * @param id
      */
     public void deleteDept(String id);
+
+    /**
+     * 获取所有部门
+     * @return
+     */
+    public List<Department> getAll();
 }

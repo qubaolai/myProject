@@ -6,6 +6,7 @@ import com.qubaolai.common.exception.exceptions.NoDataException;
 import com.qubaolai.common.exception.exceptions.ParamException;
 import com.qubaolai.common.utils.StringUtil;
 import com.qubaolai.common.utils.UUIDUtil;
+import com.qubaolai.mapper.DepartmentMapper;
 import com.qubaolai.mapper.EmployeeMapper;
 import com.qubaolai.mapper.LeaMapper;
 import com.qubaolai.mapper.myMapper.MyLeaMapper;
@@ -37,6 +38,8 @@ public class LeaServiceImpl implements LeaService {
     private MyLeaMapper myLeaMapper;
     @Resource
     private EmployeeMapper employeeMapper;
+    @Resource
+    private DepartmentMapper departmentMapper;
     @Resource
     private EmployeeService employeeService;
 
@@ -144,19 +147,26 @@ public class LeaServiceImpl implements LeaService {
             criteria.andEndTimeBetween(startTime, endTime);
         }
         //审批状态查询
-        if (null != param.get("status") && "".equals((String) param.get("status"))) {
-            criteria.andStatusEqualTo(1);
+        if (null != param.get("status") && !"".equals((String) param.get("status"))) {
+            criteria.andStatusEqualTo(Integer.parseInt((String) param.get("status")));
         }
         List<Lea> leas = leaMapper.selectByExample(example);
         if (null == leas && 0 >= leas.size()) {
             throw new NoDataException(400, "数据为空");
+        }
+        for(Lea lea : leas){
+            Employee employee = employeeMapper.selectByPrimaryKey(lea.getEmployeeNumber());
+            lea.setEmpName(employee.getName());
+            lea.setEmpNum(employee.getUsername());
+            Department department = departmentMapper.selectByPrimaryKey(lea.getDepartmentNumber());
+            lea.setDeptName(department.getName());
         }
         return ResultVo.sendResult(200, "success", leas);
     }
 
     @Override
     public void approvalHoliday(Map<String, Object> param) {
-        if(null == param.get("leaId") && "".equals((String)param.get("leaId"))){
+        if(null == param.get("leaId") || "".equals((String)param.get("leaId"))){
             throw new ParamException(501, "参数异常");
         }
         Lea lea = leaMapper.selectByPrimaryKey((String) param.get("leaId"));

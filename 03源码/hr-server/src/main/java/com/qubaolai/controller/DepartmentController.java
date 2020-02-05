@@ -88,4 +88,10 @@ public class DepartmentController {
         departmentService.updateDept(department);
         return ResultVo.sendResult(200, "success");
     }
+
+    @GetMapping("/getAllPartment")
+    public ResultVo getAllDepartment(){
+        List<Department> all = departmentService.getAll();
+        return ResultVo.sendResult(200, "success", all);
+    }
 }

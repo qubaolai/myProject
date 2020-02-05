@@ -23,4 +23,10 @@ public interface PositionService {
      * @param param
      */
     public void insertOption(Map<String, Object> param);
+
+    /**
+     * 通过部门id获取职称
+     * @return
+     */
+    public List<Position> getPositionByDeptNum(String deptId);
 }

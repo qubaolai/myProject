@@ -88,7 +88,6 @@ export default {
     commitForm() {
       updatePassword(this.form).then(response => {
         const data = response.data;
-        console.log(data);
         if (data.code === 200) {
           this.$alert("请重新登录!", "修改成功", {
             confirmButtonText: "重新登录",

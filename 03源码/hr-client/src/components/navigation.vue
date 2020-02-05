@@ -51,7 +51,6 @@ export default {
   methods: {
     handleOpen() {
       // console.log(key, keyPath);
-      console.log(this.routers);
     },
     handleClose() {
       // console.log(key, keyPath);

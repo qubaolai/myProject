@@ -108,12 +108,12 @@
                 <span>{{ scope.row.departmentName }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="领导姓名" width="400">
+            <el-table-column label="领导姓名" width="350">
               <template slot-scope="scope">
                 <span>{{ scope.row.manageName }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="部门电话" width="400">
+            <el-table-column label="部门电话" width="350">
               <template slot-scope="scope">
                 <span>{{ scope.row.departmentTel }}</span>
               </template>

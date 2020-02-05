@@ -1,5 +1,7 @@
 package com.qubaolai.po;
 
+import java.util.Date;
+
 public class History {
     private String id;
 
@@ -9,7 +11,7 @@ public class History {
 
     private Integer gender;
 
-    private String birthday;
+    private Date birthday;
 
     private String telephone;
 
@@ -23,11 +25,9 @@ public class History {
 
     private String outTime;
 
-    private Integer departmentNumber;
+    private String departmentNumber;
 
-    private Integer positionNumber;
-
-    private Integer status;
+    private String positionNumber;
 
     private String notes;
 
@@ -63,11 +63,11 @@ public class History {
         this.gender = gender;
     }
 
-    public String getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(String birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 
@@ -119,28 +119,20 @@ public class History {
         this.outTime = outTime;
     }
 
-    public Integer getDepartmentNumber() {
+    public String getDepartmentNumber() {
         return departmentNumber;
     }
 
-    public void setDepartmentNumber(Integer departmentNumber) {
+    public void setDepartmentNumber(String departmentNumber) {
         this.departmentNumber = departmentNumber;
     }
 
-    public Integer getPositionNumber() {
+    public String getPositionNumber() {
         return positionNumber;
     }
 
-    public void setPositionNumber(Integer positionNumber) {
+    public void setPositionNumber(String positionNumber) {
         this.positionNumber = positionNumber;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
     }
 
     public String getNotes() {

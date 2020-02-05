@@ -12,10 +12,7 @@ import com.qubaolai.common.utils.DateUtil;
 import com.qubaolai.common.utils.MD5Tools;
 import com.qubaolai.common.utils.PasswordCheckUtil;
 import com.qubaolai.common.utils.UUIDUtil;
-import com.qubaolai.mapper.DepartmentMapper;
-import com.qubaolai.mapper.EmployeeMapper;
-import com.qubaolai.mapper.LogsMapper;
-import com.qubaolai.mapper.PositionMapper;
+import com.qubaolai.mapper.*;
 import com.qubaolai.mapper.myMapper.MyEmployeeMapper;
 import com.qubaolai.po.*;
 import com.qubaolai.service.DepartmentService;
@@ -51,6 +48,8 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
     private DepartmentMapper departmentMapper;
     @Resource
     private DepartmentService departmentService;
+    @Resource
+    private HistoryMapper historyMapper;
 
     @Override
     public void updateEmployee(Employee employee) {
@@ -109,7 +108,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
         if (StringUtils.isBlank(oldPassword)) {
             throw new ParamException(209, ErrorEmnus.getMsg(209));
         }
-        if(!MD5Tools.string2MD5(oldPassword).equals(currentLoginEmployee.getPassword())){
+        if (!MD5Tools.string2MD5(oldPassword).equals(currentLoginEmployee.getPassword())) {
             throw new DataException(502, "旧密码错误!");
         }
         String newPassword = map.get("newPassword");
@@ -190,7 +189,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
         }
         //职称
         if (null != map.get("positionNumber") && !"".equals((String) map.get("positionNumber"))) {
-            param.put("pid", (String)map.get("positionNumber"));
+            param.put("pid", (String) map.get("positionNumber"));
         }
         Integer pageNo = null;
         Integer pageSize = null;
@@ -211,35 +210,35 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
     public String checkEmpNum(String empNum) {
         EmployeeExample example = new EmployeeExample();
         EmployeeExample.Criteria criteria = example.createCriteria();
-        if(null == empNum || "".equals(empNum)){
+        if (null == empNum || "".equals(empNum)) {
             throw new ParamException(500, "参数异常");
         }
         criteria.andUsernameLike("%" + empNum + "%");
         example.setOrderByClause("username");
         List<Employee> employeeList = employeeMapper.selectByExample(example);
-        if(null != employeeList && 0 < employeeList.size()){
+        if (null != employeeList && 0 < employeeList.size()) {
             String username = employeeList.get(employeeList.size() - 1).getUsername();
             String substring = username.substring(username.length() - 1, username.length());
             //如果用户名存在用户名拼接1
-            if(empNum.equals(username)){
+            if (empNum.equals(username)) {
                 return empNum + "1";
             }
             //判断最后一个字符是不是数组
             String test = "^[0-9]*$";
             boolean matches = Pattern.matches(test, substring);
-            if(matches){
+            if (matches) {
                 Integer last = Integer.parseInt(substring);
                 last += 1;
-                return  username.substring(0, username.length()-1) + last;
+                return username.substring(0, username.length() - 1) + last;
             }
         }
         return null;
     }
 
-    @Transactional(propagation= Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void insertEmployee(List<Employee> employees) {
-        for(Employee employee : employees){
+        for (Employee employee : employees) {
             //判断用户名是否存在
             employee.setUsername(employee.getUsername());
             employee.setId(UUIDUtil.getUUID());
@@ -249,37 +248,38 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
             //根据员工的部门id查询该部门领导
             EmployeeExample example = new EmployeeExample();
             EmployeeExample.Criteria criteria = example.createCriteria();
-            if(null == employee.getDepartmentNumber() || "0".equals(employee.getDepartmentNumber())){
+            if (null == employee.getDepartmentNumber() || "0".equals(employee.getDepartmentNumber())) {
                 throw new ParamException(500, "参数异常!");
             }
             criteria.andDepartmentNumberEqualTo(employee.getDepartmentNumber());
             criteria.andDeviceidEqualTo("0");
             List<Employee> employeeList1 = employeeMapper.selectByExample(example);
-            if(null == employeeList1 || 0 >= employeeList1.size()){
+            if (null == employeeList1 || 0 >= employeeList1.size()) {
                 //添加的员工为部门领导
                 employee.setDeviceid("0");
                 //修改部门信息表
                 Department department = departmentMapper.selectByPrimaryKey(employee.getDepartmentNumber());
                 department.setManager(employee.getId());
                 departmentService.updateDept(department);
-            }else{
+            } else {
                 employee.setManageerId(employeeList1.get(0).getId());
             }
             employee.setInTime(DateUtil.getDate());
+            employee.setEmail(employee.getUsername() + "@hr.com");
             employeeMapper.insert(employee);
         }
     }
 
     @Override
     public Employee getEmpByName(String name) {
-        if("".equals(name) || null == name){
+        if ("".equals(name) || null == name) {
             throw new ParamException(501, "参数异常");
         }
         EmployeeExample example = new EmployeeExample();
         EmployeeExample.Criteria criteria = example.createCriteria();
         criteria.andNameEqualTo(name);
         List<Employee> employees = employeeMapper.selectByExample(example);
-        if(null == employees || 0 >= employees.size()){
+        if (null == employees || 0 >= employees.size()) {
             throw new NoDataException(400, "数据为空");
         }
         return employees.get(0);
@@ -290,5 +290,48 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
         EmployeeExample employeeExample = new EmployeeExample();
         List<Employee> employeeList = employeeMapper.selectByExample(employeeExample);
         return employeeList;
+    }
+
+    @Override
+    public void deleteEmployee(String id) {
+        Employee employee = employeeMapper.selectByPrimaryKey(id);
+        //向离职表中插入记录
+        History history = new History();
+        history.setId(UUIDUtil.getUUID());
+        history.setName(employee.getName());
+        history.setEmployeeNumber(employee.getId());
+        history.setGender(employee.getGender());
+        history.setBirthday(employee.getBirthday());
+        history.setTelephone(employee.getTelephone());
+        history.setEmail(employee.getEmail());
+        history.setAddress(employee.getAddress());
+        history.setEducation(employee.getEducation());
+        history.setInTime(employee.getInTime());
+        history.setOutTime(DateUtil.getDate());
+        history.setDepartmentNumber(employee.getDepartmentNumber());
+        history.setPositionNumber(employee.getPositionNumber());
+        historyMapper.insert(history);
+        employeeMapper.deleteByPrimaryKey(id);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public void schedulingEmployee(Map<String, Object> param) {
+
+    }
+
+    @Override
+    public Employee getEmployee(String id) {
+        EmployeeExample employeeExample = new EmployeeExample();
+        EmployeeExample.Criteria criteria = employeeExample.createCriteria();
+        criteria.andUsernameEqualTo(id);
+        List<Employee> employeeList = employeeMapper.selectByExample(employeeExample);
+        if(employeeList == null || employeeList.size() <= 0){
+            throw new NoDataException(400, "员工不存在!");
+        }
+        if(employeeList.size() > 1){
+            throw new DataException(502, "数据异常");
+        }
+        return employeeList.get(0);
     }
 }

@@ -57,4 +57,16 @@ public class PositionServiceImpl implements PositionService {
         }
         positionMapper.insert(position);
     }
+
+    @Override
+    public List<Position> getPositionByDeptNum(String deptId) {
+        PositionExample example = new PositionExample();
+        PositionExample.Criteria criteria = example.createCriteria();
+        criteria.andDepartmentNumberEqualTo(deptId);
+        List<Position> positions = positionMapper.selectByExample(example);
+        if(positions == null || positions.size() <= 0){
+            throw new NoDataException(400, "职称为空");
+        }
+        return positions;
+    }
 }

@@ -65,4 +65,23 @@ public interface EmployeeService extends BaseService {
      * @return
      */
     public List<Employee> getEmps();
+
+    /**
+     * 删除员工
+     * @param id
+     */
+    public void deleteEmployee(String id);
+
+    /**
+     * 员工调动
+     * @param param
+     */
+    public void schedulingEmployee(Map<String,Object> param);
+
+    /**
+     * 通过员工编号查询员工
+     * @param id
+     * @return
+     */
+    public Employee getEmployee(String id);
 }

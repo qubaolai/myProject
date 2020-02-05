@@ -5,11 +5,13 @@ public class Move {
 
     private String employeeNumber;
 
-    private String deptBefore;
+    private String moveBefore;
 
-    private String deptAfter;
+    private String moveAfter;
 
     private String updateTime;
+
+    private Integer moveType;
 
     private String managerId;
 
@@ -31,20 +33,20 @@ public class Move {
         this.employeeNumber = employeeNumber;
     }
 
-    public String getDeptBefore() {
-        return deptBefore;
+    public String getMoveBefore() {
+        return moveBefore;
     }
 
-    public void setDeptBefore(String deptBefore) {
-        this.deptBefore = deptBefore;
+    public void setMoveBefore(String moveBefore) {
+        this.moveBefore = moveBefore;
     }
 
-    public String getDeptAfter() {
-        return deptAfter;
+    public String getMoveAfter() {
+        return moveAfter;
     }
 
-    public void setDeptAfter(String deptAfter) {
-        this.deptAfter = deptAfter;
+    public void setMoveAfter(String moveAfter) {
+        this.moveAfter = moveAfter;
     }
 
     public String getUpdateTime() {
@@ -53,6 +55,14 @@ public class Move {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getMoveType() {
+        return moveType;
+    }
+
+    public void setMoveType(Integer moveType) {
+        this.moveType = moveType;
     }
 
     public String getManagerId() {
