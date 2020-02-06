@@ -153,12 +153,32 @@
             autocomplete="off"
           ></el-input>
         </el-form-item>
-        <el-form-item label="部门电话:" :label-width="formLabelWidth">
+        <el-form-item
+          label="部门电话:"
+          style="margin-bottom: 10px;"
+          :label-width="formLabelWidth"
+        >
           <el-input
             style="width: 250px;"
             v-model="dialogForm.departmentTel"
             autocomplete="off"
           ></el-input>
+        </el-form-item>
+        <el-form-item label="部门领导:" :label-width="formLabelWidth">
+          <el-select
+            v-model="dialogForm.manageName"
+            clearable
+            placeholder="请选择部门领导"
+            style="width:250px;"
+          >
+            <el-option
+              v-for="item in manageList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -172,6 +192,7 @@
 import { getDeptList } from "@/api/department/getDepartments.js";
 import { deleteDept } from "@/api/department/deleteDepartment.js";
 import { updateDept } from "@/api/department/updateDepartment.js";
+import { getEmps } from "@/api/user/getEmployees.js";
 export default {
   name: "userList",
   data() {
@@ -201,29 +222,12 @@ export default {
       dialogForm: {
         id: "",
         departmentName: "",
-        departmentTel: ""
+        departmentTel: "",
+        manageName: ""
       },
+      manageList: [],
       //查询数据容器
-      tableData: [
-        {
-          id: "",
-          departmentName: "2016-05-03",
-          manageName: "王小虎",
-          departmentTel: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          id: "",
-          departmentName: "2016-05-03",
-          manageName: "王小虎",
-          departmentTel: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          id: "",
-          departmentName: "2016-05-03",
-          manageName: "王小虎",
-          departmentTel: "上海市普陀区金沙江路 1518 弄"
-        }
-      ]
+      tableData: []
     };
   },
   methods: {
@@ -256,10 +260,7 @@ export default {
             };
             table.id = tableInfo[i].id;
             table.departmentName = tableInfo[i].name;
-            if (
-              tableInfo[i].employee.name != null ||
-              tableInfo[i].employee.name != ""
-            ) {
+            if (tableInfo[i].employee != null && tableInfo[i].employee != "") {
               table.manageName = tableInfo[i].employee.name;
             } else {
               table.manageName = "无";
@@ -285,6 +286,7 @@ export default {
                 type: "success",
                 message: "删除成功!"
               });
+              this.submitForm();
             }
           });
         })
@@ -301,6 +303,21 @@ export default {
       this.dialogForm.id = table.id;
       this.dialogForm.departmentName = table.departmentName;
       this.dialogForm.departmentTel = table.departmentTel;
+      this.dialogForm.manageName = table.manageName;
+      //查询所有员工
+      this.manageList = [];
+      getEmps().then(response => {
+        const data = response.data.data;
+        for (let i = 0; i < data.length; i++) {
+          const marage = {
+            value: "",
+            label: ""
+          };
+          marage.value = data[i].id;
+          marage.label = data[i].name;
+          this.manageList.push(marage);
+        }
+      });
     },
     updateDept() {
       this.dialogFormVisible = false;
@@ -311,6 +328,7 @@ export default {
             type: "success",
             message: "修改成功!"
           });
+          this.submitForm();
         }
       });
     },

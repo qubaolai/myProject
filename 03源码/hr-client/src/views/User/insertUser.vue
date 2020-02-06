@@ -448,8 +448,9 @@ export default {
       if (this.form.username !== null && this.form.username !== "") {
         checkEmpNum(this.form.username).then(response => {
           const data = response.data;
-          if (data.code !== 200 && data.data != null) {
-            this.$alert("可用编号为:" + data.data, "员工编号重复", {
+          debugger;
+          if (data.code !== 200) {
+            this.$alert("员工编号重复", {
               confirmButtonText: "确定"
             });
           }

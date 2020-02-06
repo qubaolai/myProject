@@ -67,25 +67,17 @@ public class DepartmentController {
         return ResultVo.sendResult(200, "success");
     }
 
+    /**
+     * 修改部门
+     * @param param
+     * @return
+     */
     @PutMapping("/updateDepartment")
     public ResultVo updateDept(@RequestBody Map<String, Object> param) {
         if (null == param) {
             throw new ParamException(501, "参数异常");
         }
-        if (null == param.get("id") || "".equals(param.get("id"))) {
-            throw new ParamException(501, "参数异常");
-        }
-        Department department = new Department();
-        department.setId((String)param.get("id"));
-        if (null == param.get("departmentName") || "".equals(param.get("departmentName"))) {
-            throw new ParamException(501, "参数异常");
-        }
-        department.setName((String)param.get("departmentName"));
-        if (null == param.get("departmentTel") || "".equals(param.get("departmentTel"))) {
-            throw new ParamException(501, "参数异常");
-        }
-        department.setTelephone((String)param.get("departmentTel"));
-        departmentService.updateDept(department);
+        departmentService.updateDept(param);
         return ResultVo.sendResult(200, "success");
     }
 

@@ -1,7 +1,9 @@
 package com.qubaolai.service;
 
+import com.qubaolai.po.Attendance;
 import com.qubaolai.vo.ResultVo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,5 +40,7 @@ public interface AttendanceService {
      * @param map
      */
     public ResultVo updateSingInLog(Map<String, Object> map);
+
+    public List<Attendance> getAttendance(Map<String, Object> param);
 
 }

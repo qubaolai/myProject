@@ -1,9 +1,13 @@
 package com.qubaolai.po;
 
-public class Attendance {
+import com.qubaolai.pojo.AttendanceFather;
+
+public class Attendance extends AttendanceFather {
     private String id;
 
     private String employeeNumber;
+
+    private String departmentNumber;
 
     private String day;
 
@@ -31,6 +35,14 @@ public class Attendance {
 
     public void setEmployeeNumber(String employeeNumber) {
         this.employeeNumber = employeeNumber;
+    }
+
+    public String getDepartmentNumber() {
+        return departmentNumber;
+    }
+
+    public void setDepartmentNumber(String departmentNumber) {
+        this.departmentNumber = departmentNumber;
     }
 
     public String getDay() {

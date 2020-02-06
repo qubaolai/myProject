@@ -50,6 +50,8 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
     private DepartmentService departmentService;
     @Resource
     private HistoryMapper historyMapper;
+    @Resource
+    private MoveMapper moveMapper;
 
     @Override
     public void updateEmployee(Employee employee) {
@@ -207,32 +209,18 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
     }
 
     @Override
-    public String checkEmpNum(String empNum) {
+    public void checkEmpNum(String empNum) {
         EmployeeExample example = new EmployeeExample();
         EmployeeExample.Criteria criteria = example.createCriteria();
         if (null == empNum || "".equals(empNum)) {
             throw new ParamException(500, "参数异常");
         }
-        criteria.andUsernameLike("%" + empNum + "%");
+        criteria.andUsernameEqualTo(empNum);
         example.setOrderByClause("username");
         List<Employee> employeeList = employeeMapper.selectByExample(example);
-        if (null != employeeList && 0 < employeeList.size()) {
-            String username = employeeList.get(employeeList.size() - 1).getUsername();
-            String substring = username.substring(username.length() - 1, username.length());
-            //如果用户名存在用户名拼接1
-            if (empNum.equals(username)) {
-                return empNum + "1";
-            }
-            //判断最后一个字符是不是数组
-            String test = "^[0-9]*$";
-            boolean matches = Pattern.matches(test, substring);
-            if (matches) {
-                Integer last = Integer.parseInt(substring);
-                last += 1;
-                return username.substring(0, username.length() - 1) + last;
-            }
+        if(employeeList!=null&&employeeList.size()>0){
+            throw new DataException(208, "员工编号存在!");
         }
-        return null;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -257,10 +245,11 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
             if (null == employeeList1 || 0 >= employeeList1.size()) {
                 //添加的员工为部门领导
                 employee.setDeviceid("0");
+                employee.setManageerId(employee.getId());
                 //修改部门信息表
                 Department department = departmentMapper.selectByPrimaryKey(employee.getDepartmentNumber());
                 department.setManager(employee.getId());
-                departmentService.updateDept(department);
+                departmentMapper.updateByPrimaryKey(department);
             } else {
                 employee.setManageerId(employeeList1.get(0).getId());
             }
@@ -317,7 +306,89 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void schedulingEmployee(Map<String, Object> param) {
-
+        //向move插入数据
+        if(null == param.get("empNum") || "".equals((String)param.get("empNum"))){
+            throw new ParamException(501, "获取员工编号失败!");
+        }
+        EmployeeExample employeeExample = new EmployeeExample();
+        EmployeeExample.Criteria criteria = employeeExample.createCriteria();
+        criteria.andUsernameEqualTo((String) param.get("empNum"));
+        List<Employee> employeeList = employeeMapper.selectByExample(employeeExample);
+        if(employeeList.size() > 1){
+            throw new DataException(502, "数据异常");
+        }
+        Employee employee = employeeList.get(0);
+        if(employeeList == null || employeeList.size() <= 0){
+            throw new NoDataException(400, "该员工不存在!");
+        }
+        if(null == param.get("type") || "".equals((String)param.get("type"))){
+            throw new ParamException(501, "获取调动类型失败!");
+        }
+        if(null == param.get("deptNum") || "".equals((String)param.get("deptNum"))){
+            throw new ParamException(501, "获取部门编号失败!");
+        }
+        if(null == param.get("position") || "".equals((String)param.get("position"))){
+            throw new ParamException(501, "获取职位编号失败!");
+        }
+        //部门调动
+        if("0".equals((String)param.get("type"))){
+            Move move = new Move();
+            move.setId(UUIDUtil.getUUID());
+            move.setEmployeeNumber((String)param.get("empNum"));
+            //判断被调动员工时不是领导 是领导 则将该员工的调动前部门manageer值为空 修改员工将vaild为空领导id为调动后的部门的manager
+            //调动后部门
+            Department department1 = departmentMapper.selectByPrimaryKey((String) param.get("deptNum"));
+            //调动前部门
+            Department department = departmentMapper.selectByPrimaryKey(employee.getDepartmentNumber());
+            if(employee.getDeviceid().equals("0")){
+                //领导
+                // 修改调动前部门信息
+                department.setManager(null);
+                departmentMapper.updateByPrimaryKey(department);
+            }
+            //插入调动记录\
+            //调动前领导
+            move.setManagerId(employee.getManageerId());
+            move.setUpdateTime(DateUtil.getDate());
+            move.setMoveBefore(department.getId());
+            move.setMoveAfter(department1.getId());
+            move.setMoveType(0);
+            moveMapper.insert(move);
+            //如果职位变动
+            if(!employee.getPositionNumber().equals((String)param.get("position"))){
+                Move move1 = new Move();
+                move1.setId(UUIDUtil.getUUID());
+                move1.setMoveType(2);
+                move1.setEmployeeNumber((String)param.get("empNum"));
+                move1.setMoveBefore(employee.getPositionNumber());
+                move1.setMoveAfter((String)param.get("position"));
+                move1.setUpdateTime(DateUtil.getDate());
+                move1.setManagerId(employee.getManageerId());
+                moveMapper.insert(move1);
+                //修改员工职位调动
+                employee.setPositionNumber((String)param.get("position"));
+            }
+            //修改员工信息
+            employee.setDeviceid(null);
+            employee.setDepartmentNumber(department1.getId());
+            employee.setManageerId(department1.getManager());
+            employeeMapper.updateByPrimaryKey(employee);
+            //该部门所有员工的领导id设置为空
+        }
+        //职位调动
+        if("1".equals((String)param.get("type"))){
+            Move move = new Move();
+            move.setId(UUIDUtil.getUUID());
+            move.setMoveType(1);
+            move.setEmployeeNumber((String)param.get("empNum"));
+            move.setMoveBefore(employee.getPositionNumber());
+            move.setMoveAfter((String)param.get("position"));
+            move.setUpdateTime(DateUtil.getDate());
+            move.setManagerId(employee.getManageerId());
+            moveMapper.insert(move);
+            employee.setPositionNumber((String)param.get("position"));
+            employeeMapper.updateByPrimaryKey(employee);
+        }
     }
 
     @Override

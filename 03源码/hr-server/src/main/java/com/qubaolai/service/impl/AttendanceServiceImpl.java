@@ -1,12 +1,13 @@
 package com.qubaolai.service.impl;
 
+import com.qubaolai.common.exception.exceptions.NoDataException;
 import com.qubaolai.common.exception.exceptions.ParamException;
 import com.qubaolai.common.utils.DateUtil;
 import com.qubaolai.common.utils.UUIDUtil;
 import com.qubaolai.mapper.AttendanceMapper;
-import com.qubaolai.po.Attendance;
-import com.qubaolai.po.AttendanceExample;
-import com.qubaolai.po.Employee;
+import com.qubaolai.mapper.DepartmentMapper;
+import com.qubaolai.mapper.EmployeeMapper;
+import com.qubaolai.po.*;
 import com.qubaolai.service.AttendanceService;
 import com.qubaolai.service.EmployeeService;
 import com.qubaolai.vo.ResultVo;
@@ -15,10 +16,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Description qubaolai
@@ -31,6 +29,10 @@ public class AttendanceServiceImpl implements AttendanceService {
     private AttendanceMapper attendanceMapper;
     @Resource
     private EmployeeService employeeService;
+    @Resource
+    private EmployeeMapper employeeMapper;
+    @Resource
+    private DepartmentMapper departmentMapper;
     /**
      * 插入签到记录
      * @param map
@@ -45,6 +47,7 @@ public class AttendanceServiceImpl implements AttendanceService {
             attendance = (Attendance)map.get("attendance");
         }
         attendance.setEmployeeNumber(((Employee)map.get("user")).getId());
+        attendance.setDepartmentNumber(((Employee)map.get("user")).getDepartmentNumber());
         //向签到记录添加数据
         attendance.setDay(DateUtil.getDate());
         if(null != map.get("startTime")){
@@ -300,5 +303,103 @@ public class AttendanceServiceImpl implements AttendanceService {
         attendance.setEndType(endType);
         attendanceMapper.insert(attendance);
         return ResultVo.sendResult(200, "修改成功!");
+    }
+
+    @Override
+    public List<Attendance> getAttendance(Map<String, Object> param) {
+        AttendanceExample attendanceExample = new AttendanceExample();
+        AttendanceExample.Criteria attendanceCriteria = attendanceExample.createCriteria();
+        if(null != param.get("empName") && !"".equals((String)param.get("empName"))){
+            //通过员工姓名查询员工 模糊查询
+            EmployeeExample employeeExample = new EmployeeExample();
+            EmployeeExample.Criteria criteria = employeeExample.createCriteria();
+            criteria.andNameLike("%"+(String)param.get("empName")+"%");
+            List<Employee> employeeList = employeeMapper.selectByExample(employeeExample);
+            if(employeeList == null || 0 >= employeeList.size()){
+                throw new NoDataException(400, "查询数据为空");
+            }
+            ArrayList<String> empIds = new ArrayList<>();
+            for(Employee employee : employeeList){
+                empIds.add(employee.getId());
+            }
+            attendanceCriteria.andEmployeeNumberIn(empIds);
+        }
+        //员工编号模糊查询
+        if(null != param.get("empNum") && !"".equals((String)param.get("empNum"))){
+            EmployeeExample employeeExample = new EmployeeExample();
+            EmployeeExample.Criteria criteria = employeeExample.createCriteria();
+            criteria.andUsernameEqualTo((String)param.get("empNum"));
+            List<Employee> employeeList = employeeMapper.selectByExample(employeeExample);
+            ArrayList<String> empUName = new ArrayList<>();
+            if(null != employeeList && 0 < employeeList.size()){
+                for(Employee employee : employeeList){
+                    empUName.add(employee.getId());
+                }
+            }
+            attendanceCriteria.andEmployeeNumberIn(empUName);
+        }
+        //部门编号精确查询
+        if(null != param.get("deptNum") && !"".equals((String)param.get("deptNum"))){
+            attendanceCriteria.andDepartmentNumberEqualTo((String)param.get("deptNum"));
+        }
+        //签到时间
+        //上班
+        String singInstartTime = null;
+        String singInEndTime = null;
+        if(null != param.get("singInStartTime") && !"".equals((String)param.get("singInStartTime"))){
+            singInstartTime = (String)param.get("singInStartTime");
+        }
+        if(null != param.get("singInEndTime") && !"".equals((String)param.get("singInEndTime"))){
+            singInEndTime = (String)param.get("singInEndTime");
+        }
+        if(singInstartTime !=null && singInEndTime != null){
+            attendanceCriteria.andStartTimeBetween(singInstartTime,singInEndTime);
+        }
+        //下班
+        String singOutstartTime = null;
+        String singOutEndTime = null;
+        if(null != param.get("singOutstartTime") && !"".equals((String)param.get("singOutstartTime"))){
+            singOutstartTime = (String)param.get("singOutstartTime");
+        }
+        if(null != param.get("singOutEndTime") && !"".equals((String)param.get("singOutEndTime"))){
+            singOutEndTime = (String)param.get("singOutEndTime");
+        }
+        if(singOutstartTime !=null && singOutEndTime != null){
+            attendanceCriteria.andEndTimeBetween(singOutstartTime,singOutEndTime);
+        }
+        //查询签到类型
+        //上班
+        if(null != param.get("singInType") && !"".equals((String)param.get("singInType"))){
+            attendanceCriteria.andStartTypeEqualTo(Integer.parseInt((String)param.get("singInType")));
+        }
+        //下班
+        if(null != param.get("singOutType") && !"".equals((String)param.get("singOutType"))){
+            attendanceCriteria.andEndTypeEqualTo(Integer.parseInt((String)param.get("singOutType")));
+        }
+        //签到日期
+        //开始
+        String singDateStart = null;
+        if(null != param.get("singDateStart") && !"".equals((String)param.get("singDateStart"))){
+            singDateStart = (String)param.get("singDateStart");
+        }
+        //结束
+        String singDateEnd = null;
+        if(null != param.get("singDateEnd") && !"".equals((String)param.get("singDateEnd"))){
+            singDateEnd = (String)param.get("singDateEnd");
+        }
+        if(singDateStart!=null && singDateEnd != null){
+            attendanceCriteria.andDayBetween(singDateStart,singDateEnd);
+        }
+        List<Attendance> attendances = attendanceMapper.selectByExample(attendanceExample);
+        if(null == attendances || 0 >= attendances.size() ){
+            throw new NoDataException(400, "数据为空");
+        }
+        for(Attendance attendance : attendances){
+            Employee employee = employeeMapper.selectByPrimaryKey(attendance.getEmployeeNumber());
+            Department department = departmentMapper.selectByPrimaryKey(attendance.getDepartmentNumber());
+            attendance.setEmployee(employee);
+            attendance.setDepartment(department);
+        }
+        return attendances;
     }
 }

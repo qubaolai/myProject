@@ -244,6 +244,76 @@ public class AttendanceExample {
             return (Criteria) this;
         }
 
+        public Criteria andDepartmentNumberIsNull() {
+            addCriterion("department_Number is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentNumberIsNotNull() {
+            addCriterion("department_Number is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentNumberEqualTo(String value) {
+            addCriterion("department_Number =", value, "departmentNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentNumberNotEqualTo(String value) {
+            addCriterion("department_Number <>", value, "departmentNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentNumberGreaterThan(String value) {
+            addCriterion("department_Number >", value, "departmentNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentNumberGreaterThanOrEqualTo(String value) {
+            addCriterion("department_Number >=", value, "departmentNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentNumberLessThan(String value) {
+            addCriterion("department_Number <", value, "departmentNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentNumberLessThanOrEqualTo(String value) {
+            addCriterion("department_Number <=", value, "departmentNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentNumberLike(String value) {
+            addCriterion("department_Number like", value, "departmentNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentNumberNotLike(String value) {
+            addCriterion("department_Number not like", value, "departmentNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentNumberIn(List<String> values) {
+            addCriterion("department_Number in", values, "departmentNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentNumberNotIn(List<String> values) {
+            addCriterion("department_Number not in", values, "departmentNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentNumberBetween(String value1, String value2) {
+            addCriterion("department_Number between", value1, value2, "departmentNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentNumberNotBetween(String value1, String value2) {
+            addCriterion("department_Number not between", value1, value2, "departmentNumber");
+            return (Criteria) this;
+        }
+
         public Criteria andDayIsNull() {
             addCriterion("day is null");
             return (Criteria) this;

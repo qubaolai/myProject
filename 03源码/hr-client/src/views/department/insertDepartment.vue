@@ -14,6 +14,13 @@
       class="inputStyle"
     >
     </el-input>
+    <el-input
+      placeholder="请输入职位"
+      v-model="form.position"
+      clearable
+      class="inputStyle"
+    >
+    </el-input>
     <el-select
       v-model="form.manageName"
       filterable
@@ -43,7 +50,8 @@ export default {
       form: {
         deptName: "",
         deptTel: "",
-        manageName: ""
+        manageName: "",
+        position: ""
       },
       options: []
     };
@@ -83,6 +91,7 @@ export default {
     reset() {
       this.form.deptName = "";
       this.form.deptTel = "";
+      this.form.position = "";
       this.form.manageName = "";
     }
   },

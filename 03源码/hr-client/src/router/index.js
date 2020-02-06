@@ -42,6 +42,15 @@ export default new VueRouter({
             name: "首页"
           },
           component: () => import("../views/console/index.vue")
+        },
+        {
+          path: "/signlog",
+          name: "Signlog",
+          hidden: false,
+          meta: {
+            name: "签到记录"
+          },
+          component: () => import("../views/console/signLog.vue")
         }
       ]
     },

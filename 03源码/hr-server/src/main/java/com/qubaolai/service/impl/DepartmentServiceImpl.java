@@ -8,6 +8,7 @@ import com.qubaolai.common.utils.UUIDUtil;
 import com.qubaolai.mapper.DepartmentMapper;
 import com.qubaolai.mapper.EmployeeMapper;
 import com.qubaolai.mapper.MoveMapper;
+import com.qubaolai.mapper.PositionMapper;
 import com.qubaolai.po.*;
 import com.qubaolai.service.DepartmentService;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     private EmployeeMapper employeeMapper;
     @Resource
     private MoveMapper moveMapper;
+    @Resource
+    private PositionMapper positionMapper;
 
     /**
      * 获取所有部门
@@ -104,15 +107,16 @@ public class DepartmentServiceImpl implements DepartmentService {
             throw new NoDataException(400, "数据为空");
         }
         for (Department department : departments) {
-            //查询每个部门管理者的姓名
-            EmployeeExample employeeExample1 = new EmployeeExample();
-            EmployeeExample.Criteria criteria1 = employeeExample1.createCriteria();
-            criteria1.andIdEqualTo(department.getManager());
-            List<Employee> employees = employeeMapper.selectByExample(employeeExample1);
-            if (null == employees || 0 >= employees.size()) {
-                throw new NoDataException(400, "部门领导为空");
+            if(department.getManager()!=null){
+                //查询每个部门管理者的姓名
+                EmployeeExample employeeExample1 = new EmployeeExample();
+                EmployeeExample.Criteria criteria1 = employeeExample1.createCriteria();
+                criteria1.andIdEqualTo(department.getManager());
+                List<Employee> employees = employeeMapper.selectByExample(employeeExample1);
+                if (null != employees && 0 < employees.size()) {
+                    department.setEmployee(employees.get(0));
+                }
             }
-            department.setEmployee(employees.get(0));
         }
         return departments;
     }
@@ -133,14 +137,53 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public void updateDept(Department department) {
-        DepartmentExample example = new DepartmentExample();
-        DepartmentExample.Criteria criteria = example.createCriteria();
-        if (null == department.getId() || "".equals(department.getId())) {
+    public void updateDept(Map<String, Object> param) {
+        if (null == param.get("id") || "".equals(param.get("id"))) {
             throw new ParamException(501, "参数异常");
         }
-        criteria.andIdEqualTo(department.getId());
-        departmentMapper.updateByExampleSelective(department, example);
+        Department department = new Department();
+        department.setId((String)param.get("id"));
+        if (null != param.get("departmentName") && !"".equals((String)param.get("departmentName"))) {
+            department.setName((String)param.get("departmentName"));
+        }
+        if (null != param.get("departmentTel") && !"".equals((String)param.get("departmentTel"))) {
+            department.setTelephone((String)param.get("departmentTel"));
+        }
+        if (null != param.get("manageName") && !"".equals((String)param.get("manageName"))) {
+            department.setManager((String)param.get("manageName"));
+        }
+        departmentMapper.updateByPrimaryKeySelective(department);
+        //修改员工信息
+        //通过部门id和devic查询员工 该员工为部门领导
+        EmployeeExample employeeExample = new EmployeeExample();
+        EmployeeExample.Criteria criteria = employeeExample.createCriteria();
+        criteria.andDepartmentNumberEqualTo(department.getId());
+        criteria.andDeviceidEqualTo("0");
+        List<Employee> employeeList = employeeMapper.selectByExample(employeeExample);
+        if(employeeList!=null&&employeeList.size()>0){
+            Employee employee = employeeList.get(0);
+            employee.setDeviceid(null);
+            employeeMapper.updateByPrimaryKey(employee);
+        }
+        //修改新部门领导
+        //查询新领导信息
+        Employee employee1 = employeeMapper.selectByPrimaryKey((String) param.get("manageName"));
+        if("0".equals(employee1.getDeviceid())&&employee1.getDeviceid() !=null){
+            throw new DataException(502, "请重新指定部门领导!");
+        }
+        employee1.setDepartmentNumber(department.getId());
+        employee1.setDeviceid("0");
+        employee1.setManageerId(employee1.getId());
+        employeeMapper.updateByPrimaryKey(employee1);
+        //该部门的所有员工领导设置为新员工id
+        EmployeeExample employeeExample1 = new EmployeeExample();
+        EmployeeExample.Criteria criteria1 = employeeExample1.createCriteria();
+        criteria1.andDepartmentNumberEqualTo(employee1.getDepartmentNumber());
+        List<Employee> employeeList1 = employeeMapper.selectByExample(employeeExample1);
+        for(Employee employee:employeeList1){
+            employee.setDepartmentNumber(employee1.getDepartmentNumber());
+            employeeMapper.updateByPrimaryKeySelective(employee);
+        }
     }
 
     @Transactional(propagation= Propagation.REQUIRED)
@@ -202,6 +245,14 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
         department.setValid(0);
         departmentMapper.insert(department);
+        if (null == param.get("position") || "".equals((String) param.get("position"))) {
+            throw new ParamException(501, "请输入职位");
+        }
+        Position position = new Position();
+        position.setId(UUIDUtil.getUUID());
+        position.setName((String) param.get("position"));
+        position.setDepartmentNumber(department.getId());
+        positionMapper.insert(position);
     }
 
     @Transactional(propagation= Propagation.REQUIRED)

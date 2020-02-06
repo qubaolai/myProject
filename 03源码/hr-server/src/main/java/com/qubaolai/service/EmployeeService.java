@@ -46,7 +46,7 @@ public interface EmployeeService extends BaseService {
      * @param empNum
      * @return 可用编号
      */
-    public String checkEmpNum(String empNum);
+    public void checkEmpNum(String empNum);
     /**
      * 添加员工 用于管理员添加新员工
      * @param employees

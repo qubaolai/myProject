@@ -67,6 +67,7 @@
 import { getEmp } from "@/api/user/getEmployees.js";
 import { getDepts } from "@/api/department/getDepartments.js";
 import { getpositions } from "@/api/position/getPosition.js";
+import { schedulingUser } from "@/api/user/schedulingUser.js";
 export default {
   name: "insertDept",
   //监听单选按钮的值 值为1时部门默认选中不可更改
@@ -74,7 +75,9 @@ export default {
     radio: {
       handler(newVal) {
         if (newVal == "1") {
-          this.form.deptNum = this.deptNum;
+          if (this.form.empNum != "") {
+            this.getEmpInfo();
+          }
           this.getPositions();
         }
       },
@@ -86,18 +89,19 @@ export default {
       form: {
         empNum: "",
         deptNum: "",
-        posion: ""
+        postion: "",
+        type: ""
       },
       deptartments: [],
       positions: [],
       //输入框员工编号查询的部门id
       deptNum: "",
-      position: "",
       radio: "0"
     };
   },
   methods: {
     getPositions() {
+      debugger;
       getpositions(this.form.deptNum).then(response => {
         const data = response.data;
         if (data.code === 200) {
@@ -118,16 +122,34 @@ export default {
       });
     },
     getEmpInfo() {
-      getEmp(this.form.empNum).then(response => {
+      if (this.form.empNum != "") {
+        getEmp(this.form.empNum).then(response => {
+          const data = response.data;
+          if (data.code === 200) {
+            this.form.deptNum = data.data.departmentNumber;
+          } else {
+            this.$message.error(data.msg);
+          }
+        });
+      }
+    },
+    commitForm() {
+      this.form.type = this.radio;
+      schedulingUser(this.form).then(response => {
         const data = response.data;
         if (data.code === 200) {
-          this.deptNum = data.data.departmentNumber;
+          this.$message({
+            message: "调动成功!",
+            type: "success"
+          });
         } else {
-          this.$message.error(data.msg);
+          this.$message({
+            message: data.msg,
+            type: "warning"
+          });
         }
       });
     },
-    commitForm() {},
     reset() {},
     init() {
       getDepts().then(response => {

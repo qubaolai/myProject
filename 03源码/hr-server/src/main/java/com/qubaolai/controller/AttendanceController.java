@@ -1,6 +1,7 @@
 package com.qubaolai.controller;
 
 import com.qubaolai.common.exception.exceptions.ParamException;
+import com.qubaolai.po.Attendance;
 import com.qubaolai.service.AttendanceService;
 import com.qubaolai.service.EmployeeService;
 import com.qubaolai.vo.ResultVo;
@@ -8,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,5 +51,14 @@ public class AttendanceController {
         }
         ResultVo resultVo = attendanceService.updateSingInLog(map);
         return resultVo;
+    }
+
+    @PostMapping("/getAttendance")
+    public ResultVo getAttendance(@RequestBody Map<String, Object> param){
+        if(null == param){
+            throw new ParamException(501, "参数异常");
+        }
+        List<Attendance> attendance = attendanceService.getAttendance(param);
+        return ResultVo.sendResult(200, "success", attendance);
     }
 }

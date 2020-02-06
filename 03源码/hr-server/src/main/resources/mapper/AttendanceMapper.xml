@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.qubaolai.po.Attendance" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="employee_number" property="employeeNumber" jdbcType="VARCHAR" />
+    <result column="department_Number" property="departmentNumber" jdbcType="VARCHAR" />
     <result column="day" property="day" jdbcType="VARCHAR" />
     <result column="start_time" property="startTime" jdbcType="VARCHAR" />
     <result column="start_type" property="startType" jdbcType="INTEGER" />
@@ -70,7 +71,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, employee_number, day, start_time, start_type, end_time, end_type, notes
+    id, employee_number, department_Number, day, start_time, start_type, end_time, end_type, 
+    notes
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.qubaolai.po.AttendanceExample" >
     select
@@ -103,12 +105,14 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.qubaolai.po.Attendance" >
-    insert into attendance (id, employee_number, day, 
-      start_time, start_type, end_time, 
-      end_type, notes)
-    values (#{id,jdbcType=VARCHAR}, #{employeeNumber,jdbcType=VARCHAR}, #{day,jdbcType=VARCHAR}, 
-      #{startTime,jdbcType=VARCHAR}, #{startType,jdbcType=INTEGER}, #{endTime,jdbcType=VARCHAR}, 
-      #{endType,jdbcType=INTEGER}, #{notes,jdbcType=VARCHAR})
+    insert into attendance (id, employee_number, department_Number, 
+      day, start_time, start_type, 
+      end_time, end_type, notes
+      )
+    values (#{id,jdbcType=VARCHAR}, #{employeeNumber,jdbcType=VARCHAR}, #{departmentNumber,jdbcType=VARCHAR}, 
+      #{day,jdbcType=VARCHAR}, #{startTime,jdbcType=VARCHAR}, #{startType,jdbcType=INTEGER}, 
+      #{endTime,jdbcType=VARCHAR}, #{endType,jdbcType=INTEGER}, #{notes,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.qubaolai.po.Attendance" >
     insert into attendance
@@ -118,6 +122,9 @@
       </if>
       <if test="employeeNumber != null" >
         employee_number,
+      </if>
+      <if test="departmentNumber != null" >
+        department_Number,
       </if>
       <if test="day != null" >
         day,
@@ -144,6 +151,9 @@
       </if>
       <if test="employeeNumber != null" >
         #{employeeNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentNumber != null" >
+        #{departmentNumber,jdbcType=VARCHAR},
       </if>
       <if test="day != null" >
         #{day,jdbcType=VARCHAR},
@@ -180,6 +190,9 @@
       <if test="record.employeeNumber != null" >
         employee_number = #{record.employeeNumber,jdbcType=VARCHAR},
       </if>
+      <if test="record.departmentNumber != null" >
+        department_Number = #{record.departmentNumber,jdbcType=VARCHAR},
+      </if>
       <if test="record.day != null" >
         day = #{record.day,jdbcType=VARCHAR},
       </if>
@@ -207,6 +220,7 @@
     update attendance
     set id = #{record.id,jdbcType=VARCHAR},
       employee_number = #{record.employeeNumber,jdbcType=VARCHAR},
+      department_Number = #{record.departmentNumber,jdbcType=VARCHAR},
       day = #{record.day,jdbcType=VARCHAR},
       start_time = #{record.startTime,jdbcType=VARCHAR},
       start_type = #{record.startType,jdbcType=INTEGER},
@@ -222,6 +236,9 @@
     <set >
       <if test="employeeNumber != null" >
         employee_number = #{employeeNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentNumber != null" >
+        department_Number = #{departmentNumber,jdbcType=VARCHAR},
       </if>
       <if test="day != null" >
         day = #{day,jdbcType=VARCHAR},
@@ -247,6 +264,7 @@
   <update id="updateByPrimaryKey" parameterType="com.qubaolai.po.Attendance" >
     update attendance
     set employee_number = #{employeeNumber,jdbcType=VARCHAR},
+      department_Number = #{departmentNumber,jdbcType=VARCHAR},
       day = #{day,jdbcType=VARCHAR},
       start_time = #{startTime,jdbcType=VARCHAR},
       start_type = #{startType,jdbcType=INTEGER},

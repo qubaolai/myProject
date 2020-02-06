@@ -33,10 +33,10 @@ public interface DepartmentService {
 
     /**
      * 修改部门信息
-     * @param department
+     * @param param
      * @return
      */
-    public void updateDept(Department department);
+    public void updateDept(Map<String, Object> param);
 
     /**
      * 添加部门信息

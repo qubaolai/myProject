@@ -1,6 +1,5 @@
 package com.qubaolai.service.impl;
 
-import com.qubaolai.common.exception.exceptions.DataException;
 import com.qubaolai.common.exception.exceptions.NoDataException;
 import com.qubaolai.common.utils.DateUtil;
 import com.qubaolai.common.utils.UUIDUtil;

@@ -99,11 +99,8 @@ public class UserController {
         if (null == empNum || "".equals(empNum)) {
             throw new ParamException(500, "参数异常");
         }
-        String result = employeeService.checkEmpNum(empNum);
-        if (null == result) {
-            return ResultVo.sendResult(200, "success");
-        }
-        return ResultVo.sendResult(208, "员工编号存在!", result);
+        employeeService.checkEmpNum(empNum);
+        return ResultVo.sendResult(200, "success");
     }
 
     /**
@@ -191,5 +188,14 @@ public class UserController {
         }
         Employee employee = employeeService.getEmployee(id);
         return ResultVo.sendResult(200, "success", employee);
+    }
+
+    @PutMapping("/schedulingUser")
+    public ResultVo schedulingUser(@RequestBody Map<String, Object> param){
+        if(null == param){
+            throw new ParamException("参数异常");
+        }
+        employeeService.schedulingEmployee(param);
+        return ResultVo.sendResult(200, "success");
     }
 }
