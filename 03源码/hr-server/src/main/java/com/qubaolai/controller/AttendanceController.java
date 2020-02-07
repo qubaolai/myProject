@@ -44,7 +44,7 @@ public class AttendanceController {
      * @param map
      * @return
      */
-    @PostMapping("/updateWorkSingIn")
+    @PutMapping("/updateWorkSingIn")
     public ResultVo updateWorkSingin(@RequestBody Map<String, Object> map) {
         if (null == map) {
             throw new ParamException("参数异常");
@@ -53,6 +53,11 @@ public class AttendanceController {
         return resultVo;
     }
 
+    /**
+     * 获取签到记录
+     * @param param
+     * @return
+     */
     @PostMapping("/getAttendance")
     public ResultVo getAttendance(@RequestBody Map<String, Object> param){
         if(null == param){

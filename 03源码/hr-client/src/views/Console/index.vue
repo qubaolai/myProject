@@ -30,7 +30,7 @@
   </div>
 </template>
 <script>
-import { singin } from "@/api/user/signin.js";
+import { singin } from "@/api/attendance/signin.js";
 import { apply } from "@/api/lea/apply.js";
 import { formatDate } from "@/utils/dateUtil.js";
 import Modal from "@/components/load.vue";

@@ -122,6 +122,19 @@ public class DateUtil {
             return null;
         }
     }
+    /**
+     * 时间转化成为 "HH:mm:ss"格式的 字符串
+     * @param date
+     * @return
+     */
+    public static String convertTime(Date date) {
+        SimpleDateFormat formater = new SimpleDateFormat("HH:mm:ss");
+        try {
+            return formater.format(date);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     /**
      * 转sql的time格式

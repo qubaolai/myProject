@@ -16,9 +16,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Description qubaolai
@@ -291,5 +289,38 @@ public class DepartmentServiceImpl implements DepartmentService {
             throw new NoDataException(400, "部门为空");
         }
         return departments;
+    }
+
+    @Override
+    public Map<String, Object> getPageInfo() {
+        Map<String, Object> deptMap = new HashMap<>();
+        //查询所有部门
+        DepartmentExample departmentExample = new DepartmentExample();
+        List<Department> departments = departmentMapper.selectByExample(departmentExample);
+        for(Department department : departments){
+            deptMap.put(department.getId(), department);
+        }
+        //循环部门map
+        for(Map.Entry<String, Object> entry : deptMap.entrySet()){
+            List<Map<String, Object>> empList = new LinkedList<>();
+            EmployeeExample employeeExample = new EmployeeExample();
+            EmployeeExample.Criteria criteria = employeeExample.createCriteria();
+            criteria.andDepartmentNumberEqualTo(entry.getKey());
+            List<Employee> employeeList = employeeMapper.selectByExample(employeeExample);
+            for(Employee employee : employeeList){
+                Map<String, Object> empMap = new HashMap<>();
+                if(employee.getDepartmentNumber().equals(entry.getKey())){
+                    empMap.put(employee.getDepartmentNumber(), employee);
+                    empList.add(empMap);
+                }
+                //循环员工map
+                for(Map.Entry<String, Object> empEntry : empMap.entrySet()){
+                    if(((Employee)empEntry.getValue()).getDepartmentNumber().equals(entry.getKey())){
+                        ((Department)entry.getValue()).setEmployeeListMap(empList);
+                    }
+                }
+            }
+        }
+        return deptMap;
     }
 }

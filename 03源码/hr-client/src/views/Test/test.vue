@@ -33,7 +33,7 @@
             <span>部门名称&nbsp;:&nbsp;</span>
             <el-select v-model="form.deptName" clearable placeholder="请选择">
               <el-option
-                v-for="item in initData.formData.departments"
+                v-for="item in departments"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -45,16 +45,21 @@
           ><div class="grid-content bg-purple">
             <span>上班时间&nbsp;:&nbsp;</span>
             <el-time-picker
-              value-format="HH:mm:ss"
               style="width: 120px;margin-right: 5px;"
               v-model="form.singInStartTime"
+              :picker-options="{
+                selectableRange: '18:30:00 - 20:30:00'
+              }"
               placeholder="任意时间点"
             >
             </el-time-picker>
             <el-time-picker
-              value-format="HH:mm:ss"
               style="width: 120px;"
+              arrow-control
               v-model="form.singInEndTime"
+              :picker-options="{
+                selectableRange: '18:30:00 - 20:30:00'
+              }"
               placeholder="任意时间点"
             >
             </el-time-picker></div
@@ -101,21 +106,20 @@
           ><div class="grid-content bg-purple">
             <span>下班时间&nbsp;:&nbsp;</span>
             <el-time-picker
-              value-format="HH:mm:ss"
               style="width: 120px;margin-right: 5px;"
               v-model="form.singOutStartTime"
               :picker-options="{
-                selectableRange: '00:00:00 - 23:59:59'
+                selectableRange: '18:30:00 - 20:30:00'
               }"
               placeholder="任意时间点"
             >
             </el-time-picker>
             <el-time-picker
-              value-format="HH:mm:ss"
               style="width: 120px;"
+              arrow-control
               v-model="form.singOutEndTime"
               :picker-options="{
-                selectableRange: '00:00:00 - 23:59:59'
+                selectableRange: '18:30:00 - 20:30:00'
               }"
               placeholder="任意时间点"
             >
@@ -125,17 +129,12 @@
       <el-row :gutter="0" style="margin-bottom: 6px;">
         <el-col :span="24"
           ><div class="grid-content bg-purple rowSty">
-            <el-button type="primary" class="buttonStyle" @click="query()"
-              >查询</el-button
-            >
-            <el-button type="primary" class="buttonStyle" @click="reset()"
-              >重置</el-button
-            >
+            <el-button type="primary" class="buttonStyle">查询</el-button>
+            <el-button type="primary" class="buttonStyle">重置</el-button>
           </div></el-col
         >
       </el-row>
     </div>
-    <!-- 数据 -->
     <div
       style="width: 100%; height: 3px; background-color: #fff;margin-bottom: 6px;"
     ></div>
@@ -143,34 +142,28 @@
       <el-row>
         <div>
           <el-table :data="tableData" style="width: 100%;" height="390">
-            <el-table-column
-              fixed
-              prop="singDate"
-              sortable
-              label="签到日期"
-              width="150"
-            >
+            <el-table-column fixed prop="date" label="签到日期" width="150">
             </el-table-column>
             <el-table-column prop="name" label="姓名" width="150">
             </el-table-column>
-            <el-table-column prop="dept" label="部门" width="150">
+            <el-table-column prop="province" label="部门" width="150">
             </el-table-column>
-            <el-table-column prop="singInTime" label="上班时间" width="150">
+            <el-table-column prop="city" label="上班时间" width="150">
             </el-table-column>
-            <el-table-column prop="singOutTime" label="下班时间" width="150">
+            <el-table-column prop="address" label="下班时间" width="150">
             </el-table-column>
-            <el-table-column prop="singInType" label="上班签到" width="150">
+            <el-table-column prop="city" label="上班签到" width="150">
             </el-table-column>
-            <el-table-column prop="singOutType" label="下班签到" width="150">
+            <el-table-column prop="address" label="下班签到" width="150">
             </el-table-column>
-            <el-table-column v-if="role" fixed="right" label="操作" width="120">
+            <el-table-column fixed="right" label="操作" width="120">
               <template slot-scope="scope">
                 <el-button
-                  @click.native.prevent="showDialog(scope.row)"
+                  @click.native.prevent="deleteRow(scope.$index, tableData)"
                   type="text"
                   size="small"
                 >
-                  编辑
+                  移除
                 </el-button>
               </template>
             </el-table-column>
@@ -191,90 +184,14 @@
         </div>
       </el-row>
     </div>
-    <!-- 弹层 -->
-    <div>
-      <el-dialog
-        title="修改签到记录"
-        :visible.sync="dialogFormVisible"
-        :append-to-body="true"
-      >
-        <el-form :model="form">
-          <el-form-item
-            label="员工姓名"
-            :label-width="formLabelWidth"
-            style="margin-bottom: 10px;"
-          >
-            <el-input
-              :disabled="true"
-              v-model="dialogForm.employeeName"
-              clearable
-              style="width: 220px;"
-            >
-            </el-input>
-          </el-form-item>
-          <el-form-item
-            label="签到日期"
-            :label-width="formLabelWidth"
-            style="margin-bottom: 10px;"
-          >
-            <el-input
-              :disabled="true"
-              v-model="dialogForm.date"
-              clearable
-              style="width: 220px;"
-            >
-            </el-input>
-          </el-form-item>
-          <el-form-item
-            label="上班时间"
-            :label-width="formLabelWidth"
-            style="margin-bottom: 10px;"
-          >
-            <el-time-picker
-              value-format="HH:mm:ss"
-              v-model="dialogForm.startDate"
-              :picker-options="{
-                selectableRange: '00:00:00 - 23:59:59'
-              }"
-              placeholder="上班时间点"
-            >
-            </el-time-picker>
-          </el-form-item>
-          <el-form-item
-            label="下班时间"
-            :label-width="formLabelWidth"
-            style="margin-bottom: 10px;"
-          >
-            <el-time-picker
-              value-format="HH:mm:ss"
-              v-model="dialogForm.endDate"
-              :picker-options="{
-                selectableRange: '00:00:00 - 23:59:59'
-              }"
-              placeholder="下班时间点"
-            >
-            </el-time-picker>
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="submitUpdate()">确 定</el-button>
-        </div>
-      </el-dialog>
-    </div>
   </div>
 </template>
 
 <script>
 import { getEmpInfo } from "@/api/page/getEmpInfo.js";
-import { initPage } from "@/api/page/init.js";
-import formData from "@/store/data.js";
-import { getAttendance } from "@/api/attendance/getAttendance.js";
-import { updateAttendance } from "@/api/attendance/updateAttendance.js";
 export default {
   data() {
     return {
-      initData: formData,
       //分页
       //显示数据总数
       sumNum: 0,
@@ -294,93 +211,84 @@ export default {
         singOutType: "",
         singDate: ""
       },
-      empInfos: [],
-      tableData: [],
-      // 弹层数据
-      dialogFormVisible: false,
-      dialogForm: {
-        employeeNumber: "",
-        date: "",
-        employeeName: "",
-        startDate: "",
-        endDate: ""
-      },
-      formLabelWidth: "120px",
-      role: ""
+      empInfos: [
+        //第一层
+        {
+          value: "zhinan",
+          label: "指南",
+          children: [
+            //第二层
+            {
+              value: "shejiyuanze",
+              label: "设计原则"
+            },
+            {
+              value: "daohang",
+              label: "导航"
+            }
+          ]
+        }
+      ],
+      departments: [
+        {
+          value: "选项1",
+          label: "黄金糕"
+        },
+        {
+          value: "选项2",
+          label: "双皮奶"
+        },
+        {
+          value: "选项3",
+          label: "蚵仔煎"
+        },
+        {
+          value: "选项4",
+          label: "龙须面"
+        },
+        {
+          value: "选项5",
+          label: "北京烤鸭"
+        }
+      ],
+      tableData: [
+        {
+          date: "2016-05-02",
+          name: "王小虎",
+          province: "上海",
+          city: "普陀区",
+          address: "上海市普陀区金沙江路 1518 弄",
+          zip: 200333
+        },
+        {
+          date: "2016-05-04",
+          name: "王小虎",
+          province: "上海",
+          city: "普陀区",
+          address: "上海市普陀区金沙江路 1517 弄",
+          zip: 200333
+        },
+        {
+          date: "2016-05-01",
+          name: "王小虎",
+          province: "上海",
+          city: "普陀区",
+          address: "上海市普陀区金沙江路 1519 弄",
+          zip: 200333
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          province: "上海",
+          city: "普陀区",
+          address: "上海市普陀区金沙江路 1516 弄",
+          zip: 200333
+        }
+      ]
     };
   },
   methods: {
-    query() {
-      getAttendance(this.form).then(response => {
-        const data = response.data;
-        if (data.code === 200) {
-          this.tableData = [];
-          const dataList = data.data;
-          for (let i = 0; i < dataList.length; i++) {
-            const table = {
-              empId: "",
-              singDate: "",
-              name: "",
-              dept: "",
-              singInTime: "",
-              singInType: "",
-              singOutTime: "",
-              singOutType: ""
-            };
-            table.empId = dataList[i].employeeNumber;
-            table.singDate = dataList[i].day;
-            table.name = dataList[i].employee.name;
-            table.dept = dataList[i].department.name;
-            table.singInTime = dataList[i].startTime;
-            table.singOutTime = dataList[i].endTime;
-            if (dataList[i].startType == 0) {
-              table.singInType = "正常";
-            }
-            if (dataList[i].startType == 1) {
-              table.singInType = "迟到";
-            }
-            if (dataList[i].startType == 2) {
-              table.singInType = "缺勤";
-            }
-            if (dataList[i].endType == 0) {
-              table.singOutType = "正常";
-            }
-            if (dataList[i].endType == 1) {
-              table.singOutType = "早退";
-            }
-            if (dataList[i].endType == 2) {
-              table.singOutType = "加班";
-            }
-            this.tableData.push(table);
-          }
-        }
-      });
-    },
-    submitUpdate() {
-      this.dialogForm.startDate =
-        this.dialogForm.date + " " + this.dialogForm.startDate;
-      this.dialogForm.endDate =
-        this.dialogForm.date + " " + this.dialogForm.endDate;
-      console.log(this.dialogForm);
-      updateAttendance(this.dialogForm).then(response => {
-        const data = response.data;
-        if (data.code === 200) {
-          this.dialogFormVisible = false;
-          this.$message({
-            message: "修改成功!",
-            type: "success"
-          });
-        }
-      });
-    },
-    showDialog(row) {
-      this.dialogFormVisible = true;
-      this.dialogForm.employeeNumber = row.empId;
-      this.dialogForm.date = row.singDate;
-      this.dialogForm.employeeName = row.name;
-      this.dialogForm.startDate = row.singInTime;
-      this.dialogForm.endDate = row.singOutTime;
-    },
+    handleClick() {},
     initPage() {
       getEmpInfo().then(response => {
         const data = response.data;
@@ -414,6 +322,7 @@ export default {
                 firstData.children.push(secondData);
               }
             }
+            console.log(firstData);
             this.empInfos.push(firstData);
           }
         }
@@ -424,22 +333,10 @@ export default {
     },
     handleCurrentChange(val) {
       this.currentPage = val;
-    },
-    reset() {},
-    //页面加载完成调用的初始化方法
-    init() {
-      //页面初始化 发送请求获取所有部门和职称
-      initPage();
-      this.initData = formData;
     }
   },
   created: function() {
-    const user = JSON.parse(sessionStorage.getItem("user"));
-    if (user.role == 0) {
-      this.role = true;
-    }
     this.initPage();
-    this.init();
   }
 };
 </script>

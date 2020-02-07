@@ -381,7 +381,7 @@ export default {
   margin-left: auto;
   margin-right: auto;
   height: 100vh;
-  padding: 25px 0 25px 10px;
+  padding: 16px 7px 25px 10px;
   font: 14px;
   color: rgb(99, 97, 97);
   background-color: rgb(245, 243, 243);

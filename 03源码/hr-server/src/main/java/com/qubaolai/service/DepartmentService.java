@@ -55,4 +55,10 @@ public interface DepartmentService {
      * @return
      */
     public List<Department> getAll();
+
+    /**
+     * 获取各部门内员工信息
+     * @return
+     */
+    public Map<String, Object> getPageInfo();
 }

@@ -52,13 +52,13 @@ public class AttendanceServiceImpl implements AttendanceService {
         attendance.setDay(DateUtil.getDate());
         if(null != map.get("startTime")){
             Date startTime = (Date) map.get("startTime");
-            attendance.setStartTime(DateUtil.convert2String(startTime,"yyyy-MM-dd HH:mm:ss"));
+            attendance.setStartTime(DateUtil.convert2String(startTime,"HH:mm:ss"));
         }
         if(null != map.get("startType")){
             attendance.setStartType((Integer)map.get("startType"));
         }
         if(null != map.get("endTime")){
-            attendance.setEndTime(DateUtil.convert2String((Date)map.get("endTime"),"yyyy-MM-dd HH:mm:ss"));
+            attendance.setEndTime(DateUtil.convert2String((Date)map.get("endTime"),"HH:mm:ss"));
         }
         if(null != map.get("endType")){
             attendance.setEndType((Integer)map.get("endType"));
@@ -225,8 +225,7 @@ public class AttendanceServiceImpl implements AttendanceService {
             throw new ParamException("参数异常!");
         }
         String employeeNumber = (String) map.get("employeeNumber");
-        String dateStr = (String) map.get("date");
-        String date = dateStr.substring(0,10);
+        String date = (String) map.get("date");
         String startTime = null;
         Integer startType = null;
         String endTime = null;
@@ -236,7 +235,7 @@ public class AttendanceServiceImpl implements AttendanceService {
             String startDateStr = (String)map.get("startDate");
             //将字符串时间转为date类型
             Date startDate = DateUtil.convert2Date(startDateStr, "yyyy-MM-dd HH:mm:ss");
-            startTime = DateUtil.convert(startDate);
+            startTime = DateUtil.convertTime(startDate);
             //判断上班签到类型
             //正常上班
             if (startDate.before(eight) || (startDate.after(eight) && startDate.before(nine))) {
@@ -256,7 +255,7 @@ public class AttendanceServiceImpl implements AttendanceService {
             String endDateStr = (String)map.get("endDate");
             //将字符串时间转为date类型
             Date endDate = DateUtil.convert2Date(endDateStr, "yyyy-MM-dd HH:mm:ss");
-            endTime = DateUtil.convert(endDate);
+            endTime = DateUtil.convertTime(endDate);
             //判断下班签到类型
             //早退
             if(endDate.before(seventeen)){
@@ -309,20 +308,27 @@ public class AttendanceServiceImpl implements AttendanceService {
     public List<Attendance> getAttendance(Map<String, Object> param) {
         AttendanceExample attendanceExample = new AttendanceExample();
         AttendanceExample.Criteria attendanceCriteria = attendanceExample.createCriteria();
-        if(null != param.get("empName") && !"".equals((String)param.get("empName"))){
-            //通过员工姓名查询员工 模糊查询
-            EmployeeExample employeeExample = new EmployeeExample();
-            EmployeeExample.Criteria criteria = employeeExample.createCriteria();
-            criteria.andNameLike("%"+(String)param.get("empName")+"%");
-            List<Employee> employeeList = employeeMapper.selectByExample(employeeExample);
-            if(employeeList == null || 0 >= employeeList.size()){
-                throw new NoDataException(400, "查询数据为空");
-            }
-            ArrayList<String> empIds = new ArrayList<>();
-            for(Employee employee : employeeList){
-                empIds.add(employee.getId());
-            }
-            attendanceCriteria.andEmployeeNumberIn(empIds);
+        if(null != param.get("empName") && !"".equals(param.get("empName"))){
+//            //通过员工姓名查询员工 模糊查询
+//            EmployeeExample employeeExample = new EmployeeExample();
+//            EmployeeExample.Criteria criteria = employeeExample.createCriteria();
+//            criteria.andNameLike("%"+(String)param.get("empName")+"%");
+//            List<Employee> employeeList = employeeMapper.selectByExample(employeeExample);
+//            if(employeeList == null || 0 >= employeeList.size()){
+//                throw new NoDataException(400, "查询数据为空");
+//            }
+//            ArrayList<String> empIds = new ArrayList<>();
+//            for(Employee employee : employeeList){
+//                empIds.add(employee.getId());
+//            }
+//            attendanceCriteria.andEmployeeNumberIn(empIds);
+            ArrayList<String> params = (ArrayList)param.get("empName");
+            String deptId = params.get(0);
+            String empId = params.get(1);
+            AttendanceExample attendanceExample1 = new AttendanceExample();
+            AttendanceExample.Criteria criteria = attendanceExample1.createCriteria();
+            criteria.andEmployeeNumberEqualTo(empId);
+            criteria.andDepartmentNumberEqualTo(deptId);
         }
         //员工编号模糊查询
         if(null != param.get("empNum") && !"".equals((String)param.get("empNum"))){
@@ -369,12 +375,12 @@ public class AttendanceServiceImpl implements AttendanceService {
         }
         //查询签到类型
         //上班
-        if(null != param.get("singInType") && !"".equals((String)param.get("singInType"))){
-            attendanceCriteria.andStartTypeEqualTo(Integer.parseInt((String)param.get("singInType")));
+        if(null != param.get("singInType") && !"".equals(param.get("singInType"))){
+            attendanceCriteria.andStartTypeEqualTo((Integer)(param.get("singInType")));
         }
         //下班
-        if(null != param.get("singOutType") && !"".equals((String)param.get("singOutType"))){
-            attendanceCriteria.andEndTypeEqualTo(Integer.parseInt((String)param.get("singOutType")));
+        if(null != param.get("singOutType") && !"".equals(param.get("singOutType"))){
+            attendanceCriteria.andEndTypeEqualTo((Integer)param.get("singOutType"));
         }
         //签到日期
         //开始

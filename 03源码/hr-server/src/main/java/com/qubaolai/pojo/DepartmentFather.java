@@ -4,6 +4,8 @@ import com.qubaolai.po.Employee;
 import lombok.Data;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Description qubaolai
@@ -14,4 +16,6 @@ import javax.annotation.Resource;
 public class DepartmentFather {
     @Resource
     private Employee employee;
+    @Resource
+    private List<Map<String, Object>> employeeListMap;
 }

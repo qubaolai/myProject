@@ -164,6 +164,27 @@ export default new VueRouter({
           component: () => import("../views/system/updatePassword.vue")
         }
       ]
+    },
+    {
+      path: "/test",
+      name: "Test",
+      hidden: false,
+      meta: {
+        name: "测试",
+        icon: "systemConfig"
+      },
+      component: layout,
+      children: [
+        {
+          path: "/test",
+          name: "Test",
+          // hidden: false,
+          meta: {
+            name: "测试"
+          },
+          component: () => import("../views/Test/test.vue")
+        }
+      ]
     }
   ]
 });

@@ -3,8 +3,10 @@ package com.qubaolai.controller;
 import com.qubaolai.po.Department;
 import com.qubaolai.po.Position;
 import com.qubaolai.service.DepartmentService;
+import com.qubaolai.service.EmployeeService;
 import com.qubaolai.service.PositionService;
 import com.qubaolai.vo.ResultVo;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,5 +36,11 @@ public class PageInitController {
         result.put("dept", departmentst);
         result.put("option", options);
         return ResultVo.sendResult(200, "initPage", result);
+    }
+
+    @GetMapping("/getPageEmpInfo")
+    public ResultVo getPageEmpInfo(){
+        Map<String, Object> pageInfo = departmentService.getPageInfo();
+        return ResultVo.sendResult(200, "success", pageInfo);
     }
 }

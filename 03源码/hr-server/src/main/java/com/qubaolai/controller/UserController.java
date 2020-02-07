@@ -190,6 +190,11 @@ public class UserController {
         return ResultVo.sendResult(200, "success", employee);
     }
 
+    /**
+     * 员工调度
+     * @param param
+     * @return
+     */
     @PutMapping("/schedulingUser")
     public ResultVo schedulingUser(@RequestBody Map<String, Object> param){
         if(null == param){
