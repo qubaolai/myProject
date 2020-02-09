@@ -1,13 +1,19 @@
 package com.qubaolai.po;
 
-public class Move {
+import com.qubaolai.pojo.MoveFather;
+
+public class Move extends MoveFather {
     private String id;
 
     private String employeeNumber;
 
-    private String moveBefore;
+    private String deptBefore;
 
-    private String moveAfter;
+    private String deptAfter;
+
+    private String positionBefore;
+
+    private String positionAfter;
 
     private String updateTime;
 
@@ -33,20 +39,36 @@ public class Move {
         this.employeeNumber = employeeNumber;
     }
 
-    public String getMoveBefore() {
-        return moveBefore;
+    public String getDeptBefore() {
+        return deptBefore;
     }
 
-    public void setMoveBefore(String moveBefore) {
-        this.moveBefore = moveBefore;
+    public void setDeptBefore(String deptBefore) {
+        this.deptBefore = deptBefore;
     }
 
-    public String getMoveAfter() {
-        return moveAfter;
+    public String getDeptAfter() {
+        return deptAfter;
     }
 
-    public void setMoveAfter(String moveAfter) {
-        this.moveAfter = moveAfter;
+    public void setDeptAfter(String deptAfter) {
+        this.deptAfter = deptAfter;
+    }
+
+    public String getPositionBefore() {
+        return positionBefore;
+    }
+
+    public void setPositionBefore(String positionBefore) {
+        this.positionBefore = positionBefore;
+    }
+
+    public String getPositionAfter() {
+        return positionAfter;
+    }
+
+    public void setPositionAfter(String positionAfter) {
+        this.positionAfter = positionAfter;
     }
 
     public String getUpdateTime() {

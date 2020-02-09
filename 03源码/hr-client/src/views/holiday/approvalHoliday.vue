@@ -237,6 +237,7 @@ export default {
         const data = response.data;
         if (data.code === 200) {
           const tableList = data.data;
+          this.sumNum = tableList.length;
           for (let i = 0; i < tableList.length; i++) {
             if (tableList[i].status === 0) {
               tableList[i].status = "未审批";

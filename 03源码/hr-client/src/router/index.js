@@ -3,188 +3,209 @@ import VueRouter from "vue-router";
 import layout from "../views/layout/layout.vue";
 
 Vue.use(VueRouter);
-
-export default new VueRouter({
-  routes: [
-    {
-      path: "/",
-      redirect: "login",
-      hidden: true,
-      meta: {
-        name: "主页"
+export const fixedRouter = [
+  {
+    path: "/",
+    name: "Login",
+    hidden: true,
+    meta: {
+      name: "登录",
+      roles: ["0", "1"]
+    },
+    component: () => import("../views/login/index.vue")
+  }
+];
+// 需要权限判断展示的路由
+export const permissionRouter = [
+  {
+    path: "/console",
+    name: "Console",
+    redirect: "index",
+    hidden: false,
+    meta: {
+      name: "控制台",
+      roles: ["0", "1"],
+      icon: "console"
+    },
+    component: layout,
+    children: [
+      {
+        path: "/index",
+        name: "Index",
+        hidden: false,
+        meta: {
+          name: "首页",
+          roles: ["0", "1"]
+        },
+        component: () => import("../views/console/index.vue")
+      },
+      {
+        path: "/signlog",
+        name: "Signlog",
+        hidden: false,
+        meta: {
+          name: "签到记录",
+          roles: ["0", "1"]
+        },
+        component: () => import("../views/console/signLog.vue")
       }
+    ]
+  },
+  {
+    path: "/user",
+    name: "User",
+    hidden: false,
+    meta: {
+      name: "员工管理",
+      icon: "user"
     },
-    {
-      path: "/login",
-      name: "Login",
-      hidden: true,
-      meta: {
-        name: "登录"
-      },
-      component: () => import("../views/login/index.vue")
-    },
-    {
-      path: "/console",
-      name: "Console",
-      redirect: "index",
-      hidden: false,
-      meta: {
-        name: "控制台",
-        icon: "console"
-      },
-      component: layout,
-      children: [
-        {
-          path: "/index",
-          name: "Index",
-          hidden: false,
-          meta: {
-            name: "首页"
-          },
-          component: () => import("../views/console/index.vue")
+    component: layout,
+    children: [
+      {
+        path: "/userList",
+        name: "UserList",
+        // hidden: false,
+        meta: {
+          name: "员工列表",
+          roles: ["0", "1"]
         },
-        {
-          path: "/signlog",
-          name: "Signlog",
-          hidden: false,
-          meta: {
-            name: "签到记录"
-          },
-          component: () => import("../views/console/signLog.vue")
-        }
-      ]
-    },
-    {
-      path: "/user",
-      name: "User",
-      hidden: false,
-      meta: {
-        name: "员工管理",
-        icon: "user"
+        component: () => import("../views/user/userList.vue")
       },
-      component: layout,
-      children: [
-        {
-          path: "/userList",
-          name: "UserList",
-          // hidden: false,
-          meta: {
-            name: "员工列表"
-          },
-          component: () => import("../views/user/userList.vue")
+      {
+        path: "/insetUser",
+        name: "InsetUser",
+        // hidden: false,
+        meta: {
+          name: "添加员工",
+          roles: ["0"]
         },
-        {
-          path: "/insetUser",
-          name: "InsetUser",
-          // hidden: false,
-          meta: {
-            name: "添加员工"
-          },
-          component: () => import("../views/user/insertUser.vue")
+        component: () => import("../views/user/insertUser.vue")
+      },
+      {
+        path: "/schedulingUser",
+        name: "SchedulingUser",
+        // hidden: false,
+        meta: {
+          name: "员工调度",
+          roles: ["0"]
         },
-        {
-          path: "/schedulingUser",
-          name: "SchedulingUser",
-          // hidden: false,
-          meta: {
-            name: "员工调度"
-          },
-          component: () => import("../views/user/schedulingUser.vue")
-        }
-      ]
-    },
-    {
-      path: "/department",
-      name: "Department",
-      hidden: false,
-      meta: {
-        name: "部门管理",
-        icon: "department"
+        component: () => import("../views/user/schedulingUser.vue")
       },
-      component: layout,
-      children: [
-        {
-          path: "/departmentList",
-          name: "DepartmentList",
-          // hidden: false,
-          meta: {
-            name: "部门列表"
-          },
-          component: () => import("../views/department/departmentList.vue")
+      {
+        path: "/moveLog",
+        name: "MoveLog",
+        // hidden: false,
+        meta: {
+          name: "调度记录",
+          roles: ["0", "1"]
         },
-        {
-          path: "/insertDepartment",
-          name: "InsertDepartment",
-          // hidden: false,
-          meta: {
-            name: "添加部门"
-          },
-          component: () => import("../views/department/insertDepartment.vue")
-        }
-      ]
+        component: () => import("../views/user/moveLog.vue")
+      }
+    ]
+  },
+  {
+    path: "/department",
+    name: "Department",
+    hidden: false,
+    meta: {
+      name: "部门管理",
+      roles: ["0", "1"],
+      icon: "department"
     },
-    {
-      path: "/holiday",
-      name: "Holiday",
-      hidden: false,
-      meta: {
-        name: "请假管理",
-        icon: "holiday"
+    component: layout,
+    children: [
+      {
+        path: "/departmentList",
+        name: "DepartmentList",
+        // hidden: false,
+        meta: {
+          name: "部门列表",
+          roles: ["0", "1"]
+        },
+        component: () => import("../views/department/departmentList.vue")
       },
-      component: layout,
-      children: [
-        {
-          path: "/approvalHoliday",
-          name: "ApprovalHoliday",
-          // hidden: false,
-          meta: {
-            name: "请假审批"
-          },
-          component: () => import("../views/holiday/approvalHoliday.vue")
-        }
-      ]
+      {
+        path: "/insertDepartment",
+        name: "InsertDepartment",
+        // hidden: false,
+        meta: {
+          name: "添加部门",
+          roles: ["0"]
+        },
+        component: () => import("../views/department/insertDepartment.vue")
+      }
+    ]
+  },
+  {
+    path: "/holiday",
+    name: "Holiday",
+    hidden: false,
+    meta: {
+      name: "请假管理",
+      roles: ["0"],
+      icon: "holiday"
     },
-    {
-      path: "/systemConfig",
-      name: "SystemConfig",
-      hidden: false,
-      meta: {
-        name: "系统设置",
-        icon: "systemConfig"
-      },
-      component: layout,
-      children: [
-        {
-          path: "/updatePassword",
-          name: "UpdatePassword",
-          // hidden: false,
-          meta: {
-            name: "修改密码"
-          },
-          component: () => import("../views/system/updatePassword.vue")
-        }
-      ]
+    component: layout,
+    children: [
+      {
+        path: "/approvalHoliday",
+        name: "ApprovalHoliday",
+        // hidden: false,
+        meta: {
+          name: "请假审批",
+          roles: ["0"]
+        },
+        component: () => import("../views/holiday/approvalHoliday.vue")
+      }
+    ]
+  },
+  {
+    path: "/systemConfig",
+    name: "SystemConfig",
+    hidden: false,
+    meta: {
+      name: "系统设置",
+      roles: ["0", "1"],
+      icon: "systemConfig"
     },
-    {
-      path: "/test",
-      name: "Test",
-      hidden: false,
-      meta: {
-        name: "测试",
-        icon: "systemConfig"
-      },
-      component: layout,
-      children: [
-        {
-          path: "/test",
-          name: "Test",
-          // hidden: false,
-          meta: {
-            name: "测试"
-          },
-          component: () => import("../views/Test/test.vue")
-        }
-      ]
-    }
-  ]
+    component: layout,
+    children: [
+      {
+        path: "/updatePassword",
+        name: "UpdatePassword",
+        // hidden: false,
+        meta: {
+          name: "修改密码",
+          roles: ["0", "1"]
+        },
+        component: () => import("../views/system/updatePassword.vue")
+      }
+    ]
+  },
+  {
+    path: "/test",
+    name: "Test",
+    hidden: false,
+    meta: {
+      name: "测试",
+      roles: ["0", "1"],
+      icon: "systemConfig"
+    },
+    component: layout,
+    children: [
+      {
+        path: "/test",
+        name: "Test",
+        // hidden: false,
+        meta: {
+          name: "测试",
+          roles: ["0", "1"]
+        },
+        component: () => import("../views/Test/test.vue")
+      }
+    ]
+  }
+];
+export default new VueRouter({
+  routes: fixedRouter
 });

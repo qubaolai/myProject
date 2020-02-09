@@ -195,7 +195,7 @@ export default {
             const data = response.data;
             if (data.code === 200) {
               this.$router.push({
-                name: "Console"
+                path: "/console"
                 // query: { user: data.data.user }
               });
               this.user.name = data.data.user.name;

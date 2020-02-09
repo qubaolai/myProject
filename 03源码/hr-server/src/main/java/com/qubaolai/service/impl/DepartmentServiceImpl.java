@@ -225,14 +225,14 @@ public class DepartmentServiceImpl implements DepartmentService {
         //向员工调度表中添加信息
         Move move = new Move();
         move.setId(UUIDUtil.getUUID());
-        move.setMoveBefore(employee.getDepartmentNumber());
+        move.setDeptBefore(employee.getDepartmentNumber());
         move.setManagerId(employee.getManageerId());
         //修改员工部门
         employee.setDeviceid("0");
         employee.setManageerId(employee.getId());
         employee.setDepartmentNumber(department.getId());
         employeeMapper.updateByPrimaryKeySelective(employee);
-        move.setMoveAfter(employee.getDepartmentNumber());
+        move.setDeptAfter(employee.getDepartmentNumber());
         move.setEmployeeNumber(employee.getId());
         move.setUpdateTime(DateUtil.getDate());
         move.setMoveType(0);

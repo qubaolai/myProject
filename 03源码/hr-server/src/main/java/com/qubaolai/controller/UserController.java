@@ -5,7 +5,9 @@ import com.qubaolai.common.exception.exceptions.ParamException;
 import com.qubaolai.common.utils.JWTUtil;
 import com.qubaolai.mapper.EmployeeMapper;
 import com.qubaolai.po.Employee;
+import com.qubaolai.po.Move;
 import com.qubaolai.service.EmployeeService;
+import com.qubaolai.service.MoveService;
 import com.qubaolai.vo.ResultVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +30,7 @@ public class UserController {
     @Resource
     private EmployeeService employeeService;
     @Resource
-    private EmployeeMapper employeeMapper;
+    private MoveService moveService;
 
     /**
      * 用户登录
@@ -178,12 +180,13 @@ public class UserController {
 
     /**
      * 通过员工编号查询员工
+     *
      * @param id
      * @return
      */
     @GetMapping("/getEmployee")
-    public ResultVo getEmployee(String id){
-        if(null == id || "".equals(id)){
+    public ResultVo getEmployee(String id) {
+        if (null == id || "".equals(id)) {
             throw new ParamException(501, "参数异常");
         }
         Employee employee = employeeService.getEmployee(id);
@@ -192,15 +195,30 @@ public class UserController {
 
     /**
      * 员工调度
+     *
      * @param param
      * @return
      */
     @PutMapping("/schedulingUser")
-    public ResultVo schedulingUser(@RequestBody Map<String, Object> param){
-        if(null == param){
+    public ResultVo schedulingUser(@RequestBody Map<String, Object> param) {
+        if (null == param) {
             throw new ParamException("参数异常");
         }
         employeeService.schedulingEmployee(param);
         return ResultVo.sendResult(200, "success");
+    }
+
+    /**
+     * 获取员工调度记录
+     * @param param
+     * @return
+     */
+    @PostMapping("/getMoveLog")
+    public ResultVo getMoveLog(@RequestBody Map<String, Object> param) {
+        if (param == null) {
+            throw new ParamException(502, "参数异常!");
+        }
+        List<Move> moveLog = moveService.getMoveLog(param);
+        return ResultVo.sendResult(200, "success", moveLog);
     }
 }

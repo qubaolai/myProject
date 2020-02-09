@@ -46,7 +46,7 @@ export default {
         const data = response.data;
         if (data.code === 200) {
           window.sessionStorage.clear();
-          router.push({ name: "Login" });
+          window.location.href = "/";
         } else {
           this.$message({
             message: data.msg,

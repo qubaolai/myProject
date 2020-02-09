@@ -357,10 +357,14 @@ export default {
       });
     },
     submitUpdate() {
-      this.dialogForm.startDate =
-        this.dialogForm.date + " " + this.dialogForm.startDate;
-      this.dialogForm.endDate =
-        this.dialogForm.date + " " + this.dialogForm.endDate;
+      if (this.dialogForm.startDate != null) {
+        this.dialogForm.startDate =
+          this.dialogForm.date + " " + this.dialogForm.startDate;
+      }
+      if (this.dialogForm.endDate != null) {
+        this.dialogForm.endDate =
+          this.dialogForm.date + " " + this.dialogForm.endDate;
+      }
       console.log(this.dialogForm);
       updateAttendance(this.dialogForm).then(response => {
         const data = response.data;

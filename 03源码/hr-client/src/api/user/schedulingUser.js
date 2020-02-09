@@ -7,3 +7,10 @@ export function schedulingUser(data) {
     data: data
   });
 }
+export function getMoveLog(data) {
+  return intercept.request({
+    method: "post",
+    url: "/user/getMoveLog",
+    data: data
+  });
+}
