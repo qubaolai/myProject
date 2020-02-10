@@ -194,10 +194,6 @@ export default {
           login(formParam).then(response => {
             const data = response.data;
             if (data.code === 200) {
-              this.$router.push({
-                path: "/console"
-                // query: { user: data.data.user }
-              });
               this.user.name = data.data.user.name;
               this.user.role = data.data.user.role;
               //将数据存储在sessionStorage
@@ -208,6 +204,10 @@ export default {
                 window.localStorage.setItem("token", token);
                 sessionStorage[token];
               }
+              this.$router.push({
+                path: "/console"
+                // query: { user: data.data.user }
+              });
             } else if (data.code === 400) {
               this.$message({
                 message: "用户名或密码错误!",

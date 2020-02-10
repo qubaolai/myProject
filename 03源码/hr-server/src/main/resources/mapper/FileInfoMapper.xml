@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qubaolai.mapper.FileInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.qubaolai.po.FileInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="employee_number" property="employeeNumber" jdbcType="VARCHAR" />
+    <result column="file_path" property="filePath" jdbcType="VARCHAR" />
+    <result column="file_name" property="fileName" jdbcType="VARCHAR" />
+    <result column="upload_time" property="uploadTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, employee_number, file_path, file_name, upload_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.qubaolai.po.FileInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from file_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from file_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from file_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.qubaolai.po.FileInfoExample" >
+    delete from file_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.qubaolai.po.FileInfo" >
+    insert into file_info (id, employee_number, file_path, 
+      file_name, upload_time)
+    values (#{id,jdbcType=VARCHAR}, #{employeeNumber,jdbcType=VARCHAR}, #{filePath,jdbcType=VARCHAR}, 
+      #{fileName,jdbcType=VARCHAR}, #{uploadTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qubaolai.po.FileInfo" >
+    insert into file_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="employeeNumber != null" >
+        employee_number,
+      </if>
+      <if test="filePath != null" >
+        file_path,
+      </if>
+      <if test="fileName != null" >
+        file_name,
+      </if>
+      <if test="uploadTime != null" >
+        upload_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeNumber != null" >
+        #{employeeNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null" >
+        #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null" >
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadTime != null" >
+        #{uploadTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.qubaolai.po.FileInfoExample" resultType="java.lang.Integer" >
+    select count(*) from file_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update file_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.employeeNumber != null" >
+        employee_number = #{record.employeeNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.filePath != null" >
+        file_path = #{record.filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fileName != null" >
+        file_name = #{record.fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uploadTime != null" >
+        upload_time = #{record.uploadTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update file_info
+    set id = #{record.id,jdbcType=VARCHAR},
+      employee_number = #{record.employeeNumber,jdbcType=VARCHAR},
+      file_path = #{record.filePath,jdbcType=VARCHAR},
+      file_name = #{record.fileName,jdbcType=VARCHAR},
+      upload_time = #{record.uploadTime,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qubaolai.po.FileInfo" >
+    update file_info
+    <set >
+      <if test="employeeNumber != null" >
+        employee_number = #{employeeNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null" >
+        file_path = #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null" >
+        file_name = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadTime != null" >
+        upload_time = #{uploadTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qubaolai.po.FileInfo" >
+    update file_info
+    set employee_number = #{employeeNumber,jdbcType=VARCHAR},
+      file_path = #{filePath,jdbcType=VARCHAR},
+      file_name = #{fileName,jdbcType=VARCHAR},
+      upload_time = #{uploadTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

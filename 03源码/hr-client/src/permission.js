@@ -4,7 +4,6 @@ import router from "@/router/index.js";
 var addRouFlag = false;
 
 router.beforeEach((to, from, next) => {
-  debugger;
   // 取到用户的角色
   const user = JSON.parse(sessionStorage.getItem("user"));
   let GetRole = "unload";
@@ -20,17 +19,11 @@ router.beforeEach((to, from, next) => {
       addRouFlag = true;
       // 2.根据用户的角色、和需要动态展示的路由，生成符合用户角色的路由
       var getRoutes = baseRoleGetRouters(permissionRouter, GetRole.split(","));
-      console.log("新生成");
-      console.log(getRoutes);
       // 3.利用global属性，让渲染菜单的组件sideMeuns.vue重新生成左侧菜单
       global.antRouter = fixedRouter.concat(getRoutes);
-      console.log("global.antRouter");
-      console.log(JSON.stringify(global.antRouter));
       // 4.将生成好的路由addRoutes
       router.options.routes = global.antRouter;
       router.addRoutes(global.antRouter);
-      console.log("添加后");
-      console.log(router);
       // 5.push之后，会重新进入到beforeEach的钩子里,直接进入第一个if判断
       router.push({ path: to.path });
     }
@@ -45,7 +38,6 @@ router.beforeEach((to, from, next) => {
 });
 
 function hasPermission(route, roles) {
-  debugger;
   if (route.meta && route.meta.roles) {
     return roles.some(role => route.meta.roles.indexOf(role) >= 0);
   } else {
@@ -54,11 +46,9 @@ function hasPermission(route, roles) {
 }
 // 根据用户的角色取到该用户对应的路由
 function baseRoleGetRouters(allRoutes, roles) {
-  debugger;
   // allRoutes是动态路由表
   // roles是取到的用户角色，数组
   let rightRoutes = allRoutes.filter(route => {
-    debugger;
     if (hasPermission(route, roles)) {
       if (route.children && route.children.length) {
         route.children = baseRoleGetRouters(route.children, roles);

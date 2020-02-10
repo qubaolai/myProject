@@ -89,7 +89,7 @@ export default {
       form: {
         empNum: "",
         deptNum: "",
-        postion: "",
+        position: "",
         type: ""
       },
       deptartments: [],
@@ -101,7 +101,6 @@ export default {
   },
   methods: {
     getPositions() {
-      debugger;
       getpositions(this.form.deptNum).then(response => {
         const data = response.data;
         if (data.code === 200) {
@@ -134,6 +133,7 @@ export default {
       }
     },
     commitForm() {
+      debugger;
       this.form.type = this.radio;
       schedulingUser(this.form).then(response => {
         const data = response.data;

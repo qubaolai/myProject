@@ -123,11 +123,11 @@
     <div style="height: 200%; background-color: #fff">
       <el-row>
         <div>
-          <el-table :data="tableData" style="width: 100%" height="450">
+          <el-table :data="pageData" style="width: 100%" height="450">
             <el-table-column
               prop="moveDate"
               label="调度日期"
-              width="150"
+              width="180"
               sortable
             >
             </el-table-column>
@@ -202,21 +202,12 @@ export default {
         moveType: ""
       },
       empInfos: [],
-      tableData: [
-        {
-          moveDate: "2016-05-03",
-          name: "王小虎",
-          deptBefore: "骨科",
-          deptAfter: "脑壳",
-          positionBefore: "医师",
-          positionAfter: "主治医师",
-          moveType: "部门"
-        }
-      ]
+      tableData: []
     };
   },
   methods: {
     query() {
+      this.tableData = [];
       if (this.form.moveDate != null && this.form.moveDate != "") {
         this.form.moveDate[0] = formatDate(this.form.moveDate[0]);
         this.form.moveDate[1] = formatDate(this.form.moveDate[1]);
@@ -225,7 +216,7 @@ export default {
         const data = response.data;
         if (data.code === 200) {
           const dataList = data.data;
-          console.log(dataList);
+          this.sumNum = dataList.length;
           for (let i = 0; i < dataList.length; i++) {
             const table = {
               moveDate: "",
@@ -236,6 +227,22 @@ export default {
               positionAfter: "",
               moveType: ""
             };
+            table.moveDate = dataList[i].moveTime;
+            table.name = dataList[i].eName;
+            table.deptBefore = dataList[i].beforeDept;
+            table.deptAfter = dataList[i].afterDept;
+            table.positionBefore = dataList[i].beforePosition;
+            table.positionAfter = dataList[i].afterPosition;
+            if (dataList[i].mType === 0) {
+              table.moveType = "部门调动";
+            }
+            if (dataList[i].mType === 1) {
+              table.moveType = "职位调动";
+            }
+            if (dataList[i].mType === 2) {
+              table.moveType = "部门与职位同时调动";
+            }
+            this.tableData.push(table);
           }
         }
       });
@@ -295,6 +302,15 @@ export default {
   created: function() {
     this.initPage();
     this.init();
+  },
+  computed: {
+    //自动计算页面数据展示
+    pageData: function() {
+      return this.tableData.slice(
+        (this.currentPage - 1) * this.pageSize,
+        this.currentPage * this.pageSize
+      );
+    }
   }
 };
 </script>

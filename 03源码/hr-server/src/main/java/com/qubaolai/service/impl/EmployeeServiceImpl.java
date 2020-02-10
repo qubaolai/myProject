@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
@@ -306,96 +307,127 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void schedulingEmployee(Map<String, Object> param) {
-        //向move插入数据
-        if (null == param.get("empNum") || "".equals((String) param.get("empNum"))) {
+        String date = DateUtil.convert(new Date());
+        //根据员工的编号查询员工
+        if (null == param.get("empNum") || "".equals(param.get("empNum"))) {
             throw new ParamException(501, "获取员工编号失败!");
         }
         EmployeeExample employeeExample = new EmployeeExample();
         EmployeeExample.Criteria criteria = employeeExample.createCriteria();
         criteria.andUsernameEqualTo((String) param.get("empNum"));
         List<Employee> employeeList = employeeMapper.selectByExample(employeeExample);
-        if (employeeList.size() > 1) {
-            throw new DataException(502, "数据异常");
+        if (employeeList == null || 0 >= employeeList.size()) {
+            throw new ParamException(400, "员工不存在!");
         }
         Employee employee = employeeList.get(0);
-        if (employeeList == null || employeeList.size() <= 0) {
-            throw new NoDataException(400, "该员工不存在!");
-        }
-        if (null == param.get("type") || "".equals((String) param.get("type"))) {
-            throw new ParamException(501, "获取调动类型失败!");
-        }
-        if (null == param.get("deptNum") || "".equals((String) param.get("deptNum"))) {
+        //根据部门id查询调度后的部门
+        if (null == param.get("deptNum") || "".equals(param.get("deptNum"))) {
             throw new ParamException(501, "获取部门编号失败!");
         }
-        if (null == param.get("position") || "".equals((String) param.get("position"))) {
-            throw new ParamException(501, "获取职位编号失败!");
+        Department afterDept = departmentMapper.selectByPrimaryKey((String) param.get("deptNum"));
+        //判断调动类型
+        String type = (String) param.get("type");
+        if (type == null || "".equals(type)) {
+            throw new ParamException(501, "获取调度类型失败!");
         }
         //部门调动
-        if ("0".equals((String) param.get("type"))) {
-            Move move = new Move();
-            move.setId(UUIDUtil.getUUID());
-            move.setEmployeeNumber((String) param.get("empNum"));
-            //判断被调动员工时不是领导 是领导 则将该员工的调动前部门manageer值为空 修改员工将vaild为空领导id为调动后的部门的manager
-            //调动后部门
-            Department department1 = departmentMapper.selectByPrimaryKey((String) param.get("deptNum"));
-            //调动前部门
-            Department department = departmentMapper.selectByPrimaryKey(employee.getDepartmentNumber());
-            if (employee.getDeviceid() != null && employee.getDeviceid().equals("0")) {
-                //领导
-                // 修改调动前部门信息
-                department.setManager(null);
-                //修改员工的领导
+        if (type.equals("0")) {
+            //判断调度的员工是否为部门领导
+            //是领导
+            if (employee.getDeviceid() != null && !"".equals(employee.getDeviceid())) {
+                //将员工的领导标志和领导id置空
+                employee.setDeviceid(null);
+                employee.setManageerId(afterDept.getManager());
+                //将员工对应的部门领导id置空
+                Department beforeDept = departmentMapper.selectByPrimaryKey(employee.getDepartmentNumber());
+                beforeDept.setManager(null);
+                departmentMapper.updateByPrimaryKey(beforeDept);
+                //将所有领导id为被调度员工id的员工的领导id置空
                 EmployeeExample example = new EmployeeExample();
                 EmployeeExample.Criteria criteria1 = example.createCriteria();
                 criteria1.andManageerIdEqualTo(employee.getId());
                 List<Employee> employeeList1 = employeeMapper.selectByExample(example);
-                for(Employee employee1 : employeeList1){
+                for (Employee employee1 : employeeList1) {
                     employee1.setManageerId(null);
                     employeeMapper.updateByPrimaryKey(employee1);
                 }
-                departmentMapper.updateByPrimaryKey(department);
+            } else {
+                //不是领导
+                //判断调度后的部门是否存在领导
+                if (afterDept.getManager() != null && !"".equals(afterDept.getManager())) {
+                    //存在: 将被调度的员工的领导id设置为调度后的部门的领导id
+                    employee.setManageerId(afterDept.getManager());
+                    employee.setDeviceid("0");
+                } else {
+                    //不存在:将调度后的部门的领导id设置为被调度员工的id
+                    afterDept.setManager(employee.getId());
+                    departmentMapper.updateByPrimaryKey(afterDept);
+                    //修改员工调动后部门员工
+                    EmployeeExample employeeExample1 = new EmployeeExample();
+                    EmployeeExample.Criteria criteria1 = employeeExample1.createCriteria();
+                    criteria1.andDepartmentNumberEqualTo(afterDept.getId());
+                    List<Employee> employeeList1 = employeeMapper.selectByExample(employeeExample1);
+                    employee.setManageerId(employee.getId());
+                    for(Employee employee1 : employeeList1){
+                        employee1.setManageerId(employee.getId());
+                        employeeMapper.updateByPrimaryKey(employee1);
+                    }
+
+                }
             }
-            //插入调动记录\
-            //调动前领导
-            move.setManagerId(employee.getManageerId());
-            move.setUpdateTime(DateUtil.getDate());
-            move.setDeptBefore(department.getId());
-            move.setDeptAfter(department1.getId());
-            move.setPositionBefore(employee.getPositionNumber());
-            //如果职位变动
-            if (!employee.getPositionNumber().equals((String) param.get("position"))) {
-                move.setPositionAfter((String) param.get("position"));
-                move.setMoveType(2);
-            }
-            move.setMoveType(0);
-            moveMapper.insert(move);
-            //修改员工信息
-            //修改员工职位调动
-            employee.setPositionNumber((String) param.get("position"));
-            if(null == department1.getManager() || "".equals(department1.getManager())){
-                employee.setDeviceid("0");
-                employee.setManageerId(employee.getId());
-            }else{
-                employee.setDeviceid(null);
-                employee.setManageerId(department1.getManager());
-            }
-            employee.setDepartmentNumber(department1.getId());
-            employeeMapper.updateByPrimaryKey(employee);
-        }
-        //该部门所有员工的领导id设置为空
-        //职位调动
-        if ("1".equals((String) param.get("type"))) {
             Move move = new Move();
             move.setId(UUIDUtil.getUUID());
-            move.setMoveType(1);
-            move.setEmployeeNumber((String) param.get("empNum"));
+            move.setDeptBefore(employee.getDepartmentNumber());
+            move.setDeptAfter(afterDept.getId());
             move.setPositionBefore(employee.getPositionNumber());
-            move.setPositionAfter((String) param.get("position"));
-            move.setUpdateTime(DateUtil.getDate());
+            //调度前领导
             move.setManagerId(employee.getManageerId());
+            //向调度记录表插入数据 调度类型为0:部门调度
+            move.setMoveType(0);
+            move.setUpdateTime(date);
+            move.setEmployeeNumber(employee.getId());
             moveMapper.insert(move);
+            //判断员工职位是否发生改变
+            if (!employee.getPositionNumber().equals((String) param.get("position"))) {
+                //改变: 查询之前的部门调度记录 修改该记录添加职位调度信息
+                MoveExample moveExample = new MoveExample();
+                MoveExample.Criteria criteria1 = moveExample.createCriteria();
+                criteria1.andEmployeeNumberEqualTo(employee.getId());
+                criteria1.andDeptAfterEqualTo(afterDept.getId());
+                criteria1.andUpdateTimeEqualTo(date);
+                List<Move> moves = moveMapper.selectByExample(moveExample);
+                if (moves == null || 0 >= moves.size()) {
+                    throw new ParamException(400, "获取历史调度记录失败!");
+                }
+                Move move1 = moves.get(0);
+                move1.setPositionBefore(employee.getPositionNumber());
+                move1.setPositionAfter((String) param.get("position"));
+                //调度类型为2:同时调度
+                move1.setMoveType(2);
+                moveMapper.updateByPrimaryKey(move1);
+                //改变: 将职位设置为调度后的职位
+                employee.setPositionNumber((String) param.get("position"));
+            }
+            //修改被调度的员工信息
+            employee.setDepartmentNumber(afterDept.getId());
+            employeeMapper.updateByPrimaryKey(employee);
+        }
+        if (type.equals("1")) {
+            //职位调动
+            //修改员工职位id
             employee.setPositionNumber((String) param.get("position"));
             employeeMapper.updateByPrimaryKey(employee);
+            //向调度记录表插入数据 类型为1:职位调度
+            Move move = new Move();
+            move.setId(UUIDUtil.getUUID());
+            move.setPositionBefore(employee.getPositionNumber());
+            move.setPositionAfter((String) param.get("position"));
+            move.setMoveType(1);
+            move.setDeptBefore(employee.getDepartmentNumber());
+            move.setManagerId(employee.getManageerId());
+            move.setUpdateTime(date);
+            move.setEmployeeNumber(employee.getId());
+            moveMapper.insert(move);
         }
     }
 

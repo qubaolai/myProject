@@ -3,11 +3,11 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
          http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
          http://www.springframework.org/schema/context
          http://www.springframework.org/schema/context/spring-context-4.3.xsd
-         http://www.springframework.org/schema/mvc
          http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
     <!-- ①：对com.qubaolai包中的所有类进行扫描，以完成Bean创建和自动依赖注入的功能 -->
     <context:component-scan base-package="com.qubaolai"/>
@@ -44,10 +44,23 @@
         <property name="url" value="${url}"/>
         <property name="username" value="${username}"/>
         <property name="password" value="${password}"/>
-        <property name="initialSize" value="1"/>
-        <property name="maxActive" value="100"/>
-        <property name="maxIdle" value="5"/>
-        <property name="maxWait" value="80000"/>
+        <property name="initialSize" value="10"/>
+        <property name="maxActive" value="8"/>
+        <property name="minIdle" value="8"/>
+        <property name="maxIdle" value="10"/>
+        <property name="maxWait" value="5000"/>
+        <!--借出连接时不要测试，否则很影响性能。一定要配置，
+        因为它的默认值是true。false表示每次从连接池中取出连
+        接时，不需要执行validationQuery = "SELECT 1" 中的SQL
+        进行测试。若配置为true,对性能有非常大的影响，性能会下降7-10倍。-->
+        <property name="testOnBorrow" value="false"/>
+        <!--每30秒运行一次空闲连接回收器，每30秒运行一次空闲连接回收器（独立线程）。
+        并每次检查3个连接，如果连接空闲时间超过30分钟就销毁。销毁连接后，连接数量就
+        少了，如果小于minIdle数量，就新建连接，维护数量不少于minIdle-->
+        <property name="timeBetweenEvictionRunsMillis" value="30000"/>
+        <property name="minEvictableIdleTimeMillis" value="30000"/>
+        <property name="removeAbandoned" value="true" />
+        <property name="removeAbandonedTimeout" value="300" /><!-- 自动回收超时时间(以秒数为单位) -->
     </bean>
 
     <!-- 配置事务管理器 -->
@@ -71,7 +84,7 @@
                         <!--</props>-->
                     <!--</property>-->
                 <!--</bean>-->
-                <bean id="timeIntercepter" class="com.qubaolai.common.intercepter.TimeIntercepter"></bean>
+                <!--<bean id="timeIntercepter" class="com.qubaolai.common.intercepter.TimeIntercepter"></bean>-->
             </array>
         </property>
     </bean>
@@ -84,4 +97,6 @@
     </bean>
     <!--引入定时任务配置-->
     <import resource="quartz.xml" />
+    <!-- 配置支持文件上传 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" p:maxUploadSize="500000"/>
 </beans>

@@ -142,6 +142,7 @@
         <el-col :span="24"
           ><div class="grid-content bg-purple-dark">
             <el-table
+              v-loading="loading"
               :data="pageData"
               style="width: 100%"
               height="400"
@@ -371,7 +372,8 @@ export default {
       //查询按钮控制
       disable: false,
       //查询数据容器
-      tableData: []
+      tableData: [],
+      loading: true
     };
   },
   methods: {
@@ -391,6 +393,7 @@ export default {
       this.form.pageSize = this.pageSize;
       //设置页数
       this.form.pageNo = this.currentPage;
+      this.loading = true;
       getEmpList(this.form).then(response => {
         const data = response.data;
         if (data.code === 400) {
@@ -437,6 +440,8 @@ export default {
             table.email = tableList[i].email;
             table.birthday = tableList[i].birthday;
             this.tableData.push(table);
+            let timeOut = setTimeout((this.loading = false), 1000);
+            window.clearTimeout(timeOut);
           }
         }
       });
@@ -531,6 +536,9 @@ export default {
 };
 </script>
 <style>
+body {
+  margin: 0;
+}
 .main-content[data-v-5c886d6e] {
   width: 100%;
   padding-top: 3px;

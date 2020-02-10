@@ -19,6 +19,7 @@
             <mvc:mapping path="/**"/>
             <!-- 不拦截登录的请求 -->
             <mvc:exclude-mapping path="/user/login"/>
+            <mvc:exclude-mapping path="/file/uploadFile"/>
             <bean class="com.qubaolai.common.intercepter.HrHandlerIntercepter"/>
         </mvc:interceptor>
 

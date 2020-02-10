@@ -16,9 +16,13 @@ import java.util.Map;
 @Data
 public class MoveFather {
     @Resource
-    private Employee employee;
+    private String empName;
     @Resource
-    private Map<String, Department> departmentMap;
+    private String deptBefore;
     @Resource
-    private Map<String, Position> positionMap;
+    private String deptAfter;
+    @Resource
+    private String positionBefore;
+    @Resource
+    private String positionAfter;
 }
