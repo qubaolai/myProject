@@ -405,20 +405,23 @@ export default {
             //拿到第二层数据
             const empList = selectData[key].employeeListMap;
             //循环第二层数据
-            for (let i = 0; i < empList.length; i++) {
-              //获取每个对象的key
-              const keys = Object.keys(empList[i]);
-              for (let j = 0; j < keys.length; j++) {
-                //声明第二层数据
-                const secondData = {
-                  value: "",
-                  label: ""
-                };
-                secondData.value = empList[i][keys[j]].id;
-                secondData.label = empList[i][keys[j]].name;
-                firstData.children.push(secondData);
+            if (empList != null) {
+              for (let i = 0; i < empList.length; i++) {
+                //获取每个对象的key
+                const keys = Object.keys(empList[i]);
+                for (let j = 0; j < keys.length; j++) {
+                  //声明第二层数据
+                  const secondData = {
+                    value: "",
+                    label: ""
+                  };
+                  secondData.value = empList[i][keys[j]].id;
+                  secondData.label = empList[i][keys[j]].name;
+                  firstData.children.push(secondData);
+                }
               }
             }
+
             this.empInfos.push(firstData);
           }
         }

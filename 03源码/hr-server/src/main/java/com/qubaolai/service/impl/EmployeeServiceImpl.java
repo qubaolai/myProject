@@ -48,7 +48,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
     @Resource
     private DepartmentMapper departmentMapper;
     @Resource
-    private DepartmentService departmentService;
+    private FileInfoMapper fileInfoMapper;
     @Resource
     private HistoryMapper historyMapper;
     @Resource
@@ -257,6 +257,14 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
             employee.setInTime(DateUtil.getDate());
             employee.setEmail(employee.getUsername() + "@hr.com");
             employeeMapper.insert(employee);
+            //用户添加默认头像
+            FileInfo fileInfo = new FileInfo();
+            fileInfo.setFilePath("D:/img");
+            fileInfo.setFileName("userHead.jpg");
+            fileInfo.setUploadTime(DateUtil.getDate());
+            fileInfo.setEmployeeNumber(employee.getId());
+            fileInfo.setId(UUIDUtil.getUUID());
+            fileInfoMapper.insert(fileInfo);
         }
     }
 
@@ -278,6 +286,8 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
     @Override
     public List<Employee> getEmps() {
         EmployeeExample employeeExample = new EmployeeExample();
+        EmployeeExample.Criteria criteria = employeeExample.createCriteria();
+        criteria.andDeviceidIsNull();
         List<Employee> employeeList = employeeMapper.selectByExample(employeeExample);
         return employeeList;
     }

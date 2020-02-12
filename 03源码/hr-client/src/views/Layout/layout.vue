@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="layout" :class="navMenu ? 'close' : 'open'">
     <Layoutheader />
     <Layoutmain />
     <Layoutnavigation />
@@ -11,7 +11,15 @@ import Layoutmain from "@/components/main";
 import Layoutnavigation from "@/components/navigation";
 export default {
   name: "layout",
-  components: { Layoutheader, Layoutmain, Layoutnavigation }
+  data: () => {
+    return {};
+  },
+  components: { Layoutheader, Layoutmain, Layoutnavigation },
+  computed: {
+    navMenu: function() {
+      return this.$store.state.isCollapse;
+    }
+  }
 };
 </script>
 <style lang="scss" scoped></style>

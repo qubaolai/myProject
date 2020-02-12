@@ -1,6 +1,6 @@
 <template>
   <div id="header-wrap">
-    <div class="pull-left header-icon">
+    <div class="pull-left header-icon" @click="changeNav">
       <svg-icon iconClass="menu" class="menu" />
     </div>
     <div class="pull-right">
@@ -100,7 +100,12 @@ export default {
   },
   methods: {
     determine() {
-      if (this.delPath != null && this.delPath != "") {
+      if (
+        this.delPath != null &&
+        this.delPath != "" &&
+        this.imgUrl != null &&
+        this.imgUrl != ""
+      ) {
         insertFileInfo(this.delPath).then(response => {
           const data = response.data;
           if (data.code === 200) {
@@ -116,7 +121,10 @@ export default {
           }
         });
       } else {
-        alert("asdasda");
+        this.$message({
+          message: "请选择头像文件!",
+          type: "warning"
+        });
       }
     },
     cancelUpload() {
@@ -200,6 +208,9 @@ export default {
       return new File([u8arr], `${filename}.${suffix}`, {
         type: mime
       });
+    },
+    changeNav() {
+      this.$store.commit("SET_STATUS");
     }
   },
   created: function() {
@@ -267,6 +278,16 @@ export default {
   border-right: 1px solid #c5c3c3;
   + .header-icon {
     padding: 0 28px;
+  }
+}
+.open {
+  #header-wrap {
+    left: $navMenu;
+  }
+}
+.close {
+  #header-wrap {
+    left: 64px;
   }
 }
 </style>

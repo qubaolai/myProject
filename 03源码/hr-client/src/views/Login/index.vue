@@ -1,16 +1,7 @@
 <template>
   <div id="login">
     <div class="login-wrap">
-      <ul class="menu-tab">
-        <li
-          :class="{ current: item.current }"
-          v-for="item in menuTab"
-          :key="item.id"
-          @click="toggleMenu(item)"
-        >
-          {{ item.txt }}
-        </li>
-      </ul>
+      <ul class="menu-tab" style="height: 200px;"></ul>
       <!-- 表单 -->
       <el-form
         :model="ruleForm"
@@ -34,51 +25,13 @@
             minlength="6"
           ></el-input>
         </el-form-item>
-        <el-form-item
-          prop="confirmPassword"
-          class="item-from"
-          v-show="pageModel === 'registered'"
-        >
-          <label>确认密码</label>
-          <el-input
-            type="text"
-            v-model="ruleForm.confirmPassword"
-            autocomplete="off"
-            maxlength="20"
-            minlength="6"
-          ></el-input>
-        </el-form-item>
-        <el-form-item
-          prop="age"
-          class="item-from"
-          v-show="pageModel === 'registered'"
-        >
-          <label>邮箱</label>
-          <el-row :gutter="10">
-            <el-col :span="16">
-              <div class="grid-content bg-purple">
-                <el-input v-model.number="ruleForm.age"></el-input>
-              </div>
-            </el-col>
-            <el-col :span="8">
-              <div class="grid-content bg-purple">
-                <el-button
-                  type="danger"
-                  :disabled="RegistrationCode.state"
-                  class="block"
-                  >{{ RegistrationCode.txt }}</el-button
-                >
-              </div>
-            </el-col>
-          </el-row>
-        </el-form-item>
         <el-form-item class="item-from">
           <el-button
             type="primary"
             :disabled="loginButtonState"
             @click="submitForm('ruleForm')"
             class="login-btn block"
-            >{{ pageModel === "login" ? "登录" : "注册" }}</el-button
+            >登录</el-button
           >
         </el-form-item>
       </el-form>
@@ -112,37 +65,12 @@ export default {
         callback();
       }
     };
-    // 验证确认密码
-    var validateConfirmPasswordord = (rule, value, callback) => {
-      // 如果当前模块为login 不验证确认密码
-      if (this.pageModel === "login") {
-        callback();
-      }
-      // 过滤特殊字符
-      this.ruleForm.confirmPassword = stripscript(value);
-      value = this.ruleForm.confirmPassword;
-      const pass = this.ruleForm.password;
-      // 正则表达式验证密码(加特定字符验证)
-      if (value === "" || value === " ") {
-        callback(new Error("请确认密码"));
-      } else if (value !== pass) {
-        callback(new Error("两次密码不一致"));
-      } else {
-        callback();
-      }
-    };
     return {
       // 显示验证码区域和确认密码
-      pageModel: "login",
       user: {
         name: "",
         role: ""
       },
-      // confirmPass: false,
-      menuTab: [
-        { txt: "登录", current: true, type: "login" },
-        { txt: "注册", current: false, type: "registered" }
-      ],
       ruleForm: {
         username: "asd",
         password: "asd123",
@@ -151,38 +79,16 @@ export default {
       },
       //登录按钮状态声明
       loginButtonState: false,
-      //获取注册码状态对象声明
-      RegistrationCode: {
-        state: false,
-        txt: "获取注册码"
-      },
       //校验规则
       rules: {
         username: [{ validator: validateUsername, trigger: "blur" }],
-        password: [{ validator: validatePassword, trigger: "blur" }],
-        confirmPassword: [
-          { validator: validateConfirmPasswordord, trigger: "blur" }
-        ]
-        // age: [{ validator: checkAge, trigger: "blur" }]
+        password: [{ validator: validatePassword, trigger: "blur" }]
       }
     };
   },
   created() {},
   mounted() {},
   methods: {
-    toggleMenu(item) {
-      this.menuTab.forEach(elem => {
-        this.reset();
-        elem.current = false;
-        // this.confirmPass = true;
-        this.VerificationCode = true;
-      });
-      // 标签切换
-      item.current = true;
-      // 修改模块值(登录注册时页面改变)
-      this.pageModel = item.type;
-    },
-    // eslint-disable-next-line no-unused-vars
     submitForm(formName) {
       this.loginButtonState = true;
       this.$refs[formName].validate(valid => {
@@ -228,8 +134,6 @@ export default {
     reset() {
       this.ruleForm.username = "";
       this.ruleForm.password = "";
-      this.ruleForm.confirmPassword = "";
-      this.ruleForm.age = "";
     }
   }
 };

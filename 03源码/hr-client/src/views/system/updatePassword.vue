@@ -1,7 +1,14 @@
 <template>
   <div class="main">
     <div>
-      <el-form :inline="true" :model="form" class="demo-form-inline">
+      <el-form
+        :inline="true"
+        :model="form"
+        :rules="rules"
+        ref="form"
+        label-width="100px"
+        class="demo-form-inline"
+      >
         <div class="inputDiv">
           <span class="w2">旧密码:</span>
           <el-form-item prop="oldPassword">
@@ -58,7 +65,7 @@
         </div>
       </el-form>
     </div>
-    <el-button type="primary" plain @click="commitForm()">确认</el-button>
+    <el-button type="primary" plain @click="submitForm()">确认</el-button>
     <el-button type="primary" plain @click="reset()">重置</el-button>
   </div>
 </template>
@@ -68,7 +75,57 @@ import router from "@/router";
 export default {
   name: "insertDept",
   data() {
+    const validatePass = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入密码"));
+      } else {
+        if (this.form.checkPass !== "") {
+          this.$refs.form.validateField("checkPass");
+        }
+        callback();
+      }
+    };
+    const validateConfirmPass = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请再次输入密码"));
+      } else if (value !== this.form.newPassword) {
+        callback(new Error("两次输入密码不一致!"));
+      } else {
+        callback();
+      }
+    };
     return {
+      validatePass,
+      validateConfirmPass,
+      rules: {
+        oldPassword: [
+          { required: true, message: "请输入旧密码", trigger: "blur" },
+          {
+            min: 6,
+            max: 20,
+            pattern: /^[A-Za-z0-9_]{6,20}$/,
+            message: "密码仅为6-20个字母、数字、下划线",
+            trigger: "blur"
+          }
+        ],
+        newPassword: [
+          { required: true, message: "请输入新密码", trigger: "blur" },
+          {
+            pattern: /^[0-9a-zA-Z_]{6,20}$/,
+            message: "密码仅为6-20个字母、数字、下划线",
+            trigger: "blur"
+          }
+        ],
+        confirmPassword: [
+          { validator: validateConfirmPass, trigger: "blur" }
+          // { required: true, message: "请确认新密码", trigger: "blur" },
+          // {
+          //   pattern: /[\u4e00-\u9fa5]{2,8}$/,
+          //   message: "长度在 2 到 8 个汉字",
+          //   trigger: "blur"
+          // }
+        ]
+      },
       form: {
         oldPassword: "",
         newPassword: "",
@@ -85,21 +142,27 @@ export default {
     };
   },
   methods: {
-    commitForm() {
-      updatePassword(this.form).then(response => {
-        const data = response.data;
-        if (data.code === 200) {
-          this.$alert("请重新登录!", "修改成功", {
-            confirmButtonText: "重新登录",
-            showClose: false
-          }).then(() => {
-            router.push({ name: "Login" });
+    submitForm() {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          updatePassword(this.form).then(response => {
+            const data = response.data;
+            if (data.code === 200) {
+              this.$alert("请重新登录!", "修改成功", {
+                confirmButtonText: "重新登录",
+                showClose: false
+              }).then(() => {
+                router.push({ name: "Login" });
+              });
+            } else {
+              this.$message({
+                message: data.msg,
+                type: "warning"
+              });
+            }
           });
         } else {
-          this.$message({
-            message: data.msg,
-            type: "warning"
-          });
+          return false;
         }
       });
     },
@@ -131,7 +194,7 @@ span {
   top: 8px;
 }
 .inputDiv {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 .main {
   font-size: 14px;

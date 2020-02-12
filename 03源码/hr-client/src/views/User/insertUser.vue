@@ -4,154 +4,238 @@
       <el-row :gutter="8">
         <el-col :span="18"
           ><div class="grid-content bg-purple" style="margin-top: 8px;">
-            <span class="w2">姓名</span>
-            <span>:</span>
-            <el-input
-              style="width: 75%; margin-left: 5px;"
-              placeholder="请输入内容"
-              v-model="form.name"
-              clearable
+            <!-- <span class="w2">姓名</span>
+            <span>:</span> -->
+            <el-form
+              :model="form"
+              status-icon
+              :rules="rules"
+              label-width="100px"
+              class="demo-ruleForm"
             >
-            </el-input></div
+              <el-form-item label="员工姓名:" prop="name">
+                <el-input
+                  style="width: 75%;"
+                  placeholder="请输入内容"
+                  v-model="form.name"
+                  clearable
+                >
+                </el-input>
+              </el-form-item>
+            </el-form></div
         ></el-col>
       </el-row>
       <el-row :gutter="8">
         <el-col :span="18"
-          ><div
-            class="grid-content bg-purple"
-            style="margin-left:5px;margin-top:-10;"
-          >
-            <span>员工编号:</span>
-            <el-input
-              style="width: 76%; margin-left: 5px;"
-              placeholder="请输入内容"
-              v-model="form.username"
-              clearable
-              @blur="checkUserName"
+          ><div class="grid-content bg-purple" style="margin-top:-10;">
+            <!-- <span>员工编号:</span> -->
+            <el-form
+              :model="form"
+              status-icon
+              :rules="rules"
+              label-width="100px"
+              class="demo-ruleForm"
             >
-            </el-input></div
+              <el-form-item label="员工编号:" prop="username">
+                <el-input
+                  style="width: 75%;"
+                  placeholder="请输入内容"
+                  v-model="form.username"
+                  clearable
+                  @blur="checkUserName"
+                >
+                </el-input>
+              </el-form-item>
+            </el-form></div
         ></el-col>
       </el-row>
       <el-row :gutter="8">
         <el-col :span="18"
-          ><div
-            class="grid-content bg-purple"
-            style="margin-left:5px; margin-top:-10;"
-          >
-            <span>联系方式:</span>
-            <el-input
-              style="width: 76%; margin-left: 5px;"
-              placeholder="请输入内容"
-              v-model="form.telephone"
-              clearable
+          ><div class="grid-content bg-purple" style="margin-top:-10;">
+            <!-- <span>联系方式:</span> -->
+            <el-form
+              :model="form"
+              status-icon
+              :rules="rules"
+              label-width="100px"
+              class="demo-ruleForm"
             >
-            </el-input></div
+              <el-form-item label="联系方式:" prop="telephone">
+                <el-input
+                  style="width: 75%;"
+                  placeholder="请输入内容"
+                  v-model="form.telephone"
+                  clearable
+                >
+                </el-input>
+              </el-form-item>
+            </el-form></div
         ></el-col>
       </el-row>
       <el-row :gutter="8">
         <el-col :span="18"
           ><div class="grid-content bg-purple" style="margin-top: -10px;">
-            <span style="padding-top: 10px;" class="w2">性别</span>
-            <span style="padding-top: 10px;">:</span>
-            <el-radio
-              v-model="form.gender"
-              label="0"
-              style="margin-left: 5px; margin-right: 5px;padding-top: 10px;"
-              >男</el-radio
+            <!-- <span style="padding-top: 10px;" class="w2">性别</span>
+            <span style="padding-top: 10px;">:</span> -->
+            <el-form
+              :model="form"
+              status-icon
+              :rules="rules"
+              label-width="100px"
+              class="demo-ruleForm"
             >
-            <el-radio v-model="form.gender" label="1">女</el-radio>
+              <el-form-item label="员工性别:" prop="gender">
+                <el-radio
+                  v-model="form.gender"
+                  label="0"
+                  style="margin-left: 5px;padding-top: 10px;"
+                  >男</el-radio
+                >
+                <el-radio v-model="form.gender" label="1">女</el-radio>
+              </el-form-item>
+            </el-form>
           </div></el-col
         >
       </el-row>
       <el-row :gutter="8">
         <el-col :span="18"
-          ><div class="grid-content bg-purple" style="margin-top: -10px;">
-            <span class="w2">生日</span>
-            <span>:</span>
-            <el-date-picker
-              v-model="form.birthday"
-              type="date"
-              placeholder="选择日期"
-              style="width: 74%; margin-left: 5px; margin-right: 5px;"
+          ><div class="grid-content bg-purple" style="margin-top: -15px;">
+            <!-- <span class="w2">生日</span>
+            <span>:</span> -->
+            <el-form
+              :model="form"
+              status-icon
+              :rules="rules"
+              label-width="100px"
+              class="demo-ruleForm"
             >
-            </el-date-picker></div
+              <el-form-item label="员工生日:" prop="birthday">
+                <el-date-picker
+                  v-model="form.birthday"
+                  type="date"
+                  placeholder="选择日期"
+                  style="width: 75%; margin-right: 5px;"
+                >
+                </el-date-picker>
+              </el-form-item>
+            </el-form></div
         ></el-col>
       </el-row>
       <el-row :gutter="8">
         <el-col :span="18"
-          ><div class="grid-content bg-purple" style="margin-top: -10px;">
-            <span class="w2">地址</span>
-            <span>:</span>
-            <el-input
-              style="width: 74%; margin-left: 5px;"
-              placeholder="请输入内容"
-              v-model="form.address"
-              clearable
+          ><div class="grid-content bg-purple">
+            <!-- <span class="w2">地址</span>
+            <span>:</span> -->
+            <el-form
+              :model="form"
+              status-icon
+              :rules="rules"
+              label-width="100px"
+              class="demo-ruleForm"
             >
-            </el-input></div
+              <el-form-item label="员工地址:" prop="address">
+                <el-input
+                  style="width: 75%;"
+                  placeholder="请输入内容"
+                  v-model="form.address"
+                  clearable
+                >
+                </el-input>
+              </el-form-item>
+            </el-form></div
         ></el-col>
       </el-row>
       <el-row :gutter="8">
         <el-col :span="18"
-          ><div class="grid-content bg-purple" style="margin-top: -10px;">
-            <span class="w2">部门</span>
-            <span>:</span>
-            <el-select
-              v-model="form.departmentNumber"
-              clearable
-              placeholder="请选择"
-              style="width: 74%; margin-left: 5px; margin-right: 5px;"
+          ><div class="grid-content bg-purple">
+            <!-- <span class="w2">部门</span>
+            <span>:</span> -->
+            <el-form
+              :model="form"
+              status-icon
+              :rules="rules"
+              label-width="100px"
+              class="demo-ruleForm"
             >
-              <el-option
-                v-for="item in initData.formData.departments"
-                :key="item.value"
-                :label="item.label"
-                :value="item.label"
-              >
-              </el-option>
-            </el-select></div
+              <el-form-item label="员工部门:" prop="departmentNumber">
+                <el-select
+                  v-model="form.departmentNumber"
+                  clearable
+                  placeholder="请选择"
+                  style="width: 75%; margin-right: 5px;"
+                >
+                  <el-option
+                    v-for="item in initData.formData.departments"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.label"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-form></div
         ></el-col>
       </el-row>
       <el-row :gutter="8">
         <el-col :span="18"
-          ><div class="grid-content bg-purple" style="margin-top: -10px;">
-            <span class="w2">职称</span>
-            <span>:</span>
-            <el-select
-              v-model="form.positionNumber"
-              clearable
-              placeholder="请选择"
-              style="width: 74%; margin-left: 5px; margin-right: 5px;"
+          ><div class="grid-content bg-purple">
+            <!-- <span class="w2">职称</span>
+            <span>:</span> -->
+            <el-form
+              :model="form"
+              status-icon
+              :rules="rules"
+              label-width="100px"
+              class="demo-ruleForm"
             >
-              <el-option
-                v-for="item in initData.formData.options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.label"
-              >
-              </el-option>
-            </el-select></div
+              <el-form-item label="员工职称:" prop="positionNumber">
+                <el-select
+                  v-model="form.positionNumber"
+                  clearable
+                  placeholder="请选择"
+                  style="width: 75%; margin-right: 5px;"
+                >
+                  <el-option
+                    v-for="item in initData.formData.options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.label"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-form></div
         ></el-col>
       </el-row>
       <el-row :gutter="8">
         <el-col :span="18"
-          ><div class="grid-content bg-purple" style="margin-top: -10px;">
-            <span class="w2">学历</span>
-            <span>:</span>
-            <el-select
-              v-model="form.education"
-              clearable
-              placeholder="请选择"
-              style="width: 74%; margin-left: 5px; margin-right: 5px;"
+          ><div class="grid-content bg-purple">
+            <!-- <span class="w2">学历</span>
+            <span>:</span> -->
+            <el-form
+              :model="form"
+              status-icon
+              :rules="rules"
+              label-width="100px"
+              class="demo-ruleForm"
             >
-              <el-option
-                v-for="item in initData.formData.educations"
-                :key="item.value"
-                :label="item.label"
-                :value="item.label"
-              >
-              </el-option>
-            </el-select></div
+              <el-form-item label="员工学历:" prop="education">
+                <el-select
+                  v-model="form.education"
+                  clearable
+                  placeholder="请选择"
+                  style="width: 75%; margin-right: 5px;"
+                >
+                  <el-option
+                    v-for="item in initData.formData.educations"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.label"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-form></div
         ></el-col>
       </el-row>
       <el-row :gutter="8">
@@ -245,6 +329,53 @@ export default {
   name: "insertEmployee",
   data: () => {
     return {
+      rules: {
+        name: [
+          { required: true, message: "请输入姓名", trigger: "blur" },
+          {
+            pattern: /[\u4e00-\u9fa5]{2,8}$/,
+            message: "长度在 2 到 8 个汉字",
+            trigger: "blur"
+          }
+        ],
+        username: [
+          { required: true, message: "请输入用户名", trigger: "blur" },
+          { pattern: /^[0-9a-zA-Z]+$/, message: "用户名由英文与数字组合" }
+        ],
+        telephone: [
+          { required: true, message: "请输入联系方式", trigger: "blur" },
+          {
+            pattern: /^1[3|4|5|7|8][0-9]{9}$/,
+            message: "联系方式为中国大陆手机号码"
+          }
+        ],
+        gender: [{ required: true, message: "请选择性别", trigger: "blur" }],
+        birthday: [
+          {
+            type: "date",
+            required: true,
+            message: "请选择时间",
+            trigger: "blur"
+          }
+        ],
+        address: [
+          { required: true, message: "请输入地址", trigger: "blur" },
+          {
+            pattern: /[\u4e00-\u9fa5a-zA-Z0-9]{6,20}/,
+            message: "长度在 6 到 20 个汉字、字母、数字,且不能包含特殊字符",
+            trigger: "blur"
+          }
+        ],
+        departmentNumber: [
+          { required: true, message: "请选择员工部门", trigger: "blur" }
+        ],
+        positionNumber: [
+          { required: true, message: "请选择员工职称", trigger: "blur" }
+        ],
+        education: [
+          { required: true, message: "请选择员工学历", trigger: "blur" }
+        ]
+      },
       //是否允许添加员工
       canInsert: false,
       //按钮功能为提交还是确定
@@ -301,7 +432,6 @@ export default {
   methods: {
     //用于向右侧展示区添加待插入数据
     addEmp() {
-      //判断用户名是否可用
       if (this.tableData.length >= 10) {
         this.$message.error("最多添加10条记录!");
       } else {
@@ -504,15 +634,6 @@ span {
 .el-col {
   border-radius: 4px;
 }
-// .bg-purple-dark {
-//   background: #99a9bf;
-// }
-// .bg-purple {
-//   background: #d3dce6;
-// }
-// .bg-purple-light {
-//   background: #e5e9f2;
-// }
 .grid-content {
   border-radius: 4px;
   min-height: 36px;

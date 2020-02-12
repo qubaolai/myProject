@@ -25,6 +25,16 @@ export default {
   border-bottom: none;
   box-sizing: border;
 }
+.open {
+  #main-wrap {
+    left: $navMenu;
+  }
+}
+.close {
+  #main-wrap {
+    left: 64px;
+  }
+}
 .main-content {
   width: 100%;
   height: 100%;
@@ -33,16 +43,16 @@ export default {
   @include webkit(box-sizing, border-box);
   @include webkit(transition, all 0.3s ease 0s);
 }
-.open {
-  .main-content {
-    padding-left: $navMenu + 30;
-  }
-}
-.close {
-  .main-content {
-    padding-left: $navMenuMin + 30;
-  }
-}
+// .open {
+//   .main-content {
+//     padding-left: $navMenu - 40;
+//   }
+// }
+// .close {
+//   .main-content {
+//     padding-left: $navMenuMin + 30;
+//   }
+// }
 .content {
   width: 100%;
   height: 100%;

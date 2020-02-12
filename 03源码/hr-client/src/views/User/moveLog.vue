@@ -154,7 +154,8 @@
                 >
                 </el-table-column>
               </el-table-column>
-              <el-table-column> </el-table-column>
+              <el-table-column prop="moveType" label="调度类型">
+              </el-table-column>
             </el-table-column>
           </el-table>
         </div>
@@ -229,10 +230,18 @@ export default {
             };
             table.moveDate = dataList[i].moveTime;
             table.name = dataList[i].eName;
-            table.deptBefore = dataList[i].beforeDept;
-            table.deptAfter = dataList[i].afterDept;
-            table.positionBefore = dataList[i].beforePosition;
-            table.positionAfter = dataList[i].afterPosition;
+            table.deptBefore =
+              dataList[i].beforeDept == null ? "无" : dataList[i].beforeDept;
+            table.deptAfter =
+              dataList[i].afterDept == null ? "无" : dataList[i].afterDept;
+            table.positionBefore =
+              dataList[i].beforePosition == null
+                ? "无"
+                : dataList[i].beforePosition;
+            table.positionAfter =
+              dataList[i].afterPosition == null
+                ? "无"
+                : dataList[i].afterPosition;
             if (dataList[i].mType === 0) {
               table.moveType = "部门调动";
             }
@@ -291,7 +300,14 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val;
     },
-    reset() {},
+    reset() {
+      this.form.empName = "";
+      this.form.empNum = "";
+      this.form.deptNum = "";
+      this.form.position = "";
+      this.form.moveDate = "";
+      this.form.moveType = "";
+    },
     //页面加载完成调用的初始化方法
     init() {
       //页面初始化 发送请求获取所有部门和职称

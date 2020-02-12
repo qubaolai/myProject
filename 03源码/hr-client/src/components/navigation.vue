@@ -5,13 +5,13 @@
       <label>HR医院</label>
     </div>
     <el-menu
-      default-active="1-4-1"
       class="el-menu-vertical-demo"
       @open="handleOpen"
       @close="handleClose"
-      :collapse="isCollapse"
+      :collapse="status"
       background-color="transparent"
       text-color="#fff"
+      style="border-right: none;"
       router
     >
       <!-- 一级菜单 -->
@@ -26,7 +26,7 @@
           </template>
           <el-menu-item-group>
             <el-menu-item
-              style="text-indent: 36px;"
+              style="text-indent: 34px;"
               v-for="subItem in item.children"
               :key="subItem.id"
               :index="subItem.path"
@@ -49,11 +49,12 @@ export default {
     };
   },
   methods: {
-    handleOpen() {
-      // console.log(key, keyPath);
-    },
-    handleClose() {
-      // console.log(key, keyPath);
+    handleOpen() {},
+    handleClose() {}
+  },
+  computed: {
+    status: function() {
+      return this.$store.state.isCollapse;
     }
   }
 };
@@ -67,16 +68,18 @@ export default {
   width: $navMenu;
   height: 100vh;
   background-color: #344a5f;
+  transition: all 0.3s ease 0s;
 }
 svg {
-  font-size: 18px;
-  margin-left: 14px;
-  margin-right: 10px;
+  font-size: 16px;
+  margin-left: 12px;
+  margin-right: 16px;
   padding-bottom: 4px;
 }
 #hrImg {
   margin-top: 20px;
   margin-left: 35px;
+  width: $navMenu;
   margin-bottom: 30px;
   color: #fff;
   label {
@@ -85,6 +88,28 @@ svg {
   svg {
     margin-bottom: -10px;
     font-size: 30px;
+  }
+}
+.open {
+  #nav-wrap {
+    width: $navMenu;
+  }
+  #hrImg {
+    width: $navMenu;
+  }
+}
+.close {
+  #nav-wrap {
+    width: 64px;
+  }
+  #hrImg {
+    width: 64px;
+    margin-left: 10px;
+    svg {
+      width: 20px;
+      margin-bottom: -10px;
+      font-size: 30px;
+    }
   }
 }
 </style>

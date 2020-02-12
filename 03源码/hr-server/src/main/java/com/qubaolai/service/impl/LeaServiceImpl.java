@@ -135,15 +135,17 @@ public class LeaServiceImpl implements LeaService {
         }
         //时间区间查询(包括开始时间,结束时间)
         //假期开始时间的开始和结束的区间
-        if (null != param.get("startTimeIntervalStart") && !"".equals((String) param.get("startTimeIntervalEnd"))) {
-            String startTime = (String) param.get("startTimeIntervalStart");
-            String endTime = (String) param.get("startTimeIntervalEnd");
+        if (null != param.get("startTime") && !"".equals(param.get("startTime"))) {
+            ArrayList<String> startTimeInterval = (ArrayList<String>) param.get("startTime");
+            String startTime = startTimeInterval.get(0);
+            String endTime = startTimeInterval.get(1);
             criteria.andStartTimeBetween(startTime, endTime);
         }
         //假期结束时间的开始和结束的区间
-        if (null != param.get("endTimeIntervalStart") && !"".equals((String) param.get("endTimeIntervalEnd"))) {
-            String startTime = (String) param.get("endTimeIntervalStart");
-            String endTime = (String) param.get("endTimeIntervalEnd");
+        if (null != param.get("endTime") && !"".equals( param.get("endTime"))) {
+            ArrayList<String> endTimeInterval = (ArrayList<String>) param.get("endTime");
+            String startTime = endTimeInterval.get(0);
+            String endTime = endTimeInterval.get(1);
             criteria.andEndTimeBetween(startTime, endTime);
         }
         //审批状态查询

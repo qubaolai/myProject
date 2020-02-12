@@ -398,6 +398,7 @@ export default {
         const data = response.data;
         if (data.code === 400) {
           this.tableData = [];
+          this.loading = false;
           this.$message("数据为空!");
         } else {
           const tableList = data.data.list;

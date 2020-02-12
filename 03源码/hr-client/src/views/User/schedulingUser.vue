@@ -1,10 +1,18 @@
 <template>
   <div class="main">
     <div>
-      <el-form :inline="true" :model="form" class="demo-form-inline">
+      <el-form
+        :inline="true"
+        :model="form"
+        :rules="rules"
+        :show-message="false"
+        ref="form"
+        class="demo-form-inline"
+      >
         <div class="inputDiv" style="position: relative;left: 22px;">
-          <span class="w2">员工编号:</span>
-          <el-form-item prop="empNum">
+          <!-- <span class="w2">员工编号:</span> -->
+          <!-- <el-form :model="form" status-icon :rules="rules" ref="form"> -->
+          <el-form-item label="员工编号:" prop="empNum">
             <el-input
               type="text"
               style="width: 204px;"
@@ -14,19 +22,20 @@
             >
             </el-input>
           </el-form-item>
+          <!-- </el-form> -->
         </div>
         <div class="inputDiv">
-          <span class="w2">调动类型:</span>
-          <el-form-item>
+          <!-- <span class="w2">调动类型:</span> -->
+          <el-form-item label="调动类型:" prop="radio">
             <el-radio v-model="radio" label="0" style="margin-right: 4px;"
               >部门调动</el-radio
             >
             <el-radio v-model="radio" label="1">职位调动</el-radio>
           </el-form-item>
         </div>
-        <div class="inputDiv" style="position: relative;left: 46px;">
-          <span class="w2" style="margin-left: -14px;">部门:</span>
-          <el-form-item prop="deptNum">
+        <div class="inputDiv" style="position: relative;left: 34px;">
+          <!-- <span class="w2" style="margin-left: -14px;">部门:</span> -->
+          <el-form-item label="部门:" prop="deptNum">
             <el-select
               v-model="form.deptNum"
               placeholder="请选择"
@@ -43,9 +52,9 @@
             </el-select>
           </el-form-item>
         </div>
-        <div class="inputDiv" style="position: relative;left: 46px;">
-          <span class="w2" style="margin-left: -14px;">职位:</span>
-          <el-form-item prop="position">
+        <div class="inputDiv" style="position: relative;left: 34px;">
+          <!-- <span class="w2" style="margin-left: -14px;">职位:</span> -->
+          <el-form-item label="职位:" prop="position">
             <el-select v-model="form.position" placeholder="请选择">
               <el-option
                 v-for="item in positions"
@@ -86,6 +95,12 @@ export default {
   },
   data() {
     return {
+      rules: {
+        empNum: [{ required: true }],
+        deptNum: [{ required: true }],
+        position: [{ required: true }],
+        radio: [{ required: true }]
+      },
       form: {
         empNum: "",
         deptNum: "",
@@ -130,6 +145,8 @@ export default {
             this.$message.error(data.msg);
           }
         });
+      } else {
+        this.$message.error("请输入员工编号");
       }
     },
     commitForm() {
