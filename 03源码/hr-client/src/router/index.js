@@ -181,29 +181,6 @@ export const permissionRouter = [
         component: () => import("../views/system/updatePassword.vue")
       }
     ]
-  },
-  {
-    path: "/test",
-    name: "Test",
-    hidden: false,
-    meta: {
-      name: "测试",
-      roles: ["0", "1"],
-      icon: "systemConfig"
-    },
-    component: layout,
-    children: [
-      {
-        path: "/test",
-        name: "Test",
-        // hidden: false,
-        meta: {
-          name: "测试",
-          roles: ["0", "1"]
-        },
-        component: () => import("../views/Test/test.vue")
-      }
-    ]
   }
 ];
 export default new VueRouter({

@@ -20,7 +20,18 @@ public interface FileService {
     /**
      * 将上传图片的信息落库
      * @param path
-     * @param name
      */
-    public void addFileInfo(String path, String name);
+    public void addFileInfo(String path);
+
+    /**
+     * 用户获取头像
+     * @return
+     */
+    public String getPhoto();
+
+    /**
+     * 删除指定文件
+     * @param path
+     */
+    public void deleteFile(String path);
 }

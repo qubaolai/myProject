@@ -142,7 +142,7 @@
     <div style="height: 200%; background-color: #fff">
       <el-row>
         <div>
-          <el-table :data="tableData" style="width: 100%;" height="390">
+          <el-table :data="pageData" style="width: 100%;" height="390">
             <el-table-column
               fixed
               prop="singDate"
@@ -316,6 +316,7 @@ export default {
         if (data.code === 200) {
           this.tableData = [];
           const dataList = data.data;
+          this.sumNum = dataList.length;
           for (let i = 0; i < dataList.length; i++) {
             const table = {
               empId: "",
@@ -444,6 +445,15 @@ export default {
     }
     this.initPage();
     this.init();
+  },
+  computed: {
+    //自动计算页面数据展示
+    pageData: function() {
+      return this.tableData.slice(
+        (this.currentPage - 1) * this.pageSize,
+        this.currentPage * this.pageSize
+      );
+    }
   }
 };
 </script>

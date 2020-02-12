@@ -6,11 +6,11 @@
     <div class="pull-right">
       <div class="user-head pull-left">
         <el-tooltip content="更换头像" placement="bottom">
-          <el-image
-            style="width: 40px; height: 40px; position: relative; left: -18px; top: 14px;"
+          <img
+            style="width: 40px; height: 40px;"
             :src="url"
             @click="dialogFormVisible = true"
-          ></el-image>
+          />
         </el-tooltip>
       </div>
       <div class="user-text pull-left">
@@ -22,25 +22,33 @@
         </el-tooltip>
       </div>
     </div>
-    <div>
-      <el-dialog :visible.sync="dialogFormVisible" :append-to-body="true">
-        <el-upload
-          class="avatar-uploader"
-          action="api/file/uploadFile"
-          name="headPhoto"
-          :data="{ path: 'D:/img' }"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload"
-        >
-          <el-img v-if="imageUrl" :src="imageUrl" class="avatar" />
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </el-upload>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogFormVisible = false"
-            >确 定</el-button
+    <div style="margin-left: 42%;">
+      <el-dialog
+        :visible.sync="dialogFormVisible"
+        :append-to-body="true"
+        :close-on-press-escape="false"
+        :show-close="false"
+        :before-close="cancelUpload"
+      >
+        <div>
+          <el-upload
+            style="position: relative;left: 40%;width: 180px;"
+            class="avatar-uploader"
+            action="api/file/uploadFile"
+            accept=".jpg,.jpeg,.png"
+            name="headPhoto"
+            :data="{ path: 'D:/img' }"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
           >
+            <img v-if="imgUrl" :src="imgUrl" class="avatar" />
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+        </div>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="cancelUpload">取 消</el-button>
+          <el-button type="primary" @click="determine">确 定</el-button>
         </div>
       </el-dialog>
     </div>
@@ -49,7 +57,21 @@
 <script>
 import router from "@/router";
 import { logout } from "@/api/user/logout.js";
+import {
+  getPhoto,
+  deleteFile,
+  insertFileInfo
+} from "@/api/file/operationFile.js";
 export default {
+  // watch: {
+  //   url: {
+  //     handler(newVal) {
+  //       if (this.url != newVal) {
+  //         this.getUserHeader();
+  //       }
+  //     }
+  //   }
+  // },
   data: () => {
     return {
       //页面显示内容start
@@ -59,9 +81,9 @@ export default {
       },
       //页面显示内容end
       dialogFormVisible: false,
-      imageUrl: "",
-      url:
-        "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+      imgUrl: "",
+      url: "",
+      delPath: ""
     };
   },
   mounted() {
@@ -77,6 +99,42 @@ export default {
     this.user.userRole = user.role;
   },
   methods: {
+    determine() {
+      if (this.delPath != null && this.delPath != "") {
+        insertFileInfo(this.delPath).then(response => {
+          const data = response.data;
+          if (data.code === 200) {
+            this.getUserHeader();
+            this.dialogFormVisible = false;
+            this.imgUrl = "";
+          } else {
+            this.cancelUpload();
+            this.$message({
+              message: "头像上传失败!",
+              type: "error"
+            });
+          }
+        });
+      } else {
+        alert("asdasda");
+      }
+    },
+    cancelUpload() {
+      //删除文件
+      if (this.delPath != null && this.delPath != "") {
+        deleteFile(this.delPath).then(response => {
+          const data = response.data;
+          if (data.code === 200) {
+            this.imgUrl = "";
+            this.$message({
+              message: "取消上传",
+              type: "success"
+            });
+          }
+        });
+      }
+      this.dialogFormVisible = false;
+    },
     exit() {
       logout().then(response => {
         const data = response.data;
@@ -92,8 +150,15 @@ export default {
       });
     },
     handleAvatarSuccess(res, file) {
-      this.url = URL.createObjectURL(file.raw);
-      console.log(this.url);
+      if (res.code === 200) {
+        this.imgUrl = URL.createObjectURL(file.raw);
+        this.delPath = res.data;
+      } else {
+        this.$message({
+          message: "头像上传失败!",
+          type: "error"
+        });
+      }
     },
     beforeAvatarUpload(file) {
       let isJPG = false;
@@ -109,10 +174,65 @@ export default {
         this.$message.error("上传头像图片大小不能超过 2MB!");
       }
       return isJPG && isLt2M;
+    },
+    getUserHeader() {
+      getPhoto().then(response => {
+        const data = response.data;
+        if (data.code === 200) {
+          this.url = data.data;
+          // base64编码的图片
+          const fileBase64 = data.data;
+          //转换图片文件
+          this.url = URL.createObjectURL(this.base64ImgtoFile(fileBase64));
+        }
+      });
+    },
+    base64ImgtoFile(dataurl, filename = "file") {
+      let arr = dataurl.split(",");
+      let mime = arr[0].match(/:(.*?);/)[1];
+      let suffix = mime.split("/")[1];
+      let bstr = atob(arr[1]);
+      let n = bstr.length;
+      let u8arr = new Uint8Array(n);
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new File([u8arr], `${filename}.${suffix}`, {
+        type: mime
+      });
     }
+  },
+  created: function() {
+    this.imgUrl = "";
+    this.getUserHeader();
   }
 };
 </script>
+<style>
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+</style>
 <style lang="scss" scoped>
 @import "@/styles/config.scss";
 #header-wrap {
