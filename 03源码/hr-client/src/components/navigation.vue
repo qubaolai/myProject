@@ -44,7 +44,7 @@ export default {
   data: function() {
     //声明路由对象
     return {
-      isCollapse: false,
+      // isCollapse: false,
       routers: this.$router.options.routes
     };
   },

@@ -123,6 +123,7 @@
     </div>
     <div class="rightMain">
       <el-table
+        v-loading="loading"
         :data="tableData"
         max-height="550"
         height="550"
@@ -199,6 +200,7 @@ export default {
   name: "insertEmployee",
   data: () => {
     return {
+      loading: false,
       //分页
       //显示数据总数
       sumNum: 0,
@@ -215,25 +217,16 @@ export default {
         deptNum: "",
         status: ""
       },
-      tableData: [
-        {
-          leaId: "",
-          empName: "王小虎",
-          empNum: "wangxiaohu",
-          deptNmae: "脑外科",
-          startTime: "2016-05-03",
-          endTime: "2016-05-03",
-          reason: "就是不想上班",
-          status: "同意"
-        }
-      ],
+      tableData: [],
       //页面绑定的部门列表
       departments: []
     };
   },
   methods: {
     getData() {
+      this.loading = true;
       getLeasByConditions(this.form).then(response => {
+        this.loading = false;
         const data = response.data;
         if (data.code === 200) {
           const tableList = data.data;

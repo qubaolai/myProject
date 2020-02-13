@@ -27,6 +27,7 @@
         </el-form-item>
         <el-form-item class="item-from">
           <el-button
+            :v-loading="loading"
             type="primary"
             :disabled="loginButtonState"
             @click="submitForm('ruleForm')"
@@ -79,6 +80,7 @@ export default {
       },
       //登录按钮状态声明
       loginButtonState: false,
+      loading: false,
       //校验规则
       rules: {
         username: [{ validator: validateUsername, trigger: "blur" }],
@@ -91,43 +93,48 @@ export default {
   methods: {
     submitForm(formName) {
       this.loginButtonState = true;
+      this.loading = true;
       this.$refs[formName].validate(valid => {
         if (valid) {
           const formParam = {
             username: this.ruleForm.username,
             password: this.ruleForm.password
           };
-          login(formParam).then(response => {
-            const data = response.data;
-            if (data.code === 200) {
-              this.user.name = data.data.user.name;
-              this.user.role = data.data.user.role;
-              //将数据存储在sessionStorage
-              sessionStorage.setItem("user", JSON.stringify(this.user));
-              //将token保存
-              const token = data.data.token;
-              if (token !== null) {
-                window.localStorage.setItem("token", token);
-                sessionStorage[token];
+          login(formParam)
+            .then(response => {
+              const data = response.data;
+              if (data.code === 200) {
+                this.user.name = data.data.user.name;
+                this.user.role = data.data.user.role;
+                //将数据存储在sessionStorage
+                sessionStorage.setItem("user", JSON.stringify(this.user));
+                //将token保存
+                const token = data.data.token;
+                if (token !== null) {
+                  window.sessionStorage.setItem("token", token);
+                  sessionStorage[token];
+                }
+                this.$router.push({
+                  path: "/console"
+                  // query: { user: data.data.user }
+                });
+              } else if (data.code === 400) {
+                this.$message({
+                  message: "用户名或密码错误!",
+                  type: "warning"
+                });
+                this.loginButtonState = false;
+              } else {
+                this.$message({
+                  message: data.msg,
+                  type: "warning"
+                });
+                this.loginButtonState = false;
               }
-              this.$router.push({
-                path: "/console"
-                // query: { user: data.data.user }
-              });
-            } else if (data.code === 400) {
-              this.$message({
-                message: "用户名或密码错误!",
-                type: "warning"
-              });
+            })
+            .catch(() => {
               this.loginButtonState = false;
-            } else {
-              this.$message({
-                message: data.msg,
-                type: "warning"
-              });
-              this.loginButtonState = false;
-            }
-          });
+            });
         }
       });
     },

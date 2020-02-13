@@ -6,7 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     //导航栏状态
-    isCollapse: false
+    isCollapse: JSON.parse(sessionStorage.getItem("isCollapse")) || false
   },
   getters: {
     isCollapse: state => state.isCollapse
@@ -14,6 +14,7 @@ export default new Vuex.Store({
   mutations: {
     SET_STATUS(state) {
       state.isCollapse = !state.isCollapse;
+      sessionStorage.setItem("isCollapse", JSON.stringify(state.isCollapse));
     }
   },
   actions: {},

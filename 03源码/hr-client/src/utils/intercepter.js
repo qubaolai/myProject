@@ -15,7 +15,7 @@ intercept.interceptors.request.use(
     //如果不是登录请求,在请求头添加token
     const url = config.url;
     if (url !== "/user/login") {
-      const token = window.localStorage.getItem("token");
+      const token = window.sessionStorage.getItem("token");
       if (token !== null) {
         config.headers["token"] = token;
       } else {
@@ -46,28 +46,14 @@ intercept.interceptors.response.use(
     }
   },
   function(error) {
-    Message.error(error);
+    debugger;
+    // location.replace("/");
     // 对响应错误做点什么
+    if (error.response.status === 500) {
+      //请求状态500
+      router.push({ name: "Login" });
+      Message.error("无法连接服务器");
+    }
   }
 );
-// function setDept(data) {
-//   const dept = data["dept"];
-//   // const position = data["option"];
-//   formData.departments = [];
-//   formData.options = [];
-//   const department = {
-//     value: "",
-//     name: ""
-//   };
-//   for (let i = 0; i < dept.length; i++) {
-//     // formData.departments[i] = data[i].name;
-//     department.value = dept[i].id;
-//     department.name = dept[i].name;
-//     formData.departments.push(department);
-//   }
-//   // for (let i = 0; i < position.length; i++) {
-//   //   formData.options[i].value = position[i].id;
-//   //   formData.options[i].name =
-//   // }
-// }
 export default intercept;

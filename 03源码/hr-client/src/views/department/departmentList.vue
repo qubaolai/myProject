@@ -58,6 +58,7 @@
       <el-row>
         <div>
           <el-table
+            v-loading="loading"
             height="400"
             v-show="adminShow"
             :data="pageData"
@@ -197,6 +198,7 @@ export default {
   name: "userList",
   data() {
     return {
+      loading: false,
       adminShow: true,
       userShow: false,
       //弹层
@@ -239,8 +241,10 @@ export default {
     },
     //提交查询参数
     submitForm() {
+      this.loading = true;
       this.tableData = [];
       getDeptList(this.form).then(response => {
+        this.loading = false;
         const data = response.data;
         if (data.code !== 200) {
           this.$message({

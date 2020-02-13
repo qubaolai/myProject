@@ -123,7 +123,12 @@
     <div style="height: 200%; background-color: #fff">
       <el-row>
         <div>
-          <el-table :data="pageData" style="width: 100%" height="450">
+          <el-table
+            v-loading="loading"
+            :data="pageData"
+            style="width: 100%"
+            height="450"
+          >
             <el-table-column
               prop="moveDate"
               label="调度日期"
@@ -186,6 +191,8 @@ import { getMoveLog } from "@/api/user/schedulingUser.js";
 export default {
   data() {
     return {
+      //加载
+      loading: false,
       initData: formData,
       //分页
       //显示数据总数
@@ -208,12 +215,14 @@ export default {
   },
   methods: {
     query() {
+      this.loading = true;
       this.tableData = [];
       if (this.form.moveDate != null && this.form.moveDate != "") {
         this.form.moveDate[0] = formatDate(this.form.moveDate[0]);
         this.form.moveDate[1] = formatDate(this.form.moveDate[1]);
       }
       getMoveLog(this.form).then(response => {
+        this.loading = false;
         const data = response.data;
         if (data.code === 200) {
           const dataList = data.data;
@@ -331,6 +340,9 @@ export default {
 };
 </script>
 <style>
+body {
+  margin: 0;
+}
 .main-content[data-v-5c886d6e] {
   padding: 0;
 }
