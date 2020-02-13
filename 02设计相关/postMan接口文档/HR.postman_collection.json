@@ -16,7 +16,8 @@
 		"29cf90a8-9cd4-5b0f-d3d2-9bcbde18b917",
 		"df295a50-0a9c-150c-9aa0-840406f3b056",
 		"1792feca-c5ac-9fef-9368-6fb51fbaabc3",
-		"ebeed19a-c840-a200-1cf5-b0eda5261d25"
+		"ebeed19a-c840-a200-1cf5-b0eda5261d25",
+		"8445a7d5-be5e-2754-0c23-4e04b30bbdb2"
 	],
 	"folders": [],
 	"folders_order": [],
@@ -362,6 +363,36 @@
 			"description": "",
 			"collectionId": "b8fda6e3-f3ea-f4aa-5cb4-53afda358de8",
 			"responses": []
+		},
+		{
+			"id": "8445a7d5-be5e-2754-0c23-4e04b30bbdb2",
+			"headers": "token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRlIjoiVGh1IEZlYiAwNiAxMjoxMzo0NSBDU1QgMjAyMCIsImF1ZCI6ImFzZCIsImFzZCI6ImFzZCJ9.a5NThwlBuziQo0fOe7iS9vx4OF4jl3xn8BCxSTFQIRc\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRlIjoiVGh1IEZlYiAwNiAxMjoxMzo0NSBDU1QgMjAyMCIsImF1ZCI6ImFzZCIsImFzZCI6ImFzZCJ9.a5NThwlBuziQo0fOe7iS9vx4OF4jl3xn8BCxSTFQIRc",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:8080/initPage/getPageEmpInfo",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "b8fda6e3-f3ea-f4aa-5cb4-53afda358de8",
+			"data": null,
+			"dataMode": "params",
+			"name": "页面员工信息下拉",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1581060670326,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
 		},
 		{
 			"id": "df295a50-0a9c-150c-9aa0-840406f3b056",
