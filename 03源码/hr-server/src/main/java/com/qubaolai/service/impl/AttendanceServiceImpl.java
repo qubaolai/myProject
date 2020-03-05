@@ -325,10 +325,8 @@ public class AttendanceServiceImpl implements AttendanceService {
             ArrayList<String> params = (ArrayList)param.get("empName");
             String deptId = params.get(0);
             String empId = params.get(1);
-            AttendanceExample attendanceExample1 = new AttendanceExample();
-            AttendanceExample.Criteria criteria = attendanceExample1.createCriteria();
-            criteria.andEmployeeNumberEqualTo(empId);
-            criteria.andDepartmentNumberEqualTo(deptId);
+            attendanceCriteria.andEmployeeNumberEqualTo(empId);
+            attendanceCriteria.andDepartmentNumberEqualTo(deptId);
         }
         //员工编号模糊查询
         if(null != param.get("empNum") && !"".equals((String)param.get("empNum"))){
@@ -345,8 +343,8 @@ public class AttendanceServiceImpl implements AttendanceService {
             attendanceCriteria.andEmployeeNumberIn(empUName);
         }
         //部门编号精确查询
-        if(null != param.get("deptNum") && !"".equals((String)param.get("deptNum"))){
-            attendanceCriteria.andDepartmentNumberEqualTo((String)param.get("deptNum"));
+        if(null != param.get("deptName") && !"".equals((String)param.get("deptName"))){
+            attendanceCriteria.andDepartmentNumberEqualTo((String)param.get("deptName"));
         }
         //签到时间
         //上班
