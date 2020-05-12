@@ -6,9 +6,11 @@ import com.qubaolai.common.utils.UUIDUtil;
 import com.qubaolai.mapper.DepartmentMapper;
 import com.qubaolai.mapper.PositionMapper;
 import com.qubaolai.po.Department;
+import com.qubaolai.po.DepartmentExample;
 import com.qubaolai.po.Position;
 import com.qubaolai.po.PositionExample;
 import com.qubaolai.service.PositionService;
+import com.qubaolai.vo.ResultVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -69,4 +71,34 @@ public class PositionServiceImpl implements PositionService {
         }
         return positions;
     }
+
+    @Override
+    public ResultVo savePisition(Position position) {
+        position.setId(UUIDUtil.getUUID());
+        PositionExample example = new PositionExample();
+        PositionExample.Criteria criteria = example.createCriteria();
+        criteria.andDepartmentNumberEqualTo(position.getDepartmentNumber());
+        criteria.andNameEqualTo(position.getName());
+        List<Position> positions = positionMapper.selectByExample(example);
+        if(positions == null || 0 >= positions.size()){
+            positionMapper.insert(position);
+            return ResultVo.sendResult(200, "success");
+        }
+        return ResultVo.sendResult(202, "职位已存在");
+    }
+
+    @Override
+    public List<Position> getPositionByDeptName(String deptName) {
+        DepartmentExample example = new DepartmentExample();
+        DepartmentExample.Criteria criteria = example.createCriteria();
+        criteria.andNameEqualTo(deptName);
+        List<Department> departments = departmentMapper.selectByExample(example);
+        Department department = departments.get(0);
+        PositionExample example1 = new PositionExample();
+        PositionExample.Criteria criteria1 = example1.createCriteria();
+        criteria1.andDepartmentNumberEqualTo(department.getId());
+        List<Position> positions = positionMapper.selectByExample(example1);
+        return positions;
+    }
+
 }

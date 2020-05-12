@@ -196,6 +196,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         DepartmentExample departmentExample = new DepartmentExample();
         DepartmentExample.Criteria dcriteria = departmentExample.createCriteria();
         dcriteria.andNameEqualTo((String) param.get("deptName"));
+        dcriteria.andValidEqualTo(0);
         List<Department> dept = departmentMapper.selectByExample(departmentExample);
         if (null != dept && 0 < dept.size()) {
             throw new DataException(201, "部门已存在!");
@@ -211,46 +212,46 @@ public class DepartmentServiceImpl implements DepartmentService {
             throw new ParamException(501, "部门电话重复");
         }
         department.setTelephone((String) param.get("deptTel"));
-        if (null == param.get("manageName") || "".equals((String) param.get("manageName"))) {
-            throw new ParamException(501, "参数异常");
-        }
-        Employee employee = employeeMapper.selectByPrimaryKey((String) param.get("manageName"));
-        if (null == employee) {
-            throw new NoDataException(400, "员工不存在");
-        }
-        //判断员工是否已经为某部门领导
-        if(null != employee.getDeviceid() && !"".equals(employee.getDeviceid())){
-            throw new DataException(401, "员工已是其他部门领导!");
-        }
-        //向员工调度表中添加信息
-        Move move = new Move();
-        move.setId(UUIDUtil.getUUID());
-        move.setDeptBefore(employee.getDepartmentNumber());
-        move.setManagerId(employee.getManageerId());
-        //修改员工部门
-        employee.setDeviceid("0");
-        employee.setManageerId(employee.getId());
-        employee.setDepartmentNumber(department.getId());
-        employeeMapper.updateByPrimaryKeySelective(employee);
-        move.setDeptAfter(employee.getDepartmentNumber());
-        move.setEmployeeNumber(employee.getId());
-        move.setUpdateTime(DateUtil.getDate());
-        move.setMoveType(0);
-        moveMapper.insertSelective(move);
-        department.setManager(employee.getId());
+//        if (null == param.get("manageName") || "".equals((String) param.get("manageName"))) {
+//            throw new ParamException(501, "参数异常");
+//        }
+//        Employee employee = employeeMapper.selectByPrimaryKey((String) param.get("manageName"));
+//        if (null == employee) {
+//            throw new NoDataException(400, "员工不存在");
+//        }
+//        //判断员工是否已经为某部门领导
+//        if(null != employee.getDeviceid() && !"".equals(employee.getDeviceid())){
+//            throw new DataException(401, "员工已是其他部门领导!");
+//        }
+//        //向员工调度表中添加信息
+//        Move move = new Move();
+//        move.setId(UUIDUtil.getUUID());
+//        move.setDeptBefore(employee.getDepartmentNumber());
+//        move.setManagerId(employee.getManageerId());
+//        //修改员工部门
+//        employee.setDeviceid("0");
+//        employee.setManageerId(employee.getId());
+//        employee.setDepartmentNumber(department.getId());
+//        employeeMapper.updateByPrimaryKeySelective(employee);
+//        move.setDeptAfter(employee.getDepartmentNumber());
+//        move.setEmployeeNumber(employee.getId());
+//        move.setUpdateTime(DateUtil.getDate());
+//        move.setMoveType(0);
+//        moveMapper.insertSelective(move);
+//        department.setManager(employee.getId());
         if (null != param.get("notes") || !"".equals((String) param.get("notes"))) {
             department.setNotes((String) param.get("notes"));
         }
         department.setValid(0);
         departmentMapper.insert(department);
-        if (null == param.get("position") || "".equals((String) param.get("position"))) {
-            throw new ParamException(501, "请输入职位");
-        }
-        Position position = new Position();
-        position.setId(UUIDUtil.getUUID());
-        position.setName((String) param.get("position"));
-        position.setDepartmentNumber(department.getId());
-        positionMapper.insert(position);
+//        if (null == param.get("position") || "".equals((String) param.get("position"))) {
+//            throw new ParamException(501, "请输入职位");
+//        }
+//        Position position = new Position();
+//        position.setId(UUIDUtil.getUUID());
+//        position.setName((String) param.get("position"));
+//        position.setDepartmentNumber(department.getId());
+//        positionMapper.insert(position);
     }
 
     @Transactional(propagation= Propagation.REQUIRED)
@@ -265,25 +266,26 @@ public class DepartmentServiceImpl implements DepartmentService {
         EmployeeExample.Criteria criteria = employeeExample.createCriteria();
         criteria.andDepartmentNumberEqualTo(id);
         List<Employee> employeeList = employeeMapper.selectByExample(employeeExample);
-        if(null == employeeList || 0 >= employeeList.size()){
-            throw new NoDataException(400, "数据为空");
-        }
         for(Employee employee : employeeList){
-            if(employee.getDepartmentNumber().equals(id) && employee.getDeviceid().equals("0")){
+            if(employee.getDepartmentNumber().equals(id)){
                 employee.setDeviceid(null);
             }
             if(employee.getDepartmentNumber().equals(id)){
                 employee.setDepartmentNumber(null);
                 employee.setManageerId(null);
+                employee.setPositionNumber(null);
             }
             employeeMapper.updateByExample(employee,employeeExample);
         }
-        departmentMapper.updateByPrimaryKeySelective(department);
+//        departmentMapper.updateByPrimaryKeySelective(department);
+        departmentMapper.deleteByPrimaryKey(id);
     }
 
     @Override
     public List<Department> getAll() {
         DepartmentExample example = new DepartmentExample();
+        DepartmentExample.Criteria criteria = example.createCriteria();
+        criteria.andValidEqualTo(0);
         List<Department> departments = departmentMapper.selectByExample(example);
         if(departments == null || departments.size() <= 0){
             throw new NoDataException(400, "部门为空");

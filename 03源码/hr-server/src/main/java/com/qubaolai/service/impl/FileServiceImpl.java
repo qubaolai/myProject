@@ -87,7 +87,7 @@ public class FileServiceImpl implements FileService {
         FileInfoExample.Criteria criteria = example.createCriteria();
         criteria.andEmployeeNumberEqualTo(currentLoginEmployee.getId());
         List<FileInfo> fileInfos = fileInfoMapper.selectByExample(example);
-        if (fileInfos != null && 1 >= fileInfos.size()) {
+        if (fileInfos != null && 1 <= fileInfos.size()) {
             FileInfo fileInfo = fileInfos.get(0);
             fileInfo.setFileName(fileName);
             fileInfo.setFilePath(parentPath);

@@ -32,7 +32,7 @@
                              targetProject="${mapperProject}" type="XMLMAPPER"/>
 
         <!-- 如果需要通配所有表 直接用sql的通配符    %即可 -->
-        <table schema="" tableName="${table}" enableCountByExample="true"/>
+        <table schema="" tableName="%" enableCountByExample="true"/>
 
     </context>
 </generatorConfiguration>

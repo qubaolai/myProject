@@ -10,7 +10,6 @@ import com.qubaolai.mapper.EmployeeMapper;
 import com.qubaolai.mapper.PositionMapper;
 import com.qubaolai.mapper.myMapper.MyEmployeeMapper;
 import com.qubaolai.po.*;
-import com.qubaolai.service.WorkTimeService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,8 +36,6 @@ public class MyTest {
     @Resource
     private PositionMapper positionMapper;
     @Resource
-    private WorkTimeService workTimeService;
-    @Resource
     private MyEmployeeMapper myEmployeeMapper;
 
     @Before
@@ -49,7 +46,6 @@ public class MyTest {
         employeeMapper = applicationContext.getBean(EmployeeMapper.class);
         departmentMapper = applicationContext.getBean(DepartmentMapper.class);
         positionMapper = applicationContext.getBean(PositionMapper.class);
-        workTimeService = applicationContext.getBean(WorkTimeService.class);
         myEmployeeMapper = applicationContext.getBean(MyEmployeeMapper.class);
     }
 

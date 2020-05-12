@@ -2,6 +2,7 @@ package com.qubaolai.service;
 
 import com.qubaolai.po.Position;
 import com.qubaolai.vo.ResultVo;
+import javafx.geometry.Pos;
 
 import java.util.List;
 import java.util.Map;
@@ -29,4 +30,8 @@ public interface PositionService {
      * @return
      */
     public List<Position> getPositionByDeptNum(String deptId);
+
+    public ResultVo savePisition(Position position);
+
+    public List<Position> getPositionByDeptName(String deptName);
 }

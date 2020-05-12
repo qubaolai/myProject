@@ -43,6 +43,7 @@
             <if test="moveType != null">
                 and m.move_type = #{moveType}
             </if>
+                and e1.id is not null
         </where>
     </select>
 </mapper>

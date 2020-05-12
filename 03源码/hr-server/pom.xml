@@ -227,12 +227,6 @@
             <version>3.1.0</version>
             <scope>provided</scope>
         </dependency>
-        <!--支持数据库加密-->
-        <dependency>
-            <groupId>com.github.ulisesbocchio</groupId>
-            <artifactId>jasypt-spring-boot-starter</artifactId>
-            <version>1.16</version>
-        </dependency>
         <!--jwt相关-->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>

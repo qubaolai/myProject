@@ -4,6 +4,7 @@ import com.qubaolai.common.exception.exceptions.ParamException;
 import com.qubaolai.po.Position;
 import com.qubaolai.service.PositionService;
 import com.qubaolai.vo.ResultVo;
+import javafx.geometry.Pos;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -36,6 +37,23 @@ public class PositionController {
             throw new ParamException(501, "参数异常");
         }
         List<Position> positionByDeptNum = positionService.getPositionByDeptNum(deptId);
+        return ResultVo.sendResult(200, "success", positionByDeptNum);
+    }
+
+    @PostMapping("/savePosition")
+    public ResultVo savePosition(@RequestBody Position position){
+        if(position == null){
+            throw new ParamException(501, "参数异常");
+        }
+        return positionService.savePisition(position);
+    }
+
+    @GetMapping("/getPositionByDeptName")
+    public ResultVo getPositionByDeptName(String name){
+        if(name == null || "".equals(name)){
+            throw new ParamException(501, "参数异常");
+        }
+        List<Position> positionByDeptNum = positionService.getPositionByDeptName(name);
         return ResultVo.sendResult(200, "success", positionByDeptNum);
     }
 }

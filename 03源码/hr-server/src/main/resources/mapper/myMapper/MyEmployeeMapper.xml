@@ -11,6 +11,7 @@
         <result column="education" property="education" jdbcType="VARCHAR"/>
         <result column="in_time" property="inTime" jdbcType="DATE"/>
         <result column="manageer_id" property="manageerId" jdbcType="VARCHAR"/>
+        <result column="role" property="role" jdbcType="INTEGER"/>
         <association property="department" javaType="com.qubaolai.po.Department">
             <id column="did" property="id" jdbcType="VARCHAR"/>
             <result column="deptName" property="name" jdbcType="VARCHAR"/>
@@ -38,6 +39,7 @@
 	e.education,
 	e.telephone,
 	e.address,
+	e.role,
 	p.ID as pid,
 	p.NAME posiName
   </sql>

@@ -50,8 +50,6 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
     @Resource
     private FileInfoMapper fileInfoMapper;
     @Resource
-    private HistoryMapper historyMapper;
-    @Resource
     private MoveMapper moveMapper;
 
     @Override
@@ -126,7 +124,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
             throw new ParamException(207, ErrorEmnus.getMsg(207));
         }
         //正则表达式：允许数字字母下划线组成，不能少于6个字符
-        String check = "^[a-zA-Z0-9]\\w{5}$";
+        String check = "^[a-zA-Z0-9]{6,20}$";
         if (!newPassword.matches(check)) {
             throw new ParamException(209, "密码格式不符");
         }
@@ -154,9 +152,14 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
             param.put("employeeNumber", map.get("employeeNumber"));
         }
         //入职时间
-        if (null != map.get("inTimeStart") && !"".equals((String) map.get("inTimeEnd"))) {
-            param.put("inTimeStart", map.get("inTimeStart"));
-            param.put("inTimeEnd", map.get("inTimeEnd"));
+//        if (null != map.get("inTimeStart") && !"".equals((String) map.get("inTimeEnd"))) {
+//            param.put("inTimeStart", map.get("inTimeStart"));
+//            param.put("inTimeEnd", map.get("inTimeEnd"));
+//        }
+        if (null != map.get("inTime") && 0 < ((List)map.get("inTime")).size()) {
+            List list = (List) map.get("inTime");
+            param.put("inTimeStart", list.get(0));
+            param.put("inTimeEnd", list.get(1));
         }
         //性别
         if (null != map.get("sex") && !"".equals((String) map.get("sex"))) {
@@ -259,8 +262,8 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
             employeeMapper.insert(employee);
             //用户添加默认头像
             FileInfo fileInfo = new FileInfo();
-            fileInfo.setFilePath("D:/img");
-            fileInfo.setFileName("userHead.jpg");
+            fileInfo.setFilePath("D:\\img");
+            fileInfo.setFileName("head.jpg");
             fileInfo.setUploadTime(DateUtil.getDate());
             fileInfo.setEmployeeNumber(employee.getId());
             fileInfo.setId(UUIDUtil.getUUID());
@@ -295,22 +298,6 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
     @Override
     public void deleteEmployee(String id) {
         Employee employee = employeeMapper.selectByPrimaryKey(id);
-        //向离职表中插入记录
-        History history = new History();
-        history.setId(UUIDUtil.getUUID());
-        history.setName(employee.getName());
-        history.setEmployeeNumber(employee.getId());
-        history.setGender(employee.getGender());
-        history.setBirthday(employee.getBirthday());
-        history.setTelephone(employee.getTelephone());
-        history.setEmail(employee.getEmail());
-        history.setAddress(employee.getAddress());
-        history.setEducation(employee.getEducation());
-        history.setInTime(employee.getInTime());
-        history.setOutTime(DateUtil.getDate());
-        history.setDepartmentNumber(employee.getDepartmentNumber());
-        history.setPositionNumber(employee.getPositionNumber());
-        historyMapper.insert(history);
         employeeMapper.deleteByPrimaryKey(id);
     }
 
@@ -398,7 +385,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
             move.setEmployeeNumber(employee.getId());
             moveMapper.insert(move);
             //判断员工职位是否发生改变
-            if (!employee.getPositionNumber().equals((String) param.get("position"))) {
+//            if (!employee.getPositionNumber().equals((String) param.get("position"))) {
                 //改变: 查询之前的部门调度记录 修改该记录添加职位调度信息
                 MoveExample moveExample = new MoveExample();
                 MoveExample.Criteria criteria1 = moveExample.createCriteria();
@@ -417,27 +404,28 @@ public class EmployeeServiceImpl extends BaseServiceImpl implements EmployeeServ
                 moveMapper.updateByPrimaryKey(move1);
                 //改变: 将职位设置为调度后的职位
                 employee.setPositionNumber((String) param.get("position"));
-            }
+//            }
             //修改被调度的员工信息
             employee.setDepartmentNumber(afterDept.getId());
             employeeMapper.updateByPrimaryKey(employee);
         }
         if (type.equals("1")) {
             //职位调动
-            //修改员工职位id
-            employee.setPositionNumber((String) param.get("position"));
-            employeeMapper.updateByPrimaryKey(employee);
             //向调度记录表插入数据 类型为1:职位调度
             Move move = new Move();
             move.setId(UUIDUtil.getUUID());
             move.setPositionBefore(employee.getPositionNumber());
+            //修改员工职位id
+            employee.setPositionNumber((String) param.get("position"));
             move.setPositionAfter((String) param.get("position"));
             move.setMoveType(1);
             move.setDeptBefore(employee.getDepartmentNumber());
+            move.setDeptAfter(employee.getDepartmentNumber());
             move.setManagerId(employee.getManageerId());
             move.setUpdateTime(date);
             move.setEmployeeNumber(employee.getId());
             moveMapper.insert(move);
+            employeeMapper.updateByPrimaryKey(employee);
         }
     }
 
